@@ -2,6 +2,7 @@ package com.example.kodetraineetest.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Typography
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
@@ -12,7 +13,7 @@ private val LightColorPalette = lightColors(
     primaryVariant = Color(0xFF6534FF),
     onPrimary = Color(0xFF050510),
     secondary = Color(0xFF55555C),
-    secondaryVariant = Color(0xFFF7F7F8),
+    secondaryVariant = Color(0xFF97979B),
     onSecondary = Color(0xFFC3C3C6),
     error = Color(0xFFF44336),
     onError = Color(0xFFFFFFFF),
@@ -27,7 +28,7 @@ private val DarkColorPalette = darkColors(
     primaryVariant = Color(0xFF6534FF),
     onPrimary = Color(0xFF9B9BC0),
     secondary = Color(0xFF4A4A50),
-    secondaryVariant = Color(0xFF636368),
+    secondaryVariant = Color(0xFF97979B),
     onSecondary = Color(0xFFA8A8AC),
     error = Color(0xFF68150F),
     onError = Color(0xFF9B9696),
@@ -50,7 +51,7 @@ fun AppTheme(
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = Typography(),
         shapes = Shapes,
         content = content
     )

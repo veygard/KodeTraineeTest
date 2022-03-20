@@ -9,17 +9,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.kodetraineetest.R
 
-// Set of Material typography styles to start with
+val Typography = Typography(
+    body1 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    )
+    /* Other default text styles to override
+    button = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.W500,
+        fontSize = 14.sp
+    ),
+    caption = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    )
+    */
+)
 
 val InterFont = FontFamily(
-    Font(R.font.inter_black),
-    Font(R.font.inter_bold),
-    Font(R.font.inter_light),
-    Font(R.font.inter_medium),
     Font(R.font.inter_regular),
-    Font(R.font.inter_semibold),
-    Font(R.font.inter_thin),
-
 )
 
 val headlineMedium = TextStyle(
