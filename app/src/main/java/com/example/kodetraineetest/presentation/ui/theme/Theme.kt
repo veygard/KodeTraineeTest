@@ -1,39 +1,40 @@
-package com.example.kodetraineetest.ui.theme
+package com.example.kodetraineetest.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
 private val LightColorPalette = lightColors(
-    primary = Accent_Blue, //цвет кнопок
-    primaryVariant = lightBlueBackground,
-    onPrimary = white_white, //цвет на кнопке
-    secondary = Grey_50, //кнопки
-    secondaryVariant = Grey_30,
-    onSecondary = Grey_21,
-    error = Accent_Red,
-    onError = Accent_Red,
-    background = lightGreyBackground,
-    onBackground = Grey_90, //Текст титулов на бекраунде
-    surface = white_white, //Бекграунд блоков
-    onSurface = Grey_90, //Цвет на них
+    primary = Color(0xFF6534FF),
+    primaryVariant = Color(0xFF6534FF),
+    onPrimary = Color(0xFF050510),
+    secondary = Color(0xFF55555C),
+    secondaryVariant = Color(0xFFF7F7F8),
+    onSecondary = Color(0xFFC3C3C6),
+    error = Color(0xFFF44336),
+    onError = Color(0xFFFFFFFF),
+    background = Color(0xFFE5E5E5),
+    onBackground = Color(0xFF050510),
+    surface = Color(0xFF6534FF),
+    onSurface = Color(0xFFF3C4C4),
 )
 
 private val DarkColorPalette = darkColors(
-    primary = Accent_Blue_900,
-    primaryVariant = Grey_60,
-    onPrimary = Grey_30,
-    secondary = Grey_30, //кнопки
-    secondaryVariant = Grey_80,
-    onSecondary = white_white,
-    error = Accent_Red_900,
-    onError = RedErrorLight,
-    background = Grey_90,
-    onBackground = Grey_30, //Текст титулов на бекраунде
-    surface = Grey_70,
-    onSurface = Grey_30,
+    primary = Color(0xFF2900AC),
+    primaryVariant = Color(0xFF6534FF),
+    onPrimary = Color(0xFF9B9BC0),
+    secondary = Color(0xFF4A4A50),
+    secondaryVariant = Color(0xFF636368),
+    onSecondary = Color(0xFFA8A8AC),
+    error = Color(0xFF68150F),
+    onError = Color(0xFF9B9696),
+    background = Color(0xFF6534FF),
+    onBackground = Color(0xFF9B9BC0),
+    surface = Color(0xFF2900AC),
+    onSurface = Color(0xFF9B9BC0),
 )
 
 @Composable

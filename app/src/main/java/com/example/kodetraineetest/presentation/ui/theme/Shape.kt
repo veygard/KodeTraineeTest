@@ -1,4 +1,4 @@
-package com.example.kodetraineetest.ui.theme
+package com.example.kodetraineetest.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
