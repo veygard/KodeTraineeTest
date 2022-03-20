@@ -61,19 +61,6 @@ fun UserItemInList(
                 error = painterResource(R.drawable.ic_goose),
             )
 
-
-//            GlideImage(
-//                imageModel = user.avatarUrl,
-//                // Crop, Fit, Inside, FillHeight, FillWidth, None
-//                contentScale = ContentScale.Crop,
-//                // shows an image with a circular revealed animation.
-//                // shows a placeholder ImageBitmap when loading.
-//                placeHolder = ImageBitmap.imageResource(R.drawable.ic_goose),
-//                // shows an error ImageBitmap when the request failed.
-//                error = ImageBitmap.imageResource(R.drawable.ic_goose),
-//                modifier = Modifier.size(72.dp)
-//            )
-
             SpacingHorizontal(16)
 
             Column(verticalArrangement = Arrangement.Center) {

@@ -1,13 +1,12 @@
 package com.example.kodetraineetest.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.domain.repository.GetUsersResult
 import com.example.kodetraineetest.domain.use_cases.UserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -16,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UsersViewModel @Inject constructor(
     private val userUseCases: UserUseCases
-) : ViewModel() {
+) : BaseViewModel() {
     private val _userState: MutableStateFlow<UserViewModelState?> = MutableStateFlow(null)
     val userState: StateFlow<UserViewModelState?> = _userState
 
@@ -38,6 +37,12 @@ class UsersViewModel @Inject constructor(
                 else -> _userState.value = UserViewModelState.ServerError(result.error)
             }
         }
+    }
+
+    override fun clear() {
+        _userState.value = null
+        _userOriginalList.value = null
+        _userListToShow.value = null
     }
 
 }

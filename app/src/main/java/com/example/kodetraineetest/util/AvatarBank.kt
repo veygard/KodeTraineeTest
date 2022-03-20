@@ -3,7 +3,7 @@ package com.example.kodetraineetest.util
 object AvatarBank {
 
     fun getAvatarUrl(): String {
-        return  listOfAvatars[(0..listOfAvatars.size).random()]
+        return  (listOfAvatars.getOrNull((listOfAvatars.indices).random()+(0..100).random())) ?: ""
     }
 
     private val listOfAvatars = listOf(

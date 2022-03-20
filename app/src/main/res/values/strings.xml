@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">KodeTraineeTest</string>
     <string name="avatar_content_d">avatar</string>
+    <string name="critical_error_screen_title">Какой-то сверхразум все сломал</string>
+    <string name="critical_error_screen_text">Постараемся быстро починить</string>
+    <string name="critical_error_screen_again">Попробовать снова</string>
 </resources>

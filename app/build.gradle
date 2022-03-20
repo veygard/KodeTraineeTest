@@ -108,4 +108,13 @@ dependencies {
     implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
+
+    implementation("dev.icerock.moko:mvvm-core:0.11.0") // only ViewModel, EventsDispatcher, Dispatchers.UI
+    implementation("dev.icerock.moko:mvvm-livedata:0.11.0") // api mvvm-core, LiveData and extensions
+    implementation("dev.icerock.moko:mvvm-state:0.11.0") // api mvvm-livedata, ResourceState class and extensions
+    implementation("dev.icerock.moko:mvvm-livedata-material:0.11.0") // api mvvm-livedata, Material library android extensions
+    implementation("dev.icerock.moko:mvvm-livedata-glide:0.11.0") // api mvvm-livedata, Glide library android extensions
+    implementation("dev.icerock.moko:mvvm-livedata-swiperefresh:0.11.0") // api mvvm-livedata, SwipeRefreshLayout library android extensions
+    implementation("dev.icerock.moko:mvvm-databinding:0.11.0") // api mvvm-livedata, DataBinding support for Android
+    implementation("dev.icerock.moko:mvvm-viewbinding:0.11.0") // api mvvm-livedata, ViewBinding support for Android
 }

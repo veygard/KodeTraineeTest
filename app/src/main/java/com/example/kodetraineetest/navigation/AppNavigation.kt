@@ -2,7 +2,7 @@ package com.example.kodetraineetest.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import com.example.kodetraineetest.presentation.ui.screens.main.NavGraphs
+import com.example.kodetraineetest.presentation.screens.main.NavGraphs
 import com.ramcosta.composedestinations.DestinationsNavHost
 
 

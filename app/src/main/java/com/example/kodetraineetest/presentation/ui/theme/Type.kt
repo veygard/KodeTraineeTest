@@ -40,6 +40,21 @@ val headlineMedium = TextStyle(
     lineHeight = 20.sp,
     textAlign = TextAlign.Start,
 )
+val headlineRegular = TextStyle(
+    fontFamily = InterFont,
+    fontSize = 16.sp,
+    fontWeight = FontWeight.W400,
+    lineHeight = 20.sp,
+    textAlign = TextAlign.Center,
+)
+val headlineSemibold = TextStyle(
+    fontFamily = InterFont,
+    fontSize = 16.sp,
+    fontWeight = FontWeight.W600,
+    lineHeight = 20.sp,
+    textAlign = TextAlign.Center,
+)
+
 
 val caption1Regular = TextStyle(
     fontFamily = InterFont,
@@ -76,6 +91,13 @@ val title2SemiBold = TextStyle(
     fontSize = 20.sp,
     fontWeight = FontWeight.W600,
     lineHeight = 24.sp,
+    textAlign = TextAlign.Center,
+)
+val title3SemiBold = TextStyle(
+    fontFamily = InterFont,
+    fontSize = 17.sp,
+    fontWeight = FontWeight.W600,
+    lineHeight = 22.sp,
     textAlign = TextAlign.Center,
 )
 
