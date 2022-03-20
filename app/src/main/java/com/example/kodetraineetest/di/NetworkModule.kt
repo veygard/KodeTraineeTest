@@ -1,5 +1,7 @@
 package com.example.kodetraineetest.di
 
+import com.example.kodetraineetest.data.remote.api.UserApi
+import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -28,6 +30,9 @@ object NetworkModule {
     @Provides
     fun provideCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
+    @Provides
+    @Singleton
+    fun provideUsersApiService(retrofit: Retrofit):UserApi = retrofit.create(UserApi::class.java)
 
     @Provides
     @Singleton
