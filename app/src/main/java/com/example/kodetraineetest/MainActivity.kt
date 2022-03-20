@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.kodetraineetest.navigation.AppNavigation
 import com.example.kodetraineetest.presentation.viewmodel.UsersViewModel
 import com.example.kodetraineetest.presentation.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,14 +30,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 navController = rememberNavController()
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("Main Page")
-                    Text("User")
-                }
+                AppNavigation(navController= navController)
             }
         }
     }
