@@ -3,8 +3,11 @@
 Получение списка юзеров через api, отображение по списка соглавно дизайн-проекту, отображение списка с учетом требуемых дизайном сортировок, страница детализации юзера.
 
 https://github.com/appKODE/trainee-test-android
+
 https://www.figma.com/file/GRRKONipVClULsfdCAuVs1/KODE-Trainee-Dev-Осень'21?node-id=11%3A14413
+
 https://kode-education.stoplight.io/docs/trainee-test/b3A6MjUxNDM5Mjg-get-users
+
 
 ![1](https://user-images.githubusercontent.com/79571688/159157708-f0da36ae-4af6-412f-b64c-7f14230c3f55.png)
 ![2](https://user-images.githubusercontent.com/79571688/159157707-51667fbe-07ec-472d-85d7-6fca3b32326e.png)
