@@ -17,24 +17,18 @@ import com.example.kodetraineetest.presentation.ui.theme.textSemibold
 
 
 @Composable
-fun DepartmetTabRow(userList: List<User>) {
-    val tabRowSet: MutableState<Set<String>> = remember { mutableStateOf(setOf()) }
+fun PositionTabRow(
+    sortByTabRow: (chosen: String, all: String) -> Unit,
+    positionSet: Set<String>?
+) {
     var selectedIndex by remember { mutableStateOf(0) }
     val allString = stringResource(R.string.detartment_tab_row_all)
 
-    LaunchedEffect(key1 = userList, block = {
-        tabRowSet.value = setOf()
-        val depSet = mutableSetOf<String>(allString)
-        userList.forEach {
-            it.position?.let { department -> depSet.add(department) }
-        }
-        tabRowSet.value = depSet
-    })
 
-
-    if (tabRowSet.value.isNotEmpty()) {
+    if (positionSet != null && positionSet.isNotEmpty()) {
         ScrollableTabRow(
             selectedTabIndex = selectedIndex,
+            edgePadding = 0.dp,
             backgroundColor = MaterialTheme.colors.background,
             indicator = {
                 TabRowDefaults.Indicator(
@@ -44,12 +38,16 @@ fun DepartmetTabRow(userList: List<User>) {
                 )
             },
             tabs = {
-                tabRowSet.value.forEachIndexed { index, tab ->
-                    val textColor = if(selectedIndex == index) MaterialTheme.colors.onBackground else MaterialTheme.colors.secondaryVariant
-                    val textStyle = if(selectedIndex == index) textSemibold else textMedium
+                positionSet.forEachIndexed { index, tab ->
+                    val textColor =
+                        if (selectedIndex == index) MaterialTheme.colors.onBackground else MaterialTheme.colors.secondaryVariant
+                    val textStyle = if (selectedIndex == index) textSemibold else textMedium
                     Tab(
                         selected = selectedIndex == index,
-                        onClick = { selectedIndex = index },
+                        onClick = {
+                            selectedIndex = index
+                            sortByTabRow(tab, allString)
+                        },
                         text = {
                             Text(text = tab, color = textColor, style = textStyle)
                         })

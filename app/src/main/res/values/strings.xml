@@ -4,4 +4,5 @@
     <string name="critical_error_screen_title">Какой-то сверхразум все сломал</string>
     <string name="critical_error_screen_text">Постараемся быстро починить</string>
     <string name="critical_error_screen_again">Попробовать снова</string>
+    <string name="detartment_tab_row_all">Все</string>
 </resources>
