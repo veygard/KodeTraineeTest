@@ -14,25 +14,26 @@ import com.example.kodetraineetest.R
 import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.presentation.ui.theme.textMedium
 import com.example.kodetraineetest.presentation.ui.theme.textSemibold
+import kotlinx.coroutines.flow.MutableStateFlow
 
 
 @Composable
 fun PositionTabRow(
     sortByTabRow: (chosen: String, all: String) -> Unit,
-    positionSet: Set<String>?
+    positionSet: Set<String>?,
+    selectedTabIndex: MutableState<Int>,
 ) {
-    var selectedIndex by remember { mutableStateOf(0) }
-    val allString = stringResource(R.string.detartment_tab_row_all)
 
+    val allString = stringResource(R.string.detartment_tab_row_all)
 
     if (positionSet != null && positionSet.isNotEmpty()) {
         ScrollableTabRow(
-            selectedTabIndex = selectedIndex,
+            selectedTabIndex = selectedTabIndex.value,
             edgePadding = 0.dp,
             backgroundColor = MaterialTheme.colors.background,
             indicator = {
                 TabRowDefaults.Indicator(
-                    modifier = Modifier.tabIndicatorOffset(it[selectedIndex]),
+                    modifier = Modifier.tabIndicatorOffset(it[selectedTabIndex.value]),
                     height = 2.dp,
                     color = MaterialTheme.colors.primary
                 )
@@ -40,12 +41,12 @@ fun PositionTabRow(
             tabs = {
                 positionSet.forEachIndexed { index, tab ->
                     val textColor =
-                        if (selectedIndex == index) MaterialTheme.colors.onBackground else MaterialTheme.colors.secondaryVariant
-                    val textStyle = if (selectedIndex == index) textSemibold else textMedium
+                        if (selectedTabIndex.value == index) MaterialTheme.colors.onBackground else MaterialTheme.colors.secondaryVariant
+                    val textStyle = if (selectedTabIndex.value == index) textSemibold else textMedium
                     Tab(
-                        selected = selectedIndex == index,
+                        selected = selectedTabIndex.value == index,
                         onClick = {
-                            selectedIndex = index
+                            selectedTabIndex.value = index
                             sortByTabRow(tab, allString)
                         },
                         text = {

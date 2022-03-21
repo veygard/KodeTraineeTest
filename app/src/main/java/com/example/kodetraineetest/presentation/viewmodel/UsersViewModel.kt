@@ -32,6 +32,7 @@ class UsersViewModel @Inject constructor(
         MutableStateFlow(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
     val positionSet: MutableStateFlow<Set<String>?> = _positionSet
 
+
     private val _screenLoadingState: MutableStateFlow<ScreenStates> =
         MutableStateFlow(ScreenStates.Loading)
 
@@ -40,6 +41,7 @@ class UsersViewModel @Inject constructor(
 
     fun refresh() {
         viewModelScope.launch {
+            _positionSet.emit(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
             _screenLoadingState.emit(ScreenStates.Loading)
             getUsers()
         }
@@ -64,7 +66,7 @@ class UsersViewModel @Inject constructor(
     fun getUsers() {
         viewModelScope.launch {
             /*задержка для того чтобы показать работу шиммер*/
-            delay(5000)
+            delay(2000)
 
             val result = userUseCases.getUsersUseCase.start()
             when (result) {
@@ -88,7 +90,7 @@ class UsersViewModel @Inject constructor(
         }
     }
 
-    fun setupTabRowList() {
+    private fun setupTabRowList() {
         viewModelScope.launch {
             val set = mutableSetOf<String>()
             set.add(application.applicationContext.getString(R.string.detartment_tab_row_all))

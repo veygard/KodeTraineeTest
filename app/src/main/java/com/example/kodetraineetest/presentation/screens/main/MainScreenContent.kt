@@ -3,11 +3,10 @@ package com.example.kodetraineetest.presentation.screens.main
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.presentation.screens.main.blocks.PositionTabRow
@@ -25,6 +24,7 @@ internal fun MainScreenContent(
     refreshClick: () -> Unit,
     sortByTabRow: (chosen: String, all: String) -> Unit,
     positionSet: Set<String>?,
+    selectedTabIndex: MutableState<Int>,
 ) {
 
     Column(
@@ -37,7 +37,7 @@ internal fun MainScreenContent(
         SpacingVertical(heightDp = 6)
         SearchBlock()
         SpacingVertical(heightDp = 16)
-        PositionTabRow(sortByTabRow, positionSet)
+        PositionTabRow(sortByTabRow, positionSet, selectedTabIndex)
         SpacingVertical(heightDp = 22)
         when (screenLoadingState) {
             is ScreenStates.Ready -> {
