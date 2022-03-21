@@ -1,4 +1,4 @@
-package com.example.kodetraineetest.presentation.screens.critical
+package com.example.kodetraineetest.presentation.ui.widgets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -14,13 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.example.kodetraineetest.R
 import com.example.kodetraineetest.presentation.ui.theme.headlineMedium
 import com.example.kodetraineetest.presentation.ui.theme.headlineRegular
-import com.example.kodetraineetest.presentation.ui.theme.title2SemiBold
 import com.example.kodetraineetest.presentation.ui.theme.title3SemiBold
 import com.example.kodetraineetest.util.SpacingVertical
 
 @Composable
 fun CriticalErrorBlock(
-    tryAgain:(()->Unit)? = null
+    tryAgainClick:(()->Unit)? = null
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -55,7 +54,7 @@ fun CriticalErrorBlock(
                 style = headlineMedium,
                 color = MaterialTheme.colors.surface,
                 modifier = Modifier.clickable {
-                    tryAgain?.invoke()
+                    tryAgainClick?.invoke()
                 }
             )
         }

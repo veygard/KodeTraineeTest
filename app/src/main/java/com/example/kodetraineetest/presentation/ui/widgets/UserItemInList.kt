@@ -28,6 +28,9 @@ import com.example.kodetraineetest.presentation.ui.theme.headlineMedium
 import com.example.kodetraineetest.presentation.ui.theme.subheadMedium
 import com.example.kodetraineetest.util.SpacingHorizontal
 import com.skydoves.landscapist.glide.GlideImage
+import com.valentinilk.shimmer.ShimmerBounds
+import com.valentinilk.shimmer.rememberShimmer
+import com.valentinilk.shimmer.shimmer
 
 @Composable
 fun UserItemInList(
@@ -71,19 +74,19 @@ fun UserItemInList(
                     Text(
                         text = "${user.firstName} ${user.lastName}",
                         style = headlineMedium,
-                        color = MaterialTheme.colors.onBackground
+                        color = MaterialTheme.colors.onBackground,
                     )
                     SpacingHorizontal(WidthDp = 4)
                     Text(
                         text = user.userTag?.lowercase() ?: "",
                         style = subheadMedium,
-                        color = MaterialTheme.colors.secondaryVariant
+                        color = MaterialTheme.colors.secondaryVariant,
                     )
                 }
                 Text(
                     text = user.position ?: "",
                     style = caption1Regular,
-                    color = MaterialTheme.colors.secondary
+                    color = MaterialTheme.colors.secondary,
                 )
             }
         }

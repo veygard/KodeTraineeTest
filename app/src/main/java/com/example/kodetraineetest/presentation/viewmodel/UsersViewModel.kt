@@ -7,6 +7,7 @@ import com.example.kodetraineetest.domain.use_cases.UserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -25,6 +26,9 @@ class UsersViewModel @Inject constructor(
 
     fun getUsers() {
         viewModelScope.launch {
+            /*задержка для того чтобы показать работу шиммер*/
+            delay(3000)
+            
             val result = userUseCases.getUsersUseCase.start()
             when (result) {
                 is GetUsersResult.UserList -> {
