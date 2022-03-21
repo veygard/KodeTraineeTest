@@ -6,4 +6,5 @@
     <string name="critical_error_screen_again">Попробовать снова</string>
     <string name="detartment_tab_row_all">Все</string>
     <string name="search_field_placeholder">Введи имя, тег, почту...</string>
+    <string name="bottom_sheet_sort_title">Сортировка</string>
 </resources>

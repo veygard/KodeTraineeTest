@@ -66,7 +66,7 @@ class UsersViewModel @Inject constructor(
     fun getUsers() {
         viewModelScope.launch {
             /*задержка для того чтобы показать работу шиммер*/
-            delay(2000)
+            delay(500)
 
             val result = userUseCases.getUsersUseCase.start()
             when (result) {

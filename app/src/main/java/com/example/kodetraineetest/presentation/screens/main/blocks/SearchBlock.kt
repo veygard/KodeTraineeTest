@@ -15,9 +15,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.kodetraineetest.presentation.ui.theme.textMedium
 import com.example.kodetraineetest.R
+import kotlinx.coroutines.Job
 
 @Composable
-fun SearchBlock() {
+fun SearchBlock(sortButtonClick: () -> Job) {
     val showCancelButton = remember { mutableStateOf(false) }
     val enteredValue = remember { mutableStateOf("") }
 
@@ -53,10 +54,11 @@ fun SearchBlock() {
                 )
             },
             trailingIcon = {
-                Box(modifier = Modifier
-                    .width(60.dp)
-                    .padding(end=13.5.dp)
-                    .clickable {  },
+                Box(
+                    modifier = Modifier
+                        .width(60.dp)
+                        .padding(end = 13.5.dp)
+                        .clickable { sortButtonClick() },
                     contentAlignment = Alignment.CenterEnd
                 ) {
                     Icon(

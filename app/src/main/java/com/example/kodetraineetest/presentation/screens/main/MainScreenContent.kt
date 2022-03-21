@@ -1,14 +1,22 @@
 package com.example.kodetraineetest.presentation.screens.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetScaffoldState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.kodetraineetest.domain.model.User
+import com.example.kodetraineetest.presentation.screens.main.blocks.BottomSheetContent
 import com.example.kodetraineetest.presentation.screens.main.blocks.PositionTabRow
 import com.example.kodetraineetest.presentation.screens.main.blocks.SearchBlock
 import com.example.kodetraineetest.presentation.screens.main.blocks.UserListBlock
@@ -16,7 +24,11 @@ import com.example.kodetraineetest.presentation.ui.widgets.ShimmerUserList
 import com.example.kodetraineetest.presentation.viewmodel.ScreenStates
 import com.example.kodetraineetest.util.Margin
 import com.example.kodetraineetest.util.SpacingVertical
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 @Composable
 internal fun MainScreenContent(
     screenLoadingState: ScreenStates,
@@ -25,30 +37,53 @@ internal fun MainScreenContent(
     sortByTabRow: (chosen: String, all: String) -> Unit,
     positionSet: Set<String>?,
     selectedTabIndex: MutableState<Int>,
-) {
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.background)
-            .padding(start = Margin.horizontalStandard, end = Margin.horizontalStandard)
-
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
+    sortButtonClick: () -> Job,
+    coroutineScope: CoroutineScope,
     ) {
-        SpacingVertical(heightDp = 6)
-        SearchBlock()
-        SpacingVertical(heightDp = 16)
-        PositionTabRow(sortByTabRow, positionSet, selectedTabIndex)
-        SpacingVertical(heightDp = 22)
-        when (screenLoadingState) {
-            is ScreenStates.Ready -> {
-                userList?.let { list ->
-                    UserListBlock(screenLoadingState, list, refreshClick)
+    BottomSheetScaffold(
+        sheetContent = {
+            BottomSheetContent()
+            BackHandler(enabled = true) {
+                coroutineScope.launch {
+                    bottomSheetScaffoldState.bottomSheetState.collapse()
                 }
             }
-            is ScreenStates.Loading -> {
-                ShimmerUserList()
+        },
+        sheetPeekHeight = 0.dp,
+        modifier =Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colors.background)
+            .padding(start = 8.dp, end=8.dp)
+        ,
+        sheetElevation = 8.dp,
+        scaffoldState =bottomSheetScaffoldState,
+        sheetBackgroundColor = MaterialTheme.colors.background,
+        sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colors.background)
+                    .padding(start = 8.dp, end=8.dp)
+            ) {
+                SpacingVertical(heightDp = 6)
+                SearchBlock(sortButtonClick)
+                SpacingVertical(heightDp = 16)
+                PositionTabRow(sortByTabRow, positionSet, selectedTabIndex)
+                SpacingVertical(heightDp = 22)
+                when (screenLoadingState) {
+                    is ScreenStates.Ready -> {
+                        userList?.let { list ->
+                            UserListBlock(screenLoadingState, list, refreshClick)
+                        }
+                    }
+                    is ScreenStates.Loading -> {
+                        ShimmerUserList()
+                    }
+                }
             }
         }
-    }
+    )
 }
 
