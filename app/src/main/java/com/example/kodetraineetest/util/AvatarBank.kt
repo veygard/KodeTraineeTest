@@ -1,8 +1,12 @@
 package com.example.kodetraineetest.util
 
 object AvatarBank {
+    /*Так как сервер присылает сейчас битые линки аватаров, то вот таким варварским способом
+    * добавляю свои линки аватаров. Не хочу тратить время на норм.реализацию*/
 
     fun getAvatarUrl(): String {
+        /*рандом может вылезать за размер списка, чтобы отправлялся битый линк и показывалась работа
+        * заглушки аватара*/
         return  (listOfAvatars.getOrNull((listOfAvatars.indices).random()+(0..100).random())) ?: ""
     }
 

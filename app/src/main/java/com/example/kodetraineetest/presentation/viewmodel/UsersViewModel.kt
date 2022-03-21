@@ -28,7 +28,8 @@ class UsersViewModel @Inject constructor(
     private val _userListToShow: MutableStateFlow<List<User>?> = MutableStateFlow(null)
     val userListToShow: MutableStateFlow<List<User>?> = _userListToShow
 
-    private val _positionSet: MutableStateFlow<Set<String>?> = MutableStateFlow(null)
+    private val _positionSet: MutableStateFlow<Set<String>?> =
+        MutableStateFlow(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
     val positionSet: MutableStateFlow<Set<String>?> = _positionSet
 
     private val _screenLoadingState: MutableStateFlow<ScreenStates> =
@@ -63,7 +64,7 @@ class UsersViewModel @Inject constructor(
     fun getUsers() {
         viewModelScope.launch {
             /*задержка для того чтобы показать работу шиммер*/
-            delay(1500)
+            delay(5000)
 
             val result = userUseCases.getUsersUseCase.start()
             when (result) {
