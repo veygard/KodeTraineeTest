@@ -119,4 +119,5 @@ dependencies {
     implementation("dev.icerock.moko:mvvm-viewbinding:0.11.0") // api mvvm-livedata, ViewBinding support for Android
 
     implementation 'com.valentinilk.shimmer:compose-shimmer:1.0.2'
+
 }
