@@ -17,12 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.presentation.screens.main.blocks.BottomSheetContent
-import com.example.kodetraineetest.presentation.screens.main.blocks.PositionTabRow
+import com.example.kodetraineetest.presentation.screens.main.blocks.DepartmentsTabRow
 import com.example.kodetraineetest.presentation.screens.main.blocks.SearchBlock
 import com.example.kodetraineetest.presentation.screens.main.blocks.UserListBlock
 import com.example.kodetraineetest.presentation.ui.widgets.ShimmerUserList
 import com.example.kodetraineetest.presentation.viewmodel.ScreenStates
-import com.example.kodetraineetest.util.Margin
 import com.example.kodetraineetest.util.SpacingVertical
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -35,7 +34,7 @@ internal fun MainScreenContent(
     userList: List<User>?,
     refreshClick: () -> Unit,
     sortByTabRow: (chosen: String, all: String) -> Unit,
-    positionSet: Set<String>?,
+    departmentsSet: Set<String>?,
     selectedTabIndex: MutableState<Int>,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
     sortButtonClick: () -> Job,
@@ -70,7 +69,7 @@ internal fun MainScreenContent(
                 SpacingVertical(heightDp = 6)
                 SearchBlock(sortButtonClick)
                 SpacingVertical(heightDp = 16)
-                PositionTabRow(sortByTabRow, positionSet, selectedTabIndex)
+                DepartmentsTabRow(sortByTabRow, departmentsSet, selectedTabIndex)
                 SpacingVertical(heightDp = 22)
                 when (screenLoadingState) {
                     is ScreenStates.Ready -> {

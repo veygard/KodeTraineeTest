@@ -21,7 +21,7 @@ fun MainScreen(
     viewModel: UsersViewModel = hiltViewModel(),
 ) {
     val screenLoadingState by viewModel.screenLoadingState.collectAsState()
-    val positionSet by viewModel.positionSet.collectAsState()
+    val departmentsSet by viewModel.departmentsSet.collectAsState()
     val listToShow by viewModel.userListToShow.collectAsState()
     val selectedPositionTabIndex = remember { mutableStateOf(0) }
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -52,7 +52,7 @@ fun MainScreen(
                 sortByTabRow = { tab, all ->
                     viewModel.sortByTabRow(tab, all)
                 },
-                positionSet,
+                departmentsSet,
                 selectedPositionTabIndex,
                 bottomSheetScaffoldState,
                 sortButtonClick,

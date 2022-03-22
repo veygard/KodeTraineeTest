@@ -6,6 +6,7 @@ import com.example.kodetraineetest.domain.repository.UserRepository
 import com.example.kodetraineetest.domain.repository.UserRepositoryImpl
 import com.example.kodetraineetest.domain.use_cases.GetUsersUseCase
 import com.example.kodetraineetest.domain.use_cases.UserUseCases
+import com.example.kodetraineetest.util.DepartmentsAccordance
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,6 +35,10 @@ object UsersModule {
         getUsersUseCase = GetUsersUseCase(userRepository = userRepository)
     )
 
-
+    @Provides
+    @Singleton
+    fun provideDepartmentsAccordance(
+        @ApplicationContext appContext: Context
+    )= DepartmentsAccordance(appContext)
 
 }

@@ -1,13 +1,12 @@
 package com.example.kodetraineetest.presentation.viewmodel
 
 import android.app.Application
-import android.content.Context
 import com.example.kodetraineetest.R
 import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.domain.repository.GetUsersResult
 import com.example.kodetraineetest.domain.use_cases.UserUseCases
+import com.example.kodetraineetest.util.DepartmentsAccordance
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +19,7 @@ import javax.inject.Inject
 class UsersViewModel @Inject constructor(
     private val application: Application,
     private val userUseCases: UserUseCases,
+    private val departmentsAccordance: DepartmentsAccordance
 ) : BaseViewModel() {
     private val _userState: MutableStateFlow<UserViewModelState?> = MutableStateFlow(null)
     val userState: StateFlow<UserViewModelState?> = _userState
@@ -28,9 +28,9 @@ class UsersViewModel @Inject constructor(
     private val _userListToShow: MutableStateFlow<List<User>?> = MutableStateFlow(null)
     val userListToShow: MutableStateFlow<List<User>?> = _userListToShow
 
-    private val _positionSet: MutableStateFlow<Set<String>?> =
+    private val _departmentsSet: MutableStateFlow<Set<String>?> =
         MutableStateFlow(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
-    val positionSet: MutableStateFlow<Set<String>?> = _positionSet
+    val departmentsSet: MutableStateFlow<Set<String>?> = _departmentsSet
 
 
     private val _screenLoadingState: MutableStateFlow<ScreenStates> =
@@ -41,7 +41,7 @@ class UsersViewModel @Inject constructor(
 
     fun refresh() {
         viewModelScope.launch {
-            _positionSet.emit(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
+            _departmentsSet.emit(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
             _screenLoadingState.emit(ScreenStates.Loading)
             getUsers()
         }
@@ -52,7 +52,10 @@ class UsersViewModel @Inject constructor(
             if (chosen == all) {
                 _userListToShow.emit(_userOriginalList.value)
             } else {
-                _userListToShow.emit(_userOriginalList.value?.filter { it.position == chosen })
+                _userListToShow.emit(
+                    _userOriginalList.value?.filter {
+                        it.department == departmentsAccordance.getOriginalName(chosen)
+                    })
             }
         }
     }
@@ -94,10 +97,10 @@ class UsersViewModel @Inject constructor(
         viewModelScope.launch {
             val set = mutableSetOf<String>()
             set.add(application.applicationContext.getString(R.string.detartment_tab_row_all))
-            _userOriginalList.value?.map { it.position }?.forEach {
-                it?.let { position -> set.add(position) }
+            _userOriginalList.value?.map { it.department }?.forEach {
+                it?.let { dep -> set.add(departmentsAccordance.getAccordanceName(dep)) }
             }
-            _positionSet.emit(
+            _departmentsSet.emit(
                 set
             )
         }

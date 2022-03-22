@@ -7,4 +7,16 @@
     <string name="detartment_tab_row_all">Все</string>
     <string name="search_field_placeholder">Введи имя, тег, почту...</string>
     <string name="bottom_sheet_sort_title">Сортировка</string>
+    <string name="departments_accordance_ior">iOS</string>
+    <string name="departments_accordance_android">Android</string>
+    <string name="departments_accordance_design">Дизайн</string>
+    <string name="departments_accordance_management">Менеджмент</string>
+    <string name="departments_accordance_qa">QA</string>
+    <string name="departments_accordance_back">Бэк-офис</string>
+    <string name="departments_accordance_front">Frontend</string>
+    <string name="departments_accordance_hr">HR</string>
+    <string name="departments_accordance_pr">PR</string>
+    <string name="departments_accordance_backend">Backend</string>
+    <string name="departments_accordance_supp">Техподдержка</string>
+    <string name="departments_accordance_analytics">Аналитика</string>
 </resources>
