@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -21,6 +22,7 @@ import kotlinx.coroutines.Job
 fun SearchBlock(sortButtonClick: () -> Job) {
     val showCancelButton = remember { mutableStateOf(false) }
     val enteredValue = remember { mutableStateOf("") }
+    val focusManager = LocalFocusManager.current
 
     Column(modifier = Modifier.fillMaxWidth()) {
         TextField(
@@ -58,7 +60,10 @@ fun SearchBlock(sortButtonClick: () -> Job) {
                     modifier = Modifier
                         .width(60.dp)
                         .padding(end = 13.5.dp)
-                        .clickable { sortButtonClick() },
+                        .clickable {
+                            focusManager.clearFocus()
+                            sortButtonClick()
+                        },
                     contentAlignment = Alignment.CenterEnd
                 ) {
                     Icon(

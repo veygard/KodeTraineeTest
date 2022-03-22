@@ -79,6 +79,13 @@ val textMedium = TextStyle(
     lineHeight = 20.sp,
     textAlign = TextAlign.Start,
 )
+val textRegular = TextStyle(
+    fontFamily = InterFont,
+    fontSize = 15.sp,
+    fontWeight = FontWeight.W400,
+    lineHeight = 20.sp,
+    textAlign = TextAlign.Right,
+)
 val textSemibold = TextStyle(
     fontFamily = InterFont,
     fontSize = 15.sp,

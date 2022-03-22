@@ -1,6 +1,7 @@
 package com.example.kodetraineetest.presentation.screens.main
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,28 +22,32 @@ import com.example.kodetraineetest.presentation.screens.main.blocks.DepartmentsT
 import com.example.kodetraineetest.presentation.screens.main.blocks.SearchBlock
 import com.example.kodetraineetest.presentation.screens.main.blocks.UserListBlock
 import com.example.kodetraineetest.presentation.ui.widgets.ShimmerUserList
-import com.example.kodetraineetest.presentation.viewmodel.ScreenStates
+import com.example.kodetraineetest.presentation.viewmodel.supports.ScreenStates
+import com.example.kodetraineetest.presentation.viewmodel.supports.SortingTypes
 import com.example.kodetraineetest.util.SpacingVertical
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
 internal fun MainScreenContent(
     screenLoadingState: ScreenStates,
     userList: List<User>?,
     refreshClick: () -> Unit,
+    sortByTypeClick: (type: SortingTypes) -> Unit,
     sortByTabRow: (chosen: String, all: String) -> Unit,
     departmentsSet: Set<String>?,
     selectedTabIndex: MutableState<Int>,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
     sortButtonClick: () -> Job,
     coroutineScope: CoroutineScope,
+    sortedByState: SortingTypes,
     ) {
     BottomSheetScaffold(
         sheetContent = {
-            BottomSheetContent()
+            BottomSheetContent(sortByTypeClick, sortedByState)
             BackHandler(enabled = true) {
                 coroutineScope.launch {
                     bottomSheetScaffoldState.bottomSheetState.collapse()
@@ -74,7 +79,7 @@ internal fun MainScreenContent(
                 when (screenLoadingState) {
                     is ScreenStates.Ready -> {
                         userList?.let { list ->
-                            UserListBlock(screenLoadingState, list, refreshClick)
+                            UserListBlock(screenLoadingState, list, refreshClick, sortedByState)
                         }
                     }
                     is ScreenStates.Loading -> {

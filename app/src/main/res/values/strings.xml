@@ -19,4 +19,6 @@
     <string name="departments_accordance_backend">Backend</string>
     <string name="departments_accordance_supp">Техподдержка</string>
     <string name="departments_accordance_analytics">Аналитика</string>
+    <string name="radio_button_abc">По алфавиту</string>
+    <string name="radio_button_born_date">По дню рождения</string>
 </resources>

@@ -5,7 +5,11 @@ import com.example.kodetraineetest.R
 import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.domain.repository.GetUsersResult
 import com.example.kodetraineetest.domain.use_cases.UserUseCases
+import com.example.kodetraineetest.presentation.viewmodel.supports.ScreenStates
+import com.example.kodetraineetest.presentation.viewmodel.supports.SortingTypes
+import com.example.kodetraineetest.presentation.viewmodel.supports.SortingTypes.*
 import com.example.kodetraineetest.util.DepartmentsAccordance
+import com.example.kodetraineetest.util.extention.toLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import kotlinx.coroutines.delay
@@ -13,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,8 +26,6 @@ class UsersViewModel @Inject constructor(
     private val userUseCases: UserUseCases,
     private val departmentsAccordance: DepartmentsAccordance
 ) : BaseViewModel() {
-    private val _userState: MutableStateFlow<UserViewModelState?> = MutableStateFlow(null)
-    val userState: StateFlow<UserViewModelState?> = _userState
 
     private val _userOriginalList: MutableLiveData<List<User>?> = MutableLiveData(null)
     private val _userListToShow: MutableStateFlow<List<User>?> = MutableStateFlow(null)
@@ -31,6 +34,9 @@ class UsersViewModel @Inject constructor(
     private val _departmentsSet: MutableStateFlow<Set<String>?> =
         MutableStateFlow(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
     val departmentsSet: MutableStateFlow<Set<String>?> = _departmentsSet
+
+    private val _sortedBy = MutableStateFlow(ABC)
+    val sortedBy: MutableStateFlow<SortingTypes> = _sortedBy
 
 
     private val _screenLoadingState: MutableStateFlow<ScreenStates> =
@@ -42,6 +48,7 @@ class UsersViewModel @Inject constructor(
     fun refresh() {
         viewModelScope.launch {
             _departmentsSet.emit(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
+            _sortedBy.emit(ABC)
             _screenLoadingState.emit(ScreenStates.Loading)
             getUsers()
         }
@@ -51,11 +58,49 @@ class UsersViewModel @Inject constructor(
         viewModelScope.launch {
             if (chosen == all) {
                 _userListToShow.emit(_userOriginalList.value)
+                sortByType(ABC)
             } else {
                 _userListToShow.emit(
                     _userOriginalList.value?.filter {
                         it.department == departmentsAccordance.getOriginalName(chosen)
                     })
+
+                when (_sortedBy.value) {
+                    ABC -> {
+                        sortByType(ABC)
+                    }
+                }
+            }
+        }
+    }
+
+    fun sortByType(type: SortingTypes) {
+        viewModelScope.launch {
+            val userListToShow = _userListToShow.value
+
+            when (type) {
+                ABC -> {
+                    userListToShow?.let { list ->
+                        _userListToShow.emit(
+                            list.sortedBy { it.lastName }
+                        )
+                        sortedBy.emit(ABC)
+                    }
+                }
+                BORN_DATE -> {
+                    userListToShow?.let { list ->
+                        val sortedList = list.sortedWith(
+                            compareBy(
+                                { it.birthday?.toLocalDate()?.month },
+                                { it.birthday?.toLocalDate()?.dayOfMonth },
+                            )
+                        )
+                        _userListToShow.emit(
+                            sortedList
+                        )
+                        sortedBy.emit(BORN_DATE)
+                    }
+                }
             }
         }
     }
@@ -74,19 +119,16 @@ class UsersViewModel @Inject constructor(
             val result = userUseCases.getUsersUseCase.start()
             when (result) {
                 is GetUsersResult.UserList -> {
-                    _userState.value = UserViewModelState.GotUsers(result.list)
                     _userOriginalList.value = result.list
                     _userListToShow.value = result.list
                     setupTabRowList()
+                    sortByType(ABC)
                     _screenLoadingState.emit(ScreenStates.Ready)
                 }
                 is GetUsersResult.ConnectionError -> {
-                    _userState.value =
-                        UserViewModelState.ConnectionError(result.error)
                     _screenLoadingState.emit(ScreenStates.Error)
                 }
                 else -> {
-                    _userState.value = UserViewModelState.ServerError(result.error)
                     _screenLoadingState.emit(ScreenStates.Error)
                 }
             }
@@ -107,9 +149,9 @@ class UsersViewModel @Inject constructor(
     }
 
     override fun clear() {
-        _userState.value = null
         _userOriginalList.value = null
         _userListToShow.value = null
     }
+
 
 }

@@ -1,4 +1,4 @@
-package com.example.kodetraineetest.presentation.viewmodel
+package com.example.kodetraineetest.presentation.viewmodel.supports
 
 sealed class ScreenStates{
     object Loading: ScreenStates()
