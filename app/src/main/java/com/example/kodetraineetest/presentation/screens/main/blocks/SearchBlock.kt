@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.kodetraineetest.presentation.ui.theme.textMedium
 import com.example.kodetraineetest.R
+import com.example.kodetraineetest.domain.model.User
 import kotlinx.coroutines.Job
 
 @Composable

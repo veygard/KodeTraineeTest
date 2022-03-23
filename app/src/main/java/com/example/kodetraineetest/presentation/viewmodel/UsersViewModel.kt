@@ -42,6 +42,16 @@ class UsersViewModel @Inject constructor(
     private val _screenLoadingState: MutableStateFlow<ScreenStates> =
         MutableStateFlow(ScreenStates.Loading)
 
+    private val _userListWithBDayGroups: MutableStateFlow<Map<String, MutableSet<User>>> =
+        MutableStateFlow(
+            mapOf(
+                LocalDate.now().year.toString() to mutableSetOf(),
+                LocalDate.now().year.plus(1).toString() to mutableSetOf(),
+            )
+        )
+    val userListWithBDayGroups: MutableStateFlow<Map<String, MutableSet<User>>> =
+        _userListWithBDayGroups
+
     val screenLoadingState: StateFlow<ScreenStates>
         get() = _screenLoadingState.asStateFlow()
 
@@ -54,20 +64,32 @@ class UsersViewModel @Inject constructor(
         }
     }
 
+
     fun sortByTabRow(chosen: String, all: String) {
         viewModelScope.launch {
             if (chosen == all) {
-                _userListToShow.emit(_userOriginalList.value)
-                sortByType(ABC)
+                when (_sortedBy.value) {
+                    ABC -> {
+                        _userListToShow.emit(_userOriginalList.value)
+                        sortByType(ABC)
+                    }
+                    BORN_DATE -> {
+                        _userListToShow.emit(_userOriginalList.value)
+                        setupYearGroups(_userListWithBDayGroups, _userListToShow)
+                    }
+                }
+
             } else {
                 _userListToShow.emit(
                     _userOriginalList.value?.filter {
                         it.department == departmentsAccordance.getOriginalName(chosen)
                     })
-
                 when (_sortedBy.value) {
                     ABC -> {
                         sortByType(ABC)
+                    }
+                    BORN_DATE -> {
+                        setupYearGroups(_userListWithBDayGroups, _userListToShow)
                     }
                 }
             }
@@ -88,18 +110,8 @@ class UsersViewModel @Inject constructor(
                     }
                 }
                 BORN_DATE -> {
-                    userListToShow?.let { list ->
-                        val sortedList = list.sortedWith(
-                            compareBy(
-                                { it.birthday?.toLocalDate()?.month },
-                                { it.birthday?.toLocalDate()?.dayOfMonth },
-                            )
-                        )
-                        _userListToShow.emit(
-                            sortedList
-                        )
-                        sortedBy.emit(BORN_DATE)
-                    }
+                    setupYearGroups(_userListWithBDayGroups, _userListToShow)
+                    sortedBy.emit(BORN_DATE)
                 }
             }
         }
@@ -147,6 +159,41 @@ class UsersViewModel @Inject constructor(
             )
         }
     }
+
+    private fun setupYearGroups(
+        birthdayYearGroup: MutableStateFlow<Map<String, MutableSet<User>>>,
+        list: MutableStateFlow<List<User>?>
+    ) {
+        birthdayYearGroup.value.values.forEach {
+            it.clear()
+        }
+
+        list.value?.forEach { user ->
+            val date = user.birthday?.toLocalDate()
+            date?.let { d ->
+                val day = d.dayOfMonth
+                val month = d.month
+                val year = LocalDate.now().year
+                val newDate = LocalDate.of(year, month, day)
+
+                if (newDate.isAfter(LocalDate.now())) {
+                    birthdayYearGroup.value[LocalDate.now().year.toString()]?.add(user)
+                } else {
+                    birthdayYearGroup.value[LocalDate.now().year.plus(1).toString()]?.add(user)
+                }
+            }
+        }
+
+        birthdayYearGroup.value.values.forEach { set ->
+            set.sortedWith(
+                compareBy(
+                    { it.birthday?.toLocalDate()?.month },
+                    { it.birthday?.toLocalDate()?.dayOfMonth },
+                )
+            )
+        }
+    }
+
 
     override fun clear() {
         _userOriginalList.value = null

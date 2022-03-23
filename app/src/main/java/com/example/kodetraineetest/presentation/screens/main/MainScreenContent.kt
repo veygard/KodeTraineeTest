@@ -44,6 +44,7 @@ internal fun MainScreenContent(
     sortButtonClick: () -> Job,
     coroutineScope: CoroutineScope,
     sortedByState: SortingTypes,
+    userListWithBDayGroups: Map<String, MutableSet<User>>,
     ) {
     BottomSheetScaffold(
         sheetContent = {
@@ -79,7 +80,7 @@ internal fun MainScreenContent(
                 when (screenLoadingState) {
                     is ScreenStates.Ready -> {
                         userList?.let { list ->
-                            UserListBlock(screenLoadingState, list, refreshClick, sortedByState)
+                            UserListBlock(screenLoadingState, list, refreshClick, sortedByState, userListWithBDayGroups)
                         }
                     }
                     is ScreenStates.Loading -> {

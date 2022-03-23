@@ -32,18 +32,13 @@ fun UserListBlock(
     list: List<User>,
     refreshClick: () -> Unit,
     sortedByState: SortingTypes,
+    userListWithBDayGroups: Map<String, MutableSet<User>>,
 ) {
     val birthdayYearGroup: MutableState<Map<String, MutableSet<User>>> = remember {
-        mutableStateOf(
-            mapOf(
-                LocalDate.now().year.toString() to mutableSetOf(),
-                LocalDate.now().year.plus(1).toString() to mutableSetOf(),
-            )
-        )
+        mutableStateOf(userListWithBDayGroups)
     }
 
     val birthdayList = remember { mutableStateOf(listOf<User>()) }
-    val coroutineScope = rememberCoroutineScope()
 
     SwipeRefresh(state = rememberSwipeRefreshState(
         screenLoadingState != ScreenStates.Ready
@@ -58,8 +53,6 @@ fun UserListBlock(
         ) {
             when (sortedByState) {
                 SortingTypes.BORN_DATE -> {
-
-                    setupYearGroups(birthdayYearGroup, list)
 
                     birthdayYearGroup.value.forEach { (year, userList) ->
 
@@ -115,39 +108,6 @@ fun UserListBlock(
 
 }
 
-private fun setupYearGroups(
-    birthdayYearGroup: MutableState<Map<String, MutableSet<User>>>,
-    list: List<User>
-) {
-    birthdayYearGroup.value.values.forEach {
-        it.clear()
-    }
-
-    list.forEach { user ->
-        val date = user.birthday?.toLocalDate()
-        date?.let { d ->
-            val day = d.dayOfMonth
-            val month = d.month
-            val year = LocalDate.now().year
-            val newDate = LocalDate.of(year, month, day)
-
-            if (newDate.isAfter(LocalDate.now())) {
-                birthdayYearGroup.value[LocalDate.now().year.toString()]?.add(user)
-            } else {
-                birthdayYearGroup.value[LocalDate.now().year.plus(1).toString()]?.add(user)
-            }
-        }
-    }
-
-    birthdayYearGroup.value.values.forEach { set ->
-        set.sortedWith(
-            compareBy(
-                { it.birthday?.toLocalDate()?.month },
-                { it.birthday?.toLocalDate()?.dayOfMonth },
-            )
-        )
-    }
-}
 
 private fun sortByMonthDay(userList: MutableSet<User>): List<User> {
     return userList.toList().sortedWith(
