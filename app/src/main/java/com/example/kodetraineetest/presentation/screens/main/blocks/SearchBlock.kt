@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -17,24 +18,39 @@ import androidx.compose.ui.unit.dp
 import com.example.kodetraineetest.presentation.ui.theme.textMedium
 import com.example.kodetraineetest.R
 import com.example.kodetraineetest.domain.model.User
+import com.example.kodetraineetest.presentation.ui.theme.subheadMedium
+import com.example.kodetraineetest.presentation.ui.theme.subheadSemibold
+import com.example.kodetraineetest.util.SpacingHorizontal
 import kotlinx.coroutines.Job
 
 @Composable
 fun SearchBlock(
     sortButtonClick: () -> Job,
-    sortBySearchEntered: (value: String) -> Unit
+    sortBySearchEntered: (value: String) -> Unit,
+    enteredValue: MutableState<String>,
+    showCancelButton: MutableState<Boolean>,
+    searchCancelButtonClick: () -> Unit
 ) {
-    val showCancelButton = remember { mutableStateOf(false) }
-    val enteredValue = remember { mutableStateOf("") }
+
+
     val focusManager = LocalFocusManager.current
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+
         TextField(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = when (showCancelButton.value) {
+                true -> Modifier
+                false-> Modifier
+                    .fillMaxWidth()
+            },
             value = enteredValue.value, onValueChange = {
                 enteredValue.value = it
                 sortBySearchEntered(it)
+                showCancelButton.value = it.isNotEmpty()
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 backgroundColor = MaterialTheme.colors.primaryVariant,
@@ -76,9 +92,19 @@ fun SearchBlock(
                         contentDescription = "sort",
                         tint = MaterialTheme.colors.onSecondary,
                     )
-
                 }
             }
         )
+
+        if (showCancelButton.value) {
+            SpacingHorizontal(12)
+            Text(text = stringResource(R.string.cansel_button_title),
+                style = subheadSemibold,
+                color = MaterialTheme.colors.primary,
+                modifier = Modifier.clickable {
+                    searchCancelButtonClick()
+                }
+            )
+        }
     }
 }

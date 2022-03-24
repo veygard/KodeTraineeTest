@@ -37,7 +37,7 @@ internal fun MainScreenContent(
     userList: List<User>?,
     refreshClick: () -> Unit,
     sortByTypeClick: (type: SortingTypes) -> Unit,
-        sortBySearchEntered: (value: String) -> Unit,
+    sortBySearchEntered: (value: String) -> Unit,
     sortByTabRow: (chosen: String, all: String) -> Unit,
     departmentsSet: Set<String>?,
     selectedTabIndex: MutableState<Int>,
@@ -45,6 +45,9 @@ internal fun MainScreenContent(
     sortButtonClick: () -> Job,
     coroutineScope: CoroutineScope,
     sortedByState: SortingTypes,
+    enteredSearchValue: MutableState<String>,
+    showCancelButton: MutableState<Boolean>,
+    searchCancelButtonClick: () -> Unit,
     ) {
     BottomSheetScaffold(
         sheetContent = {
@@ -73,7 +76,7 @@ internal fun MainScreenContent(
                     .padding(start = 8.dp, end=8.dp)
             ) {
                 SpacingVertical(heightDp = 6)
-                SearchBlock(sortButtonClick, sortBySearchEntered)
+                SearchBlock(sortButtonClick, sortBySearchEntered, enteredSearchValue,showCancelButton,searchCancelButtonClick)
                 SpacingVertical(heightDp = 16)
                 DepartmentsTabRow(sortByTabRow, departmentsSet, selectedTabIndex)
                 SpacingVertical(heightDp = 22)

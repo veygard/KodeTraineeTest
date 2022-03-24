@@ -71,7 +71,13 @@ val subheadMedium = TextStyle(
     lineHeight = 18.sp,
     textAlign = TextAlign.Start,
 )
-
+val subheadSemibold = TextStyle(
+    fontFamily = InterFont,
+    fontSize = 14.sp,
+    fontWeight = FontWeight.W600,
+    lineHeight = 18.sp,
+    textAlign = TextAlign.Right,
+)
 val textMedium = TextStyle(
     fontFamily = InterFont,
     fontSize = 15.sp,

@@ -32,7 +32,13 @@ fun MainScreen(
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
     )
-
+    val enteredSearchValue = remember { mutableStateOf("") }
+    val showCancelButton = remember { mutableStateOf(false) }
+    val searchCancelButtonClick = {
+        enteredSearchValue.value = ""
+        showCancelButton.value= false
+        viewModel.filterUsersBySearch("")
+    }
 
     LaunchedEffect(key1 = true, block = {
         viewModel.getUsers()
@@ -41,6 +47,7 @@ fun MainScreen(
 
     val refreshClick = {
         selectedPositionTabIndex.value = 0
+        enteredSearchValue.value = ""
         viewModel.refresh()
     }
     val sortButtonClick = {
@@ -70,6 +77,9 @@ fun MainScreen(
                 sortButtonClick,
                 coroutineScope,
                 sortedByState,
+                enteredSearchValue,
+                showCancelButton,
+                searchCancelButtonClick
             )
         }
         is ScreenStates.Error -> {
