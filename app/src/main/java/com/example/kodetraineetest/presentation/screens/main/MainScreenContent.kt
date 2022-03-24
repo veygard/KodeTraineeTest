@@ -39,6 +39,7 @@ internal fun MainScreenContent(
     sortByTypeClick: (type: SortingTypes) -> Unit,
     sortBySearchEntered: (value: String) -> Unit,
     sortByTabRow: (chosen: String, all: String) -> Unit,
+    routeDetailScreen: (user:User) -> Unit,
     departmentsSet: Set<String>?,
     selectedTabIndex: MutableState<Int>,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
@@ -83,7 +84,7 @@ internal fun MainScreenContent(
                 when (screenLoadingState) {
                     is ScreenStates.Ready -> {
                         userList?.let { list ->
-                            UserListBlock(screenLoadingState, list, refreshClick, sortedByState)
+                            UserListBlock(screenLoadingState, list, refreshClick, sortedByState, routeDetailScreen)
                         }
                     }
                     is ScreenStates.Loading -> {

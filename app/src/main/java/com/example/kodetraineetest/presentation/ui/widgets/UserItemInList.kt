@@ -28,13 +28,13 @@ import java.util.*
 fun UserItemInList(
     user: User,
     showBornDate: Boolean = false,
-    userClick: (id: String?) -> Unit
+    userClick: (user:User) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                userClick(user.id)
+                userClick(user)
             },
     ) {
         Row(
@@ -90,7 +90,6 @@ fun UserItemInList(
 
                 date?.let { d ->
                     val str = d.toDayMonthString()
-                    val i = 10
                     Text(
                         text = str ?: "",
                         style = textRegular,

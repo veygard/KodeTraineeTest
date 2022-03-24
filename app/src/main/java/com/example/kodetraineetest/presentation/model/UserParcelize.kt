@@ -1,9 +1,12 @@
-package com.example.kodetraineetest.domain.model
+package com.example.kodetraineetest.presentation.model
 
-import com.example.kodetraineetest.presentation.model.UserParcelize
+import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.util.AvatarBank
+import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.parcelize.Parcelize
 
-data class User(
+@Parcelize
+data class UserParcelize(
     val id: String? = null,
     val avatarUrl: String? = null,
     val firstName: String? = null,
@@ -13,9 +16,9 @@ data class User(
     val position: String? = null,
     val birthday: String? = null,
     val phone: String? = null
-)
+): Parcelable
 
-fun User.toParcelize() = UserParcelize(
+fun UserParcelize.toUser() = User(
     id = id,
     avatarUrl = AvatarBank.getAvatarUrl(),
     firstName = firstName,
@@ -26,4 +29,3 @@ fun User.toParcelize() = UserParcelize(
     birthday = birthday,
     phone = phone
 )
-

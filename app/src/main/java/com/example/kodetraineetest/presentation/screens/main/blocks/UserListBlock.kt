@@ -32,6 +32,7 @@ fun UserListBlock(
     list: List<User>,
     refreshClick: () -> Unit,
     sortedByState: SortingTypes,
+    routeDetailScreen: (user: User) -> Unit,
 ) {
     val currentYear = LocalDate.now().year.toString()
     val nextYear = LocalDate.now().year.plus(1).toString()
@@ -80,7 +81,7 @@ fun UserListBlock(
                                 items(birthdayList.value, itemContent = { user ->
                                     UserItemInList(
                                         user = user,
-                                        userClick = {},
+                                        userClick = routeDetailScreen,
                                         showBornDate = true
                                     )
                                 })
@@ -89,7 +90,7 @@ fun UserListBlock(
 
                         SortingTypes.ABC -> {
                             items(list.size) { index ->
-                                UserItemInList(user = list[index], userClick = {})
+                                UserItemInList(user = list[index], userClick = routeDetailScreen)
                                 SpacingVertical(24)
                             }
                         }

@@ -7,6 +7,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.*
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.kodetraineetest.domain.model.toParcelize
+import com.example.kodetraineetest.presentation.screens.destinations.DetailScreenDestination
 import com.example.kodetraineetest.presentation.viewmodel.supports.ScreenStates
 import com.example.kodetraineetest.presentation.ui.widgets.CriticalErrorBlock
 import com.example.kodetraineetest.presentation.viewmodel.UsersViewModel
@@ -70,6 +72,9 @@ fun MainScreen(
                 },
                 sortByTabRow = { tab, all ->
                     viewModel.filterUsersByTabRow(tab, all)
+                },
+                routeDetailScreen = {user ->
+                    navigator.navigate(DetailScreenDestination(user.toParcelize()))
                 },
                 departmentsSet,
                 selectedPositionTabIndex,
