@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.presentation.ui.theme.textMedium
+import com.example.kodetraineetest.presentation.ui.widgets.NothingFoundBlock
 import com.example.kodetraineetest.presentation.ui.widgets.UserItemInList
 import com.example.kodetraineetest.presentation.viewmodel.supports.ScreenStates
 import com.example.kodetraineetest.presentation.viewmodel.supports.SortingTypes
@@ -22,7 +23,6 @@ import com.example.kodetraineetest.util.SpacingVertical
 import com.example.kodetraineetest.util.extention.toLocalDate
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @ExperimentalFoundationApi
@@ -32,82 +32,139 @@ fun UserListBlock(
     list: List<User>,
     refreshClick: () -> Unit,
     sortedByState: SortingTypes,
-    userListWithBDayGroups: Map<String, MutableSet<User>>,
 ) {
-    val birthdayYearGroup: MutableState<Map<String, MutableSet<User>>> = remember {
-        mutableStateOf(userListWithBDayGroups)
-    }
+    val currentYear = LocalDate.now().year.toString()
+    val nextYear = LocalDate.now().year.plus(1).toString()
 
+    val birthdayYearGroup: MutableState<Map<String, MutableSet<User>>> = remember {
+        mutableStateOf(
+            mapOf(
+                currentYear to mutableSetOf(),
+                nextYear to mutableSetOf(),
+            )
+        )
+    }
     val birthdayList = remember { mutableStateOf(listOf<User>()) }
 
-    SwipeRefresh(state = rememberSwipeRefreshState(
-        screenLoadingState != ScreenStates.Ready
-    ), onRefresh = {
-        refreshClick()
-    }) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colors.background),
-            contentPadding = PaddingValues(vertical = 24.dp)
-        ) {
-            when (sortedByState) {
-                SortingTypes.BORN_DATE -> {
+    val isAnyUsers = remember { mutableStateOf(false) }
 
-                    birthdayYearGroup.value.forEach { (year, userList) ->
 
-                        if (year != LocalDate.now().year.toString() && userList.isNotEmpty()) {
-                            stickyHeader {
-                                SpacingVertical(heightDp = 12)
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    SpacingHorizontal(WidthDp = 8)
-                                    Divider(
-                                        color = MaterialTheme.colors.onSecondary,
-                                        thickness = 1.dp,
-                                        modifier = Modifier.width(72.dp)
-                                    )
-                                    Text(
-                                        text = year,
-                                        style = textMedium,
-                                        color = MaterialTheme.colors.onSecondary
-                                    )
-                                    Divider(
-                                        color = MaterialTheme.colors.onSecondary,
-                                        thickness = 1.dp,
-                                        modifier = Modifier.width(72.dp)
-                                    )
-                                    SpacingHorizontal(WidthDp = 8)
+    isAnyUsers.value = isAnyUsersCheck(list)
+    when (isAnyUsers.value) {
+        true -> {
+            SwipeRefresh(state = rememberSwipeRefreshState(
+                screenLoadingState != ScreenStates.Ready
+            ), onRefresh = {
+                refreshClick()
+            }) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.background),
+                    contentPadding = PaddingValues(vertical = 24.dp)
+                ) {
+
+                    when (sortedByState) {
+                        SortingTypes.BORN_DATE -> {
+                            birthdayYearGroup.value.forEach { (year, userList) ->
+                                setupYearGroups(birthdayYearGroup, list)
+
+                                if (year != currentYear && userList.isNotEmpty()) {
+                                    stickyHeader {
+                                        StickyHeader(year)
+                                    }
                                 }
-                                SpacingVertical(heightDp = 12)
-                            }
 
+                                birthdayList.value = sortByMonthDay(userList)
+
+                                items(birthdayList.value, itemContent = { user ->
+                                    UserItemInList(
+                                        user = user,
+                                        userClick = {},
+                                        showBornDate = true
+                                    )
+                                })
+                            }
                         }
 
-                        birthdayList.value = sortByMonthDay(userList)
-
-                        items(birthdayList.value, itemContent = { user ->
-                            UserItemInList(user = user, userClick = {}, showBornDate = true)
-                        })
-                    }
-                }
-
-
-                else -> {
-                    items(list.size) { index ->
-                        UserItemInList(user = list[index], userClick = {})
-                        SpacingVertical(24)
+                        SortingTypes.ABC -> {
+                            items(list.size) { index ->
+                                UserItemInList(user = list[index], userClick = {})
+                                SpacingVertical(24)
+                            }
+                        }
                     }
                 }
             }
         }
+
+        false -> NothingFoundBlock(refreshClick)
     }
 
 }
 
+@Composable
+private fun StickyHeader(year: String) {
+    SpacingVertical(heightDp = 12)
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        SpacingHorizontal(WidthDp = 8)
+        Divider(
+            color = MaterialTheme.colors.onSecondary,
+            thickness = 1.dp,
+            modifier = Modifier.width(72.dp)
+        )
+        Text(
+            text = year,
+            style = textMedium,
+            color = MaterialTheme.colors.onSecondary
+        )
+        Divider(
+            color = MaterialTheme.colors.onSecondary,
+            thickness = 1.dp,
+            modifier = Modifier.width(72.dp)
+        )
+        SpacingHorizontal(WidthDp = 8)
+    }
+    SpacingVertical(heightDp = 12)
+}
+
+private fun setupYearGroups(
+    birthdayYearGroup: MutableState<Map<String, MutableSet<User>>>,
+    list: List<User>
+) {
+    birthdayYearGroup.value.values.forEach {
+        it.clear()
+    }
+
+    list.forEach { user ->
+        val date = user.birthday?.toLocalDate()
+        date?.let { d ->
+            val day = d.dayOfMonth
+            val month = d.month
+            val year = LocalDate.now().year
+            val newDate = LocalDate.of(year, month, day)
+
+            if (newDate.isAfter(LocalDate.now())) {
+                birthdayYearGroup.value[LocalDate.now().year.toString()]?.add(user)
+            } else {
+                birthdayYearGroup.value[LocalDate.now().year.plus(1).toString()]?.add(user)
+            }
+        }
+    }
+
+    birthdayYearGroup.value.values.forEach { set ->
+        set.sortedWith(
+            compareBy(
+                { it.birthday?.toLocalDate()?.month },
+                { it.birthday?.toLocalDate()?.dayOfMonth },
+            )
+        )
+    }
+}
 
 private fun sortByMonthDay(userList: MutableSet<User>): List<User> {
     return userList.toList().sortedWith(
@@ -117,3 +174,5 @@ private fun sortByMonthDay(userList: MutableSet<User>): List<User> {
         )
     )
 }
+
+private fun isAnyUsersCheck(list: List<User>) = list.isNotEmpty()

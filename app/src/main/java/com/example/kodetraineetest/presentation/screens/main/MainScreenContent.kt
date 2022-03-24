@@ -37,6 +37,7 @@ internal fun MainScreenContent(
     userList: List<User>?,
     refreshClick: () -> Unit,
     sortByTypeClick: (type: SortingTypes) -> Unit,
+        sortBySearchEntered: (value: String) -> Unit,
     sortByTabRow: (chosen: String, all: String) -> Unit,
     departmentsSet: Set<String>?,
     selectedTabIndex: MutableState<Int>,
@@ -44,7 +45,6 @@ internal fun MainScreenContent(
     sortButtonClick: () -> Job,
     coroutineScope: CoroutineScope,
     sortedByState: SortingTypes,
-    userListWithBDayGroups: Map<String, MutableSet<User>>,
     ) {
     BottomSheetScaffold(
         sheetContent = {
@@ -73,14 +73,14 @@ internal fun MainScreenContent(
                     .padding(start = 8.dp, end=8.dp)
             ) {
                 SpacingVertical(heightDp = 6)
-                SearchBlock(sortButtonClick)
+                SearchBlock(sortButtonClick, sortBySearchEntered)
                 SpacingVertical(heightDp = 16)
                 DepartmentsTabRow(sortByTabRow, departmentsSet, selectedTabIndex)
                 SpacingVertical(heightDp = 22)
                 when (screenLoadingState) {
                     is ScreenStates.Ready -> {
                         userList?.let { list ->
-                            UserListBlock(screenLoadingState, list, refreshClick, sortedByState, userListWithBDayGroups)
+                            UserListBlock(screenLoadingState, list, refreshClick, sortedByState)
                         }
                     }
                     is ScreenStates.Loading -> {

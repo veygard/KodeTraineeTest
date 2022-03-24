@@ -31,6 +31,8 @@ class UsersViewModel @Inject constructor(
     private val _userListToShow: MutableStateFlow<List<User>?> = MutableStateFlow(null)
     val userListToShow: MutableStateFlow<List<User>?> = _userListToShow
 
+    private val _userLisFilteredByTab: MutableStateFlow<List<User>?> = MutableStateFlow(null)
+
     private val _departmentsSet: MutableStateFlow<Set<String>?> =
         MutableStateFlow(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
     val departmentsSet: MutableStateFlow<Set<String>?> = _departmentsSet
@@ -42,59 +44,74 @@ class UsersViewModel @Inject constructor(
     private val _screenLoadingState: MutableStateFlow<ScreenStates> =
         MutableStateFlow(ScreenStates.Loading)
 
-    private val _userListWithBDayGroups: MutableStateFlow<Map<String, MutableSet<User>>> =
-        MutableStateFlow(
-            mapOf(
-                LocalDate.now().year.toString() to mutableSetOf(),
-                LocalDate.now().year.plus(1).toString() to mutableSetOf(),
-            )
-        )
-    val userListWithBDayGroups: MutableStateFlow<Map<String, MutableSet<User>>> =
-        _userListWithBDayGroups
+    private val _filterValue = MutableStateFlow("")
 
     val screenLoadingState: StateFlow<ScreenStates>
         get() = _screenLoadingState.asStateFlow()
+
 
     fun refresh() {
         viewModelScope.launch {
             _departmentsSet.emit(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
             _sortedBy.emit(ABC)
+            _filterValue.emit("")
             _screenLoadingState.emit(ScreenStates.Loading)
             getUsers()
         }
     }
 
+    fun filterUsersBySearch(value: String) {
+        viewModelScope.launch {
+            val set = mutableSetOf<User>()
+            _filterValue.emit(value)
 
-    fun sortByTabRow(chosen: String, all: String) {
+            when {
+                value.isEmpty() -> {
+                    _userListToShow.emit(_userLisFilteredByTab.value)
+                }
+                else -> {
+                    _userLisFilteredByTab.value?.forEach { user ->
+                        when {
+                            (user.firstName?.contains(value, ignoreCase = true) == true) ||
+                                    (user.lastName?.contains(value, ignoreCase = true) == true) ||
+                                    (user.userTag?.contains(value, ignoreCase = true) == true)
+                            -> {
+                                set.add(user)
+                            }
+                        }
+                    }
+                    _userListToShow.emit(set.toList())
+                }
+            }
+
+        }
+    }
+
+
+    fun filterUsersByTabRow(chosen: String, all: String) {
         viewModelScope.launch {
             if (chosen == all) {
-                when (_sortedBy.value) {
-                    ABC -> {
-                        _userListToShow.emit(_userOriginalList.value)
-                        sortByType(ABC)
-                    }
-                    BORN_DATE -> {
-                        _userListToShow.emit(_userOriginalList.value)
-                        setupYearGroups(_userListWithBDayGroups, _userListToShow)
-                    }
-                }
-
+                _userListToShow.emit(_userOriginalList.value)
+                _userLisFilteredByTab.emit(_userOriginalList.value)
+                if(_filterValue.value.isNotEmpty()) { filterUsersBySearch(_filterValue.value) }
+                sortByType(ABC)
             } else {
                 _userListToShow.emit(
                     _userOriginalList.value?.filter {
                         it.department == departmentsAccordance.getOriginalName(chosen)
                     })
+                _userLisFilteredByTab.emit(_userListToShow.value)
+                if(_filterValue.value.isNotEmpty()) { filterUsersBySearch(_filterValue.value) }
+
                 when (_sortedBy.value) {
                     ABC -> {
                         sortByType(ABC)
-                    }
-                    BORN_DATE -> {
-                        setupYearGroups(_userListWithBDayGroups, _userListToShow)
                     }
                 }
             }
         }
     }
+
 
     fun sortByType(type: SortingTypes) {
         viewModelScope.launch {
@@ -110,7 +127,6 @@ class UsersViewModel @Inject constructor(
                     }
                 }
                 BORN_DATE -> {
-                    setupYearGroups(_userListWithBDayGroups, _userListToShow)
                     sortedBy.emit(BORN_DATE)
                 }
             }
@@ -133,6 +149,8 @@ class UsersViewModel @Inject constructor(
                 is GetUsersResult.UserList -> {
                     _userOriginalList.value = result.list
                     _userListToShow.value = result.list
+                    _userLisFilteredByTab.value = result.list
+
                     setupTabRowList()
                     sortByType(ABC)
                     _screenLoadingState.emit(ScreenStates.Ready)
@@ -160,39 +178,6 @@ class UsersViewModel @Inject constructor(
         }
     }
 
-    private fun setupYearGroups(
-        birthdayYearGroup: MutableStateFlow<Map<String, MutableSet<User>>>,
-        list: MutableStateFlow<List<User>?>
-    ) {
-        birthdayYearGroup.value.values.forEach {
-            it.clear()
-        }
-
-        list.value?.forEach { user ->
-            val date = user.birthday?.toLocalDate()
-            date?.let { d ->
-                val day = d.dayOfMonth
-                val month = d.month
-                val year = LocalDate.now().year
-                val newDate = LocalDate.of(year, month, day)
-
-                if (newDate.isAfter(LocalDate.now())) {
-                    birthdayYearGroup.value[LocalDate.now().year.toString()]?.add(user)
-                } else {
-                    birthdayYearGroup.value[LocalDate.now().year.plus(1).toString()]?.add(user)
-                }
-            }
-        }
-
-        birthdayYearGroup.value.values.forEach { set ->
-            set.sortedWith(
-                compareBy(
-                    { it.birthday?.toLocalDate()?.month },
-                    { it.birthday?.toLocalDate()?.dayOfMonth },
-                )
-            )
-        }
-    }
 
 
     override fun clear() {

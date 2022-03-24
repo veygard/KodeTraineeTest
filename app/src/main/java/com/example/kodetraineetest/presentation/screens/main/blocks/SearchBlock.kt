@@ -20,7 +20,10 @@ import com.example.kodetraineetest.domain.model.User
 import kotlinx.coroutines.Job
 
 @Composable
-fun SearchBlock(sortButtonClick: () -> Job) {
+fun SearchBlock(
+    sortButtonClick: () -> Job,
+    sortBySearchEntered: (value: String) -> Unit
+) {
     val showCancelButton = remember { mutableStateOf(false) }
     val enteredValue = remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
@@ -31,6 +34,7 @@ fun SearchBlock(sortButtonClick: () -> Job) {
                 .fillMaxWidth(),
             value = enteredValue.value, onValueChange = {
                 enteredValue.value = it
+                sortBySearchEntered(it)
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 backgroundColor = MaterialTheme.colors.primaryVariant,

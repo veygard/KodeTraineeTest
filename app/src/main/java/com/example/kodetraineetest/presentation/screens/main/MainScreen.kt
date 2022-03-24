@@ -25,7 +25,6 @@ fun MainScreen(
     val screenLoadingState by viewModel.screenLoadingState.collectAsState()
     val departmentsSet by viewModel.departmentsSet.collectAsState()
     val listToShow by viewModel.userListToShow.collectAsState()
-    val userListWithBDayGroups by viewModel.userListWithBDayGroups.collectAsState()
     val sortedByState by viewModel.sortedBy.collectAsState()
     val selectedPositionTabIndex = remember { mutableStateOf(0) }
 
@@ -59,8 +58,11 @@ fun MainScreen(
                 sortByTypeClick = { type ->
                     viewModel.sortByType(type)
                 },
+                sortBySearchEntered = { value ->
+                    viewModel.filterUsersBySearch(value)
+                },
                 sortByTabRow = { tab, all ->
-                    viewModel.sortByTabRow(tab, all)
+                    viewModel.filterUsersByTabRow(tab, all)
                 },
                 departmentsSet,
                 selectedPositionTabIndex,
@@ -68,7 +70,6 @@ fun MainScreen(
                 sortButtonClick,
                 coroutineScope,
                 sortedByState,
-                userListWithBDayGroups
             )
         }
         is ScreenStates.Error -> {
