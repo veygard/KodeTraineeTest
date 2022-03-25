@@ -106,6 +106,15 @@ val title2SemiBold = TextStyle(
     lineHeight = 24.sp,
     textAlign = TextAlign.Center,
 )
+
+val title3regular = TextStyle(
+    fontFamily = InterFont,
+    fontSize = 17.sp,
+    fontWeight = FontWeight.W400,
+    lineHeight = 22.sp,
+    textAlign = TextAlign.Center,
+)
+
 val title3SemiBold = TextStyle(
     fontFamily = InterFont,
     fontSize = 17.sp,

@@ -18,7 +18,7 @@ fun DepartmentsTabRow(
     selectedTabIndex: MutableState<Int>,
 ) {
 
-    val allString = stringResource(R.string.detartment_tab_row_all)
+    val allString = stringResource(R.string.department_tab_row_all)
 
     if (departmentsSet != null && departmentsSet.isNotEmpty()) {
         ScrollableTabRow(

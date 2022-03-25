@@ -9,7 +9,6 @@ import com.example.kodetraineetest.presentation.viewmodel.supports.ScreenStates
 import com.example.kodetraineetest.presentation.viewmodel.supports.SortingTypes
 import com.example.kodetraineetest.presentation.viewmodel.supports.SortingTypes.*
 import com.example.kodetraineetest.util.DepartmentsAccordance
-import com.example.kodetraineetest.util.extention.toLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import kotlinx.coroutines.delay
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,7 +32,7 @@ class UsersViewModel @Inject constructor(
     private val _userLisFilteredByTab: MutableStateFlow<List<User>?> = MutableStateFlow(null)
 
     private val _departmentsSet: MutableStateFlow<Set<String>?> =
-        MutableStateFlow(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
+        MutableStateFlow(setOf(application.applicationContext.getString(R.string.department_tab_row_all)))
     val departmentsSet: MutableStateFlow<Set<String>?> = _departmentsSet
 
     private val _sortedBy = MutableStateFlow(ABC)
@@ -52,7 +50,7 @@ class UsersViewModel @Inject constructor(
 
     fun refresh() {
         viewModelScope.launch {
-            _departmentsSet.emit(setOf(application.applicationContext.getString(R.string.detartment_tab_row_all)))
+            _departmentsSet.emit(setOf(application.applicationContext.getString(R.string.department_tab_row_all)))
             _sortedBy.emit(ABC)
             _filterValue.emit("")
             _screenLoadingState.emit(ScreenStates.Loading)
@@ -168,7 +166,7 @@ class UsersViewModel @Inject constructor(
     private fun setupTabRowList() {
         viewModelScope.launch {
             val set = mutableSetOf<String>()
-            set.add(application.applicationContext.getString(R.string.detartment_tab_row_all))
+            set.add(application.applicationContext.getString(R.string.department_tab_row_all))
             _userOriginalList.value?.map { it.department }?.forEach {
                 it?.let { dep -> set.add(departmentsAccordance.getAccordanceName(dep)) }
             }

@@ -8,3 +8,8 @@ fun LocalDate.toDayMonthString(): String? {
     val formatter = DateTimeFormatter.ofPattern("dd MMM", Locale("ru"))
     return LocalDate.of(this.year, this.month, this.dayOfMonth).format(formatter)
 }
+
+fun LocalDate.toFullString(): String? {
+    val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("ru"))
+    return LocalDate.of(this.year, this.month, this.dayOfMonth).format(formatter)
+}

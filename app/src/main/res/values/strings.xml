@@ -4,7 +4,7 @@
     <string name="critical_error_screen_title">Какой-то сверхразум все сломал</string>
     <string name="critical_error_screen_text">Постараемся быстро починить</string>
     <string name="critical_error_screen_again">Попробовать снова</string>
-    <string name="detartment_tab_row_all">Все</string>
+    <string name="department_tab_row_all">Все</string>
     <string name="search_field_placeholder">Введи имя, тег, почту...</string>
     <string name="bottom_sheet_sort_title">Сортировка</string>
     <string name="departments_accordance_ior">iOS</string>
@@ -21,5 +21,10 @@
     <string name="departments_accordance_analytics">Аналитика</string>
     <string name="radio_button_abc">По алфавиту</string>
     <string name="radio_button_born_date">По дню рождения</string>
-    <string name="cansel_button_title">Отмена</string>
+    <string name="cancel_button_title">Отмена</string>
+    <string name="years1">лет</string>
+    <string name="years2">год</string>
+    <string name="years3">года</string>
+
+
 </resources>

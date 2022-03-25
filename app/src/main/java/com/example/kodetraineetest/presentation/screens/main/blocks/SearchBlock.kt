@@ -6,8 +6,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,8 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.kodetraineetest.presentation.ui.theme.textMedium
 import com.example.kodetraineetest.R
-import com.example.kodetraineetest.domain.model.User
-import com.example.kodetraineetest.presentation.ui.theme.subheadMedium
 import com.example.kodetraineetest.presentation.ui.theme.subheadSemibold
 import com.example.kodetraineetest.util.SpacingHorizontal
 import kotlinx.coroutines.Job
@@ -98,7 +94,7 @@ fun SearchBlock(
 
         if (showCancelButton.value) {
             SpacingHorizontal(12)
-            Text(text = stringResource(R.string.cansel_button_title),
+            Text(text = stringResource(R.string.cancel_button_title),
                 style = subheadSemibold,
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier.clickable {

@@ -86,8 +86,8 @@ fun UserItemInList(
                     )
                 }
             }
-            if(showBornDate){             val date = user.birthday?.toLocalDate()
-
+            if(showBornDate){
+                val date = user.birthday?.toLocalDate()
                 date?.let { d ->
                     val str = d.toDayMonthString()
                     Text(
@@ -96,7 +96,6 @@ fun UserItemInList(
                         color = MaterialTheme.colors.secondary
                     )
                 }
-
             }
 
         }
