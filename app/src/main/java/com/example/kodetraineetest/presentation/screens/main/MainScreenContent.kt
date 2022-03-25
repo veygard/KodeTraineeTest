@@ -21,8 +21,10 @@ import com.example.kodetraineetest.presentation.screens.main.blocks.BottomSheetC
 import com.example.kodetraineetest.presentation.screens.main.blocks.DepartmentsTabRow
 import com.example.kodetraineetest.presentation.screens.main.blocks.SearchBlock
 import com.example.kodetraineetest.presentation.screens.main.blocks.UserListBlock
+import com.example.kodetraineetest.presentation.ui.widgets.RefreshingShackBar
 import com.example.kodetraineetest.presentation.ui.widgets.ShimmerUserList
 import com.example.kodetraineetest.presentation.viewmodel.supports.ScreenStates
+import com.example.kodetraineetest.presentation.viewmodel.supports.SnackbarTypes
 import com.example.kodetraineetest.presentation.viewmodel.supports.SortingTypes
 import com.example.kodetraineetest.util.SpacingVertical
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +41,7 @@ internal fun MainScreenContent(
     sortByTypeClick: (type: SortingTypes) -> Unit,
     sortBySearchEntered: (value: String) -> Unit,
     sortByTabRow: (chosen: String, all: String) -> Unit,
-    routeDetailScreen: (user:User) -> Unit,
+    routeDetailScreen: (user: User) -> Unit,
     departmentsSet: Set<String>?,
     selectedTabIndex: MutableState<Int>,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
@@ -49,7 +51,9 @@ internal fun MainScreenContent(
     enteredSearchValue: MutableState<String>,
     showCancelButton: MutableState<Boolean>,
     searchCancelButtonClick: () -> Unit,
-    ) {
+    snackbarState: SnackbarTypes?,
+) {
+
     BottomSheetScaffold(
         sheetContent = {
             BottomSheetContent(sortByTypeClick, sortedByState)
@@ -60,13 +64,15 @@ internal fun MainScreenContent(
             }
         },
         sheetPeekHeight = 0.dp,
-        modifier =Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colors.background)
-            .padding(start = 8.dp, end=8.dp)
-        ,
+            .padding(start = 8.dp, end = 8.dp),
         sheetElevation = 8.dp,
-        scaffoldState =bottomSheetScaffoldState,
+        scaffoldState = bottomSheetScaffoldState,
+        snackbarHost = {
+            RefreshingShackBar(bottomSheetScaffoldState, snackbarState)
+        },
         sheetBackgroundColor = MaterialTheme.colors.background,
         sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
         content = {
@@ -74,17 +80,29 @@ internal fun MainScreenContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colors.background)
-                    .padding(start = 8.dp, end=8.dp)
+                    .padding(start = 8.dp, end = 8.dp)
             ) {
                 SpacingVertical(heightDp = 6)
-                SearchBlock(sortButtonClick, sortBySearchEntered, enteredSearchValue,showCancelButton,searchCancelButtonClick)
+                SearchBlock(
+                    sortButtonClick,
+                    sortBySearchEntered,
+                    enteredSearchValue,
+                    showCancelButton,
+                    searchCancelButtonClick
+                )
                 SpacingVertical(heightDp = 16)
                 DepartmentsTabRow(sortByTabRow, departmentsSet, selectedTabIndex)
                 SpacingVertical(heightDp = 22)
                 when (screenLoadingState) {
                     is ScreenStates.Ready -> {
                         userList?.let { list ->
-                            UserListBlock(screenLoadingState, list, refreshClick, sortedByState, routeDetailScreen)
+                            UserListBlock(
+                                screenLoadingState,
+                                list,
+                                refreshClick,
+                                sortedByState,
+                                routeDetailScreen
+                            )
                         }
                     }
                     is ScreenStates.Loading -> {

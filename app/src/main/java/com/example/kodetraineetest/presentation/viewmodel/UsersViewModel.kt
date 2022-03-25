@@ -6,11 +6,14 @@ import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.domain.repository.GetUsersResult
 import com.example.kodetraineetest.domain.use_cases.UserUseCases
 import com.example.kodetraineetest.presentation.viewmodel.supports.ScreenStates
+import com.example.kodetraineetest.presentation.viewmodel.supports.SnackbarTypes
 import com.example.kodetraineetest.presentation.viewmodel.supports.SortingTypes
-import com.example.kodetraineetest.presentation.viewmodel.supports.SortingTypes.*
+import com.example.kodetraineetest.presentation.viewmodel.supports.SortingTypes.ABC
+import com.example.kodetraineetest.presentation.viewmodel.supports.SortingTypes.BORN_DATE
 import com.example.kodetraineetest.util.DepartmentsAccordance
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +26,7 @@ class UsersViewModel @Inject constructor(
     private val application: Application,
     private val userUseCases: UserUseCases,
     private val departmentsAccordance: DepartmentsAccordance
-) : BaseViewModel() {
+) : ViewModel() {
 
     private val _userOriginalList: MutableLiveData<List<User>?> = MutableLiveData(null)
     private val _userListToShow: MutableStateFlow<List<User>?> = MutableStateFlow(null)
@@ -38,6 +41,8 @@ class UsersViewModel @Inject constructor(
     private val _sortedBy = MutableStateFlow(ABC)
     val sortedBy: MutableStateFlow<SortingTypes> = _sortedBy
 
+    private val _showSnackbar: MutableStateFlow<SnackbarTypes?> = MutableStateFlow(null)
+    val showSnackbar: MutableStateFlow<SnackbarTypes?> = _showSnackbar
 
     private val _screenLoadingState: MutableStateFlow<ScreenStates> =
         MutableStateFlow(ScreenStates.Loading)
@@ -48,12 +53,15 @@ class UsersViewModel @Inject constructor(
         get() = _screenLoadingState.asStateFlow()
 
 
-    fun refresh() {
+    fun refresh(isLoadStateNeeded : Boolean = false) {
         viewModelScope.launch {
-            _departmentsSet.emit(setOf(application.applicationContext.getString(R.string.department_tab_row_all)))
-            _sortedBy.emit(ABC)
+//            _departmentsSet.emit(setOf(application.applicationContext.getString(R.string.department_tab_row_all)))
+//            _sortedBy.emit(ABC)
+
             _filterValue.emit("")
-            _screenLoadingState.emit(ScreenStates.Loading)
+
+            if(isLoadStateNeeded) _screenLoadingState.emit(ScreenStates.Loading)
+            else _showSnackbar.emit(SnackbarTypes.Loading)
             getUsers()
         }
     }
@@ -92,7 +100,6 @@ class UsersViewModel @Inject constructor(
                 _userListToShow.emit(_userOriginalList.value)
                 _userLisFilteredByTab.emit(_userOriginalList.value)
                 if(_filterValue.value.isNotEmpty()) { filterUsersBySearch(_filterValue.value) }
-                sortByType(ABC)
             } else {
                 _userListToShow.emit(
                     _userOriginalList.value?.filter {
@@ -148,16 +155,17 @@ class UsersViewModel @Inject constructor(
                     _userOriginalList.value = result.list
                     _userListToShow.value = result.list
                     _userLisFilteredByTab.value = result.list
-
                     setupTabRowList()
                     sortByType(ABC)
                     _screenLoadingState.emit(ScreenStates.Ready)
                 }
                 is GetUsersResult.ConnectionError -> {
-                    _screenLoadingState.emit(ScreenStates.Error)
+                    if(_userListToShow.value == null) _screenLoadingState.emit(ScreenStates.Error)
+                    else _showSnackbar.emit(SnackbarTypes.ConnectionError)
                 }
                 else -> {
-                    _screenLoadingState.emit(ScreenStates.Error)
+                    if(_userListToShow.value == null) _screenLoadingState.emit(ScreenStates.Error)
+                    else _showSnackbar.emit(SnackbarTypes.ServerError)
                 }
             }
         }
@@ -178,7 +186,7 @@ class UsersViewModel @Inject constructor(
 
 
 
-    override fun clear() {
+    fun clear() {
         _userOriginalList.value = null
         _userListToShow.value = null
     }

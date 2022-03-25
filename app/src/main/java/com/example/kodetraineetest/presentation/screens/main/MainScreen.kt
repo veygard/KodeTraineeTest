@@ -9,9 +9,9 @@ import androidx.compose.runtime.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kodetraineetest.domain.model.toParcelize
 import com.example.kodetraineetest.presentation.screens.destinations.DetailScreenDestination
-import com.example.kodetraineetest.presentation.viewmodel.supports.ScreenStates
 import com.example.kodetraineetest.presentation.ui.widgets.CriticalErrorBlock
 import com.example.kodetraineetest.presentation.viewmodel.UsersViewModel
+import com.example.kodetraineetest.presentation.viewmodel.supports.ScreenStates
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -28,7 +28,11 @@ fun MainScreen(
     val departmentsSet by viewModel.departmentsSet.collectAsState()
     val listToShow by viewModel.userListToShow.collectAsState()
     val sortedByState by viewModel.sortedBy.collectAsState()
+    val toastState by viewModel.showSnackbar.collectAsState()
+
+
     val selectedPositionTabIndex = remember { mutableStateOf(0) }
+
 
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -46,12 +50,17 @@ fun MainScreen(
         viewModel.getUsers()
     })
 
-
-    val refreshClick = {
-        selectedPositionTabIndex.value = 0
+    fun refreshClick(isLoadStateNeeded: Boolean = false) {
+//        selectedPositionTabIndex.value = 0
         enteredSearchValue.value = ""
-        viewModel.refresh()
+
+        if(!isLoadStateNeeded) coroutineScope.launch {
+            bottomSheetScaffoldState.snackbarHostState.showSnackbar("")
+        }
+
+        viewModel.refresh(isLoadStateNeeded)
     }
+
     val sortButtonClick = {
         coroutineScope.launch {
             bottomSheetScaffoldState.bottomSheetState.expand()
@@ -63,7 +72,7 @@ fun MainScreen(
             MainScreenContent(
                 screenLoadingState,
                 listToShow,
-                refreshClick = refreshClick,
+                refreshClick = {refreshClick()},
                 sortByTypeClick = { type ->
                     viewModel.sortByType(type)
                 },
@@ -84,15 +93,18 @@ fun MainScreen(
                 sortedByState,
                 enteredSearchValue,
                 showCancelButton,
-                searchCancelButtonClick
+                searchCancelButtonClick,
+                toastState
             )
         }
         is ScreenStates.Error -> {
             CriticalErrorBlock(
-                tryAgainClick = refreshClick
+                tryAgainClick = {refreshClick(true)}
             )
         }
     }
+
+
 }
 
 

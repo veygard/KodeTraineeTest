@@ -25,6 +25,8 @@
     <string name="years1">лет</string>
     <string name="years2">год</string>
     <string name="years3">года</string>
+    <string name="snackbar_errow_message">Не могу обновить данные.\nПроверь соединение с интернетом.</string>
+    <string name="snackbar_loading_message">Секундочку, гружусь...</string>
 
 
 </resources>
