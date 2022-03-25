@@ -38,12 +38,12 @@ internal fun MainScreenContent(
     screenLoadingState: ScreenStates,
     userList: List<User>?,
     refreshClick: () -> Unit,
+    saveTabIndex: (position: Int) -> Unit,
     sortByTypeClick: (type: SortingTypes) -> Unit,
     sortBySearchEntered: (value: String) -> Unit,
     sortByTabRow: (chosen: String, all: String) -> Unit,
     routeDetailScreen: (user: User) -> Unit,
     departmentsSet: Set<String>?,
-    selectedTabIndex: MutableState<Int>,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
     sortButtonClick: () -> Job,
     coroutineScope: CoroutineScope,
@@ -52,6 +52,7 @@ internal fun MainScreenContent(
     showCancelButton: MutableState<Boolean>,
     searchCancelButtonClick: () -> Unit,
     snackbarState: SnackbarTypes?,
+    selectedPositionTabIndex: Int,
 ) {
 
     BottomSheetScaffold(
@@ -91,7 +92,7 @@ internal fun MainScreenContent(
                     searchCancelButtonClick
                 )
                 SpacingVertical(heightDp = 16)
-                DepartmentsTabRow(sortByTabRow, departmentsSet, selectedTabIndex)
+                DepartmentsTabRow(sortByTabRow, departmentsSet, saveTabIndex, selectedPositionTabIndex)
                 SpacingVertical(heightDp = 22)
                 when (screenLoadingState) {
                     is ScreenStates.Ready -> {

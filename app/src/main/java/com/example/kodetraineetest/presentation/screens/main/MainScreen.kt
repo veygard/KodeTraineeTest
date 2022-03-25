@@ -28,10 +28,10 @@ fun MainScreen(
     val departmentsSet by viewModel.departmentsSet.collectAsState()
     val listToShow by viewModel.userListToShow.collectAsState()
     val sortedByState by viewModel.sortedBy.collectAsState()
-    val toastState by viewModel.showSnackbar.collectAsState()
+    val shackbarState by viewModel.showSnackbar.collectAsState()
+    val selectedPositionTabIndex by viewModel.selectedPositionTabIndex.collectAsState()
 
 
-    val selectedPositionTabIndex = remember { mutableStateOf(0) }
 
 
     val coroutineScope = rememberCoroutineScope()
@@ -51,7 +51,6 @@ fun MainScreen(
     })
 
     fun refreshClick(isLoadStateNeeded: Boolean = false) {
-//        selectedPositionTabIndex.value = 0
         enteredSearchValue.value = ""
 
         if(!isLoadStateNeeded) coroutineScope.launch {
@@ -73,6 +72,7 @@ fun MainScreen(
                 screenLoadingState,
                 listToShow,
                 refreshClick = {refreshClick()},
+                saveTabIndex = { p-> viewModel.saveTabIndex(p)},
                 sortByTypeClick = { type ->
                     viewModel.sortByType(type)
                 },
@@ -86,7 +86,6 @@ fun MainScreen(
                     navigator.navigate(DetailScreenDestination(user.toParcelize()))
                 },
                 departmentsSet,
-                selectedPositionTabIndex,
                 bottomSheetScaffoldState,
                 sortButtonClick,
                 coroutineScope,
@@ -94,7 +93,8 @@ fun MainScreen(
                 enteredSearchValue,
                 showCancelButton,
                 searchCancelButtonClick,
-                toastState
+                shackbarState,
+                selectedPositionTabIndex
             )
         }
         is ScreenStates.Error -> {

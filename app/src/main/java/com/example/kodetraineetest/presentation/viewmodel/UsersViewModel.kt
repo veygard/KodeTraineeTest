@@ -34,8 +34,9 @@ class UsersViewModel @Inject constructor(
 
     private val _userLisFilteredByTab: MutableStateFlow<List<User>?> = MutableStateFlow(null)
 
+    private val allDepName = application.applicationContext.getString(R.string.department_tab_row_all)
     private val _departmentsSet: MutableStateFlow<Set<String>?> =
-        MutableStateFlow(setOf(application.applicationContext.getString(R.string.department_tab_row_all)))
+        MutableStateFlow(setOf(allDepName))
     val departmentsSet: MutableStateFlow<Set<String>?> = _departmentsSet
 
     private val _sortedBy = MutableStateFlow(ABC)
@@ -52,14 +53,25 @@ class UsersViewModel @Inject constructor(
     val screenLoadingState: StateFlow<ScreenStates>
         get() = _screenLoadingState.asStateFlow()
 
+    private val _selectedPositionTabIndex = MutableStateFlow(0)
+    val selectedPositionTabIndex:MutableStateFlow<Int> = _selectedPositionTabIndex
+
+    fun saveTabIndex(position: Int){
+        viewModelScope.launch {
+            _selectedPositionTabIndex.emit(position)
+        }
+    }
+    fun getDepNameByIndex(): String {
+        return try {
+           departmentsSet.value?.elementAt(_selectedPositionTabIndex.value)!!
+        } catch (e: Exception){
+            allDepName
+        }
+    }
 
     fun refresh(isLoadStateNeeded : Boolean = false) {
         viewModelScope.launch {
-//            _departmentsSet.emit(setOf(application.applicationContext.getString(R.string.department_tab_row_all)))
-//            _sortedBy.emit(ABC)
-
             _filterValue.emit("")
-
             if(isLoadStateNeeded) _screenLoadingState.emit(ScreenStates.Loading)
             else _showSnackbar.emit(SnackbarTypes.Loading)
             getUsers()
@@ -153,10 +165,8 @@ class UsersViewModel @Inject constructor(
             when (result) {
                 is GetUsersResult.UserList -> {
                     _userOriginalList.value = result.list
-                    _userListToShow.value = result.list
-                    _userLisFilteredByTab.value = result.list
+                    filterUsersByTabRow(getDepNameByIndex(), all = allDepName)
                     setupTabRowList()
-                    sortByType(ABC)
                     _screenLoadingState.emit(ScreenStates.Ready)
                 }
                 is GetUsersResult.ConnectionError -> {
