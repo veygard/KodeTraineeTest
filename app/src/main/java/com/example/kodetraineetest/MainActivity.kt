@@ -1,41 +1,32 @@
 package com.example.kodetraineetest
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.kodetraineetest.navigation.AppNavigation
-import com.example.kodetraineetest.presentation.viewmodel.UsersViewModel
-import com.example.kodetraineetest.presentation.ui.theme.AppTheme
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.kodetraineetest.databinding.MainActivityBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    private lateinit var navController: NavHostController
-    private val viewModel: UsersViewModel by viewModels()
-
+class MainActivity : AppCompatActivity(R.layout.main_activity) {
+    private val binding: MainActivityBinding by viewBinding(R.id.const_container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getUsers()
+        setContentView(binding.root)
+    }
 
-        setContent {
-            AppTheme {
-                navController = rememberNavController()
-                AppNavigation(navController= navController)
-            }
-        }
+    fun composeButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
+        startActivity(Intent(this, ComposeActivity::class.java))
+    }
+
+    fun xmlButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
+        startActivity(Intent(this, ComposeActivity::class.java))
     }
 }
+

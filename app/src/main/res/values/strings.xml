@@ -27,6 +27,9 @@
     <string name="years3">года</string>
     <string name="snackbar_errow_message">Не могу обновить данные.\nПроверь соединение с интернетом.</string>
     <string name="snackbar_loading_message">Секундочку, гружусь...</string>
+    <string name="xml_version_button">То XML Version</string>
+    <string name="compose_version_button">То Compose Version</string>
+    <string name="jetpack_compose_xml">Практическое задание выполнено в двух вариантах: Jetpack Compose и классической XML. Для перехода в раздел нажмите на соответствующую кнопку.</string>
 
 
 </resources>
