@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/xml_version_nav"
-    app:startDestination="@id/MainFragment">
-
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/xml_version_nav"
+        app:startDestination="@id/mainScreenFragment">
     <fragment
-            android:id="@+id/MainFragment"
-            android:name="com.example.kodetraineetest.presentation.xml.screens.MainScreenFragment" />
-
+            android:id="@+id/mainScreenFragment"
+            android:name="com.example.kodetraineetest.presentation.xml.screens.MainScreenFragment"
+            android:label="MainScreenFragment" >
+        <action
+                android:id="@+id/action_mainScreenFragment_to_criticalErrorFragment"
+                app:destination="@id/criticalErrorFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/criticalErrorFragment"
+            android:name="com.example.kodetraineetest.presentation.xml.screens.CriticalErrorFragment"
+            android:label="CriticalErrorFragment" >
+        <action
+                android:id="@+id/action_criticalErrorFragment_to_mainScreenFragment"
+                app:destination="@id/mainScreenFragment" />
+        <action
+                android:id="@+id/action_criticalErrorFragment_to_mainScreenFragment2"
+                app:destination="@id/mainScreenFragment" />
+        <action
+                android:id="@+id/action_criticalErrorFragment_to_mainScreenFragment3"
+                app:destination="@id/mainScreenFragment" />
+    </fragment>
 </navigation>

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.kodetraineetest.R
 import com.example.kodetraineetest.presentation.compose.ui.theme.headlineRegular
@@ -59,13 +60,13 @@ fun NothingFoundBlock(refreshClick: () -> Unit) {
             )
             SpacingVertical(heightDp = 8)
             Text(
-                text = "Мы никого не нашли",
+                text = stringResource(R.string.nothing_found_title),
                 style = title3SemiBold,
                 color = MaterialTheme.colors.onBackground
             )
             SpacingVertical(heightDp = 12)
             Text(
-                text = "Попробуй скорректировать запрос",
+                text = stringResource(R.string.nothing_found_text),
                 style = headlineRegular,
                 color = MaterialTheme.colors.secondaryVariant
             )

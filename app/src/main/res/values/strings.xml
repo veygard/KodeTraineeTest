@@ -30,6 +30,8 @@
     <string name="xml_version_button">То XML Version</string>
     <string name="compose_version_button">То Compose Version</string>
     <string name="jetpack_compose_xml">Практическое задание выполнено в двух вариантах: Jetpack Compose и классический XML. Для перехода в раздел нажмите на соответствующую кнопку.</string>
+    <string name="nothing_found_title">Мы никого не нашли</string>
+    <string name="nothing_found_text">Попробуй скорректировать запрос</string>
 
 
 </resources>

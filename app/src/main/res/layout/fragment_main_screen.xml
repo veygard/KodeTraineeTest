@@ -1,6 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        android:background="@color/background"
         android:layout_height="match_parent">
+
+
+    <SearchView
+            android:id="@+id/search_bar"
+            android:layout_width="377dp"
+            android:layout_height="48dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:searchIcon="@drawable/ic_search"
+            android:visibility="visible"
+            android:iconifiedByDefault="false"
+            tools:visibility="visible"
+            android:background="@drawable/bg_white_rounded"
+            app:defaultQueryHint="@string/search_field_placeholder"
+            app:queryHint="@string/search_field_placeholder"
+            android:focusable="false"
+            android:paddingStart="-10dp"
+            android:focusableInTouchMode="true"
+            app:theme="@style/SearchViewStyle"
+            app:closeIcon="@drawable/ic_sort"
+            android:queryBackground="@android:color/transparent"
+            android:layout_marginTop="24dp" />
+
+    <ImageButton
+            android:id="@+id/sort_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            app:layout_constraintEnd_toEndOf="@id/search_bar"
+            app:layout_constraintTop_toTopOf="@id/search_bar"
+            app:layout_constraintBottom_toBottomOf="@id/search_bar"
+            android:src="@drawable/ic_sort"
+            android:contentDescription="sort_button"
+            android:layout_marginEnd="16dp"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancelButton"
+            android:visibility="gone"
+            android:layout_width="54sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/transparent"
+            android:text="@string/cancel_button_title"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@id/search_bar"
+            app:layout_constraintTop_toTopOf="@id/search_bar"
+            app:layout_constraintStart_toEndOf="@id/search_bar"
+            android:layout_marginStart="16dp" />
+
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabSlider"
+            style="@style/TopAppBar"
+            android:layout_width="wrap_content"
+            android:layout_height="44sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:tabIndicatorColor="@color/tab_color"
+            app:tabIndicatorFullWidth="true"
+            app:tabMode="scrollable"
+            app:tabGravity="fill"
+            app:layout_constraintTop_toBottomOf="@+id/search_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+            android:id="@+id/list_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabSlider"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintVertical_bias="0.0">
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
