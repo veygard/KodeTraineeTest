@@ -2,7 +2,6 @@ package com.example.kodetraineetest.domain.repository
 
 import com.example.kodetraineetest.data.remote.api.UserApi
 import com.example.kodetraineetest.data.remote.model.user.toDomainList
-import java.lang.Exception
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(

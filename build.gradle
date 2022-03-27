@@ -4,6 +4,7 @@ buildscript {
         accompanist_version = '0.21.3-beta'
         kotlin_version = '1.6.10'
         retrofit_version = '2.9.0'
+        nav_version = "2.4.1"
     }
 
     dependencies {

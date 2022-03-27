@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
     }
 
     fun xmlButtonClick(@Suppress("UNUSED_PARAMETER") view: View) {
-        startActivity(Intent(this, ComposeActivity::class.java))
+        startActivity(Intent(this, XmlActivity::class.java))
     }
 }
 

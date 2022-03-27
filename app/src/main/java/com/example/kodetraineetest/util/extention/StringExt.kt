@@ -1,8 +1,5 @@
 package com.example.kodetraineetest.util.extention
 
-import android.content.Context
-import android.telephony.TelephonyManager
-import androidx.core.content.ContextCompat.getSystemService
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter.ofPattern
 import java.util.*

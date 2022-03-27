@@ -1,7 +1,6 @@
 package com.example.kodetraineetest.di
 
 import com.example.kodetraineetest.data.remote.api.UserApi
-import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
