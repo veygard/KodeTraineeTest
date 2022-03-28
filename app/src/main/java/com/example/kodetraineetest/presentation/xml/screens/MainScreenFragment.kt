@@ -33,8 +33,10 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
 
         tabLayoutListener()
         searchViewListener()
+        cancelButtonListener()
         return binding.root
     }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +75,8 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
     private fun searchViewListener() {
         _binding?.searchBar?.onQueryTextChanged { text ->
             viewModel.filterUsersBySearch(text)
-            toggleSortButtonVisibility(text.isNotEmpty())
+            toggleVisibility(text.isNotEmpty(),_binding?.sortButton)
+            toggleVisibility(text.isEmpty(),_binding?.cancelButton)
             toggleSearchViewIconColor(text.isNotEmpty())
         }
     }
@@ -123,9 +126,9 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         }
     }
 
-    private fun toggleSortButtonVisibility(hide: Boolean) {
-        if (hide) _binding?.sortButton?.visibility = View.GONE
-        else _binding?.sortButton?.visibility = View.VISIBLE
+    private fun toggleVisibility(hide: Boolean, view: View?) {
+        if (hide) view?.visibility = View.GONE
+        else view?.visibility = View.VISIBLE
     }
 
     private fun toggleSearchViewIconColor(isNotEmpty: Boolean) {
@@ -137,6 +140,12 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         else icon?.setColorFilter(
             context?.getColor(R.color.light_content_default_secondary) ?: Color.LTGRAY
         )
+    }
+    private fun cancelButtonListener() {
+       _binding?.cancelButton?.setOnClickListener {
+           _binding?.searchBar?.setQuery("", false)
+           _binding?.searchBar?.clearFocus()
+       }
     }
 
     override fun onDestroyView() {
