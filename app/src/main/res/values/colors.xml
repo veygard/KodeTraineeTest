@@ -9,7 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="light_text_primary">#050510</color>
-    <color name="grayText">#97979B</color>
+    <color name="text_tetriary">#97979B</color>
+    <color name="text_secondary">#55555C</color>
     <color name="grayTextSecondary">#55555C</color>
     <color name="LightBG_Secondary">#F7F7F8</color>
     <color name="background">#E5E5E5</color>

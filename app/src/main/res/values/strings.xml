@@ -32,6 +32,8 @@
     <string name="jetpack_compose_xml">Практическое задание выполнено в двух вариантах: Jetpack Compose и классический XML. Для перехода в раздел нажмите на соответствующую кнопку.</string>
     <string name="nothing_found_title">Мы никого не нашли</string>
     <string name="nothing_found_text">Попробуй скорректировать запрос</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

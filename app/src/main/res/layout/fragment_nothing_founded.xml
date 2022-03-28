@@ -40,7 +40,7 @@
         android:layout_marginTop="12sp"
         android:lineSpacingExtra="1sp"
         android:text="@string/critical_error_screen_text"
-        android:textColor="@color/grayText"
+        android:textColor="@color/text_tetriary"
         android:textFontWeight="400"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
