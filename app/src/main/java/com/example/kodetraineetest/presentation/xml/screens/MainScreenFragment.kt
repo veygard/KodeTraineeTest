@@ -143,4 +143,5 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         super.onDestroyView()
         _binding = null
     }
+
 }

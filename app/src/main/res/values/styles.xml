@@ -98,7 +98,6 @@
         <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryDark">#00BCD4</item>
         <item name="colorAccent">@color/blue</item>
-        <item name="closeIcon">@drawable/ic_sort</item>
     </style>
 
     <style name="SheetStyle" parent="android:Widget">

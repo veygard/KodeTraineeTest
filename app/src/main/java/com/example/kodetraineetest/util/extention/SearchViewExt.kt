@@ -2,6 +2,7 @@ package com.example.kodetraineetest.util.extention
 
 import android.widget.SearchView
 
+
 inline fun SearchView.onQueryTextChanged(crossinline listener: (String) -> Unit) {
     this.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {

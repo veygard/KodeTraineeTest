@@ -25,8 +25,9 @@
             android:paddingStart="-10dp"
             android:focusableInTouchMode="true"
             app:theme="@style/SearchViewStyle"
-            app:closeIcon="@drawable/ic_sort"
             android:queryBackground="@android:color/transparent"
+            android:searchHintIcon="@drawable/none"
+            android:closeIcon="@drawable/none"
             android:layout_marginTop="24dp" />
 
     <ImageButton
