@@ -1,5 +1,6 @@
 package com.example.kodetraineetest.presentation.xml.screens
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -70,12 +71,12 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
     }
 
     private fun searchViewListener() {
-        _binding?.searchBar?.onQueryTextChanged { text->
+        _binding?.searchBar?.onQueryTextChanged { text ->
             viewModel.filterUsersBySearch(text)
             toggleSortButtonVisibility(text.isNotEmpty())
+            toggleSearchViewIconColor(text.isNotEmpty())
         }
     }
-
 
 
     private fun setNothingFoundFragment() {
@@ -87,8 +88,12 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
     private fun tabLayoutListener() {
         _binding?.tabSlider?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                viewModel.filterUsersByTabRow(tab?.text.toString(),context?.getString(R.string.department_tab_row_all) ?:"")
+                viewModel.filterUsersByTabRow(
+                    tab?.text.toString(),
+                    context?.getString(R.string.department_tab_row_all) ?: ""
+                )
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
@@ -110,17 +115,28 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
 
     private fun setTabs(result: Set<String>) {
         _binding?.tabSlider?.removeAllTabs()
-        result.forEach {tab->
+        result.forEach { tab ->
             _binding?.tabSlider?.newTab()?.let {
-                it.text=tab
+                it.text = tab
                 _binding?.tabSlider?.addTab(it)
             }
         }
     }
 
-    private fun toggleSortButtonVisibility(hide: Boolean){
-        if(hide) _binding?.sortButton?.visibility = View.GONE
+    private fun toggleSortButtonVisibility(hide: Boolean) {
+        if (hide) _binding?.sortButton?.visibility = View.GONE
         else _binding?.sortButton?.visibility = View.VISIBLE
+    }
+
+    private fun toggleSearchViewIconColor(isNotEmpty: Boolean) {
+        val icon = _binding?.searchIcon
+
+        if (isNotEmpty)  icon?.setColorFilter(
+            context?.getColor(R.color.light_text_primary) ?: Color.BLACK
+        )
+        else icon?.setColorFilter(
+            context?.getColor(R.color.light_content_default_secondary) ?: Color.LTGRAY
+        )
     }
 
     override fun onDestroyView() {
