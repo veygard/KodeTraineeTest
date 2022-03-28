@@ -72,6 +72,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
     private fun searchViewListener() {
         _binding?.searchBar?.onQueryTextChanged { text->
             viewModel.filterUsersBySearch(text)
+            toggleSortButtonVisibility(text.isNotEmpty())
         }
     }
 
@@ -115,6 +116,11 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
                 _binding?.tabSlider?.addTab(it)
             }
         }
+    }
+
+    private fun toggleSortButtonVisibility(hide: Boolean){
+        if(hide) _binding?.sortButton?.visibility = View.GONE
+        else _binding?.sortButton?.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {
