@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.example.kodetraineetest">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
             android:allowBackup="true"
@@ -13,10 +13,9 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.KodeTraineeTest">
         <activity
-                android:name=".MainActivity"
+                       android:name=".MainActivity"
                 android:exported="true"
-                android:label="@string/app_name"
-                >
+                android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,8 +23,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ComposeActivity" />
-        <activity android:name=".XmlActivity" />
-
+        <activity
+                android:name=".XmlActivity"
+                android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>
