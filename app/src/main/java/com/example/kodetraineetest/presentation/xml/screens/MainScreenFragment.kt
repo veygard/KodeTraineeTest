@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.example.kodetraineetest.R
 import com.example.kodetraineetest.databinding.FragmentMainScreenBinding
 import com.example.kodetraineetest.domain.model.User
+import com.example.kodetraineetest.navigation.xml.MainScreenRouter
+import com.example.kodetraineetest.navigation.xml.MainScreenRouterImpl
 import com.example.kodetraineetest.presentation.common.supports.ScreenStates
 import com.example.kodetraineetest.presentation.xml.viewmodel.UsersViewModelXml
 import com.example.kodetraineetest.presentation.xml.widgets.NothingFoundFragment
@@ -25,26 +25,22 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
     private var _binding: FragmentMainScreenBinding? = null
     private val binding get() = _binding!!
 
+    private val mainScreenRouter: MainScreenRouter by lazy {
+        MainScreenRouterImpl(this)
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
-
+        viewModel.getUsers()
+        observeData(viewModel)
         tabLayoutListener()
         searchViewListener()
         cancelButtonListener()
         return binding.root
-    }
-
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel.getUsers()
-        observeData(viewModel)
-
     }
 
 
@@ -103,11 +99,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
     }
 
     private fun criticalFragment() {
-        val fm: FragmentManager = (context as FragmentActivity).supportFragmentManager
-        val nestedFragment: Fragment = CriticalErrorFragment()
-        fm
-            .beginTransaction()
-            .replace(R.id.fragmentContainerView, nestedFragment).commit()
+        mainScreenRouter.routeToCriticalErrorScreen()
     }
 
     private fun setListFragment(users: List<User>) {

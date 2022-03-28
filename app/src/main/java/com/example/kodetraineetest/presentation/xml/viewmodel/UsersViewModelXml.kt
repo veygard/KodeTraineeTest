@@ -155,6 +155,7 @@ class UsersViewModelXml @Inject constructor(
 
     fun getUsers() {
         viewModelScope.launch {
+            delay(3000)
 
             val result = userUseCases.getUsersUseCase.start()
             when (result) {
