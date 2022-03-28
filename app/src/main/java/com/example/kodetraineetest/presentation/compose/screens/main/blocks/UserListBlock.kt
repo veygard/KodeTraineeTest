@@ -57,7 +57,7 @@ fun UserListBlock(
     when (isAnyUsers.value) {
         true -> {
             SwipeRefresh(state = rememberSwipeRefreshState(
-                screenLoadingState != ScreenStates.Ready
+                screenLoadingState != ScreenStates.Ready()
             ), onRefresh = {
                 refreshClick()
             }) {

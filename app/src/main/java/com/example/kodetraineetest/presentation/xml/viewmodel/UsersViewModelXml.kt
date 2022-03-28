@@ -155,7 +155,7 @@ class UsersViewModelXml @Inject constructor(
 
     fun getUsers() {
         viewModelScope.launch {
-            delay(3000)
+            delay(500)
 
             val result = userUseCases.getUsersUseCase.start()
             when (result) {
@@ -163,8 +163,7 @@ class UsersViewModelXml @Inject constructor(
                     _userOriginalList.value = result.list
                     filterUsersByTabRow(getDepNameByIndex(), all = allDepName)
                     setupTabRowList()
-                    delay(500)
-                    _screenLoadingState.value = ScreenStates.Ready
+                    _screenLoadingState.value = ScreenStates.Ready(result.list)
                 }
                 is GetUsersResult.ConnectionError -> {
                     if(_userListToShow.value == null) _screenLoadingState.value = ScreenStates.Error

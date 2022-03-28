@@ -45,11 +45,12 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
 
 
     private fun observeData(viewModel: UsersViewModelXml) {
-        var users = listOf<User>()
         viewModel.userListToShow.addObserver { result ->
             if (result != null) {
-                users = result
-                setListFragment(users)
+                when{
+                    result.isNotEmpty() -> setListFragment(result)
+                    result.isEmpty() -> setNothingFoundFragment()
+                }
             }
         }
 
@@ -57,8 +58,8 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
             when (result) {
                 ScreenStates.Error -> criticalFragment()
                 ScreenStates.Loading -> setNothingFoundFragment()
-                ScreenStates.Ready -> setListFragment(users)
-            }
+                is ScreenStates.Ready -> setListFragment(result.userList ?: emptyList())
+            } 
         }
 
         viewModel.departmentsSet.addObserver { result ->

@@ -167,7 +167,7 @@ class UsersViewModel @Inject constructor(
                     _userOriginalList.value = result.list
                     filterUsersByTabRow(getDepNameByIndex(), all = allDepName)
                     setupTabRowList()
-                    _screenLoadingState.emit(ScreenStates.Ready)
+                    _screenLoadingState.emit(ScreenStates.Ready())
                 }
                 is GetUsersResult.ConnectionError -> {
                     if(_userListToShow.value == null) _screenLoadingState.emit(ScreenStates.Error)
