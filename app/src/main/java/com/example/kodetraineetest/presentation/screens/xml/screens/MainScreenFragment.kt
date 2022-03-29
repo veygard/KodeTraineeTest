@@ -45,12 +45,18 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         viewModel.getUsers()
         tabLayoutListener()
         searchViewListener()
+        swipeRefreshListener()
         cancelButtonListener()
 
         return binding.root
     }
 
-
+    private fun swipeRefreshListener() {
+        _binding?.recyclerUserRefresh?.setOnRefreshListener {
+            viewModel.getUsers()
+            _binding?.recyclerUserRefresh?.isRefreshing = false
+        }
+    }
 
 
     private fun searchViewListener() {
@@ -97,11 +103,14 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         val nestedFragment: Fragment = UserListFragment(users)
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.list_container, nestedFragment).commit()
-        if(_binding?.tabSlider?.visibility == View.INVISIBLE)toggleVisibility(false, _binding?.tabSlider)
+        if (_binding?.tabSlider?.visibility == View.INVISIBLE) toggleVisibility(
+            false,
+            _binding?.tabSlider
+        )
     }
 
     private fun setTabs(result: Set<String>) {
-        val tabs=_binding?.tabSlider
+        val tabs = _binding?.tabSlider
         tabs?.removeAllTabs()
         result.forEach { tab ->
             tabs?.newTab()?.let {
@@ -153,10 +162,15 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.screenLoadingState.collect { result ->
                     when (result) {
-                        ScreenStates.Error -> routeToCriticalFragment()
-                        ScreenStates.Loading -> setShimmerFragment()
-
-                        is ScreenStates.Ready -> setListFragment(result.userList ?: emptyList())
+                        ScreenStates.Error -> {
+                            routeToCriticalFragment()
+                        }
+                        ScreenStates.Loading -> {
+                            setShimmerFragment()
+                        }
+                        is ScreenStates.Ready -> {
+                            setListFragment(result.userList ?: emptyList())
+                        }
                     }
                 }
             }
@@ -169,11 +183,40 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
                         setTabs(result)
                     }
                 }
-
             }
         }
+
+//        lifecycleScope.launch {
+//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.showSnackbar.collect { result ->
+//                    when(result){
+//                        SnackbarTypes.ConnectionError -> TODO()
+//                        SnackbarTypes.Loading -> TODO()
+//                        SnackbarTypes.ServerError -> TODO()
+//                    }
+//                }
+//            }
+//        }
     }
 
+//    private fun showToast(snackbarState: SnackbarTypes?){
+//        var text= ""
+//        var background = androidx.compose.ui.graphics.Color.DarkGray
+//        var textColor= androidx.compose.ui.graphics.Color.Green
+//
+//        when(snackbarState){
+//            SnackbarTypes.ConnectionError, SnackbarTypes.ServerError -> {
+//                text= getString(R.string.snackbar_errow_message)
+//                background= getColor
+//                textColor= MaterialTheme.colors.onError
+//            }
+//            SnackbarTypes.Loading -> {
+//                text= getString(R.string.snackbar_loading_message)
+//                background= MaterialTheme.colors.primary
+//                textColor= MaterialTheme.colors.onError
+//            }
+//        }
+//    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

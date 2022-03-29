@@ -69,7 +69,7 @@
             android:background="@color/transparent"
             android:text="@string/cancel_button_title"
             android:textAllCaps="false"
-            android:textColor="@color/blue"
+            android:textColor="@color/primary"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/search_bar"
@@ -93,16 +93,27 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-    <FrameLayout
-            android:id="@+id/list_container"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/recycler_user_refresh"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabSlider"
-            android:layout_height="0dp"
-            android:layout_width="0dp"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintVertical_bias="0.0">
-    </FrameLayout>
+            >
+
+        <FrameLayout
+                android:id="@+id/list_container"
+                app:layout_constraintEnd_toEndOf="@+id/recycler_user_refresh"
+                app:layout_constraintStart_toStartOf="@+id/recycler_user_refresh"
+                app:layout_constraintBottom_toBottomOf="@+id/recycler_user_refresh"
+                app:layout_constraintTop_toTopOf="@+id/recycler_user_refresh"
+                android:layout_height="0dp"
+                android:layout_width="0dp"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

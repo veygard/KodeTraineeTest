@@ -36,7 +36,7 @@
         <item name="boxCornerRadiusBottomStart">16dp</item>
         <item name="boxCornerRadiusTopEnd">16dp</item>
         <item name="boxCornerRadiusTopStart">16dp</item>
-        <item name="colorControlActivated">@color/blue</item>
+        <item name="colorControlActivated">@color/primary</item>
     </style>
 
     <style name="headline_medium">
@@ -95,9 +95,9 @@
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.Light.SearchView">
         <item name="android:textSize">15sp</item>
-        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">#00BCD4</item>
-        <item name="colorAccent">@color/blue</item>
+        <item name="colorAccent">@color/primary</item>
     </style>
 
     <style name="SheetStyle" parent="android:Widget">
