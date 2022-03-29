@@ -126,7 +126,11 @@ dependencies {
     implementation("dev.icerock.moko:mvvm-databinding:0.11.0") // api mvvm-livedata, DataBinding support for Android
     implementation("dev.icerock.moko:mvvm-viewbinding:0.11.0") // api mvvm-livedata, ViewBinding support for Android
 
+    //compose shimmer
     implementation 'com.valentinilk.shimmer:compose-shimmer:1.0.2'
+    //xml shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
     implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.6'
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"

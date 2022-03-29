@@ -1,4 +1,4 @@
-package com.example.kodetraineetest.presentation.screens.xml.screens.main
+package com.example.kodetraineetest.presentation.screens.xml.screens
 
 import android.graphics.Color
 import android.os.Bundle
@@ -17,6 +17,7 @@ import com.example.kodetraineetest.navigation.xml.MainScreenRouter
 import com.example.kodetraineetest.navigation.xml.MainScreenRouterImpl
 import com.example.kodetraineetest.presentation.model.ScreenStates
 import com.example.kodetraineetest.presentation.screens.xml.widgets.NothingFoundFragment
+import com.example.kodetraineetest.presentation.screens.xml.widgets.ShimmerFragment
 import com.example.kodetraineetest.presentation.screens.xml.widgets.UserListFragment
 import com.example.kodetraineetest.presentation.viewmodel.UsersViewModel
 import com.example.kodetraineetest.util.extention.onQueryTextChanged
@@ -39,11 +40,13 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
-        viewModel.getUsers()
+
         observeViewModelFields(viewModel)
+        viewModel.getUsers()
         tabLayoutListener()
         searchViewListener()
         cancelButtonListener()
+
         return binding.root
     }
 
@@ -62,6 +65,12 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
 
     private fun setNothingFoundFragment() {
         val nestedFragment: Fragment = NothingFoundFragment()
+        val transaction = childFragmentManager.beginTransaction()
+        transaction.replace(R.id.list_container, nestedFragment).commit()
+    }
+
+    private fun setShimmerFragment() {
+        val nestedFragment: Fragment = ShimmerFragment()
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.list_container, nestedFragment).commit()
     }
@@ -88,14 +97,16 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         val nestedFragment: Fragment = UserListFragment(users)
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.list_container, nestedFragment).commit()
+        if(_binding?.tabSlider?.visibility == View.INVISIBLE)toggleVisibility(false, _binding?.tabSlider)
     }
 
     private fun setTabs(result: Set<String>) {
-        _binding?.tabSlider?.removeAllTabs()
+        val tabs=_binding?.tabSlider
+        tabs?.removeAllTabs()
         result.forEach { tab ->
-            _binding?.tabSlider?.newTab()?.let {
+            tabs?.newTab()?.let {
                 it.text = tab
-                _binding?.tabSlider?.addTab(it)
+                tabs.addTab(it)
             }
         }
     }
@@ -143,7 +154,8 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
                 viewModel.screenLoadingState.collect { result ->
                     when (result) {
                         ScreenStates.Error -> routeToCriticalFragment()
-                        ScreenStates.Loading -> setNothingFoundFragment()
+                        ScreenStates.Loading -> setShimmerFragment()
+
                         is ScreenStates.Ready -> setListFragment(result.userList ?: emptyList())
                     }
                 }
@@ -157,6 +169,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
                         setTabs(result)
                     }
                 }
+
             }
         }
     }

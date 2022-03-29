@@ -5,7 +5,7 @@
         app:startDestination="@id/mainScreenFragment">
     <fragment
             android:id="@+id/mainScreenFragment"
-            android:name="com.example.kodetraineetest.presentation.screens.xml.screens.main.MainScreenFragment"
+            android:name="com.example.kodetraineetest.presentation.screens.xml.screens.MainScreenFragment"
             android:label="MainScreenFragment" >
         <action
                 android:id="@+id/action_mainScreenFragment_to_criticalErrorFragment"

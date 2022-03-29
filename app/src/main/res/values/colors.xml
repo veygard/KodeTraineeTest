@@ -17,4 +17,6 @@
     <color name="light_content_default_secondary">#C3C3C6</color>
     <color name="blue">#6534FF</color>
     <color name="transparent">#00000000 </color>
+
+        <color name="shimmer_placeholder">#dddddd</color>
 </resources>

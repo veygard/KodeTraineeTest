@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="84dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            app:strokeColor="@color/transparent"
+            app:strokeWidth="1dp"
+            android:id="@+id/user_img_shimmer"
+            android:background="@color/shimmer_placeholder"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_name_field_shimmer"
+            android:background="@color/shimmer_placeholder"
+            android:text="Shimmer big text"
+            android:textColor="@color/shimmer_placeholder"
+            tools:text="@tools:sample/lorem"
+            app:layout_constraintStart_toEndOf="@+id/user_img_shimmer"
+            app:layout_constraintTop_toTopOf="@+id/user_img_shimmer"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/user_img_shimmer"
+            android:layout_marginBottom="24dp"
+            tools:ignore="HardcodedText" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_tag_field_shimmer"
+            android:text="Shimmer"
+            android:textColor="@color/shimmer_placeholder"
+            android:background="@color/shimmer_placeholder"
+            tools:text="@tools:sample/lorem"
+            app:layout_constraintBottom_toBottomOf="@+id/user_name_field_shimmer"
+            app:layout_constraintTop_toTopOf="@+id/user_name_field_shimmer"
+            app:layout_constraintStart_toEndOf="@+id/user_name_field_shimmer"
+            android:layout_marginStart="4dp"
+            tools:ignore="HardcodedText"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_position_field"
+            android:text="Shimmer"
+            android:textColor="@color/shimmer_placeholder"
+            android:background="@color/shimmer_placeholder"
+            tools:text="@tools:sample/lorem"
+            app:layout_constraintStart_toStartOf="@+id/user_name_field_shimmer"
+            app:layout_constraintTop_toBottomOf="@+id/user_name_field_shimmer"
+            android:layout_marginTop="3dp"
+            tools:ignore="HardcodedText"
+            />
+</androidx.constraintlayout.widget.ConstraintLayout>

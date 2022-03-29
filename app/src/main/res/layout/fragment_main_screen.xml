@@ -81,6 +81,7 @@
     <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabSlider"
             style="@style/TopAppBar"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="44sp"
             app:layout_constraintRight_toRightOf="parent"
