@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:id="@+id/bottom_sheet_sort"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_white_top_rounded">
+
+    <ImageView
+            android:id="@+id/line_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_line_small"
+            tools:ignore="HardcodedText,TouchTargetSizeCheck"
+            android:contentDescription="line"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp" />
+
+    <TextView
+            android:text="@string/bottom_sheet_sort_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottom_sheet_title"
+            style="@style/title_two_semiBold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/line_small" />
+
+    <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_title"
+            android:layout_marginTop="35dp"
+            android:id="@+id/radioGroup">
+
+        <RadioButton
+                android:id="@+id/radio_abc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/radio_button"
+                android:paddingStart="16dp"
+                style="@style/headline_medium"
+                android:text="@string/radio_button_abc"
+                android:checked="true"
+                tools:ignore="RtlSymmetry" />
+
+        <RadioButton
+                android:id="@+id/radio_date"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                android:button="@drawable/radio_button"
+                android:paddingStart="16dp"
+                style="@style/headline_medium"
+                android:text="@string/radio_button_born_date"
+                android:layout_weight="1"
+                tools:ignore="RtlSymmetry" />
+    </RadioGroup>
+
+    <ImageView
+            android:id="@+id/line_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_line_big"
+            tools:ignore="HardcodedText,TouchTargetSizeCheck"
+            android:contentDescription="line"
+            android:paddingBottom="9dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+            android:layout_marginTop="40dp"
+            app:layout_constraintHorizontal_bias="0.501" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

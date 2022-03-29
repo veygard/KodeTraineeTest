@@ -141,9 +141,11 @@ class UsersViewModel @Inject constructor(
                         )
                         sortedBy.emit(ABC)
                     }
+                    Log.d("sorting type","soring $ABC ")
                 }
                 BORN_DATE -> {
                     sortedBy.emit(BORN_DATE)
+                    Log.d("sorting type","soring $BORN_DATE ")
                 }
             }
         }

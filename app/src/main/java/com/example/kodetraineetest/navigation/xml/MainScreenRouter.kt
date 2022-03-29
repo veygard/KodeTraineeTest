@@ -7,6 +7,7 @@ import com.example.kodetraineetest.R
 interface MainScreenRouter {
     fun routeToDetailScreen()
     fun routeToCriticalErrorScreen()
+    fun openSortBottomSheet()
 
 }
 
@@ -19,6 +20,10 @@ class MainScreenRouterImpl(
 
     override fun routeToCriticalErrorScreen() {
         fragment.findNavController().navigate(R.id.action_mainScreenFragment_to_criticalErrorFragment)
+    }
+
+    override fun openSortBottomSheet() {
+        fragment.findNavController().navigate(R.id.action_mainScreenFragment_to_sortBottomSheet)
     }
 
 }

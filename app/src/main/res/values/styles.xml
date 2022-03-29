@@ -46,6 +46,12 @@
         <item name="android:fontFamily">@font/inter_medium</item>
     </style>
 
+    <style name="title_two_semiBold">
+        <item name="android:textColor">@color/light_text_primary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="lineHeight">20sp</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
     <style name="caption_one_regular">
         <item name="android:textSize">13sp</item>
         <item name="lineHeight">16sp</item>
@@ -105,6 +111,16 @@
         <item name="behavior_peekHeight">auto</item>
         <item name="behavior_hideable">true</item>
         <item name="behavior_skipCollapsed">false</item>
+    </style>
+
+    <style name="custom_bottom_sheet_theme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/custom_bottom_sheet_style</item>
+    </style>
+
+    <style name="custom_bottom_sheet_style" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
     </style>
 
 

@@ -18,6 +18,7 @@ import com.example.kodetraineetest.navigation.xml.MainScreenRouter
 import com.example.kodetraineetest.navigation.xml.MainScreenRouterImpl
 import com.example.kodetraineetest.presentation.model.ScreenStates
 import com.example.kodetraineetest.presentation.model.SnackbarTypes
+import com.example.kodetraineetest.presentation.model.SortingTypes
 import com.example.kodetraineetest.presentation.screens.xml.widgets.CustomToast
 import com.example.kodetraineetest.presentation.screens.xml.widgets.NothingFoundFragment
 import com.example.kodetraineetest.presentation.screens.xml.widgets.ShimmerFragment
@@ -49,8 +50,15 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         searchViewListener()
         swipeRefreshListener()
         cancelButtonListener()
+        sortButtonListener()
 
         return binding.root
+    }
+
+    private fun sortButtonListener() {
+        _binding?.sortButton?.setOnClickListener {
+            mainScreenRouter.openSortBottomSheet()
+        }
     }
 
     private fun swipeRefreshListener() {
@@ -200,6 +208,15 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
                 }
             }
         }
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.sortedBy.collect { result ->
+                    when(result){
+                        SortingTypes.ABC -> Log.d("sorting type","soring $result ")
+                        SortingTypes.BORN_DATE -> Log.d("sorting type","soring $result ")
+                    }
+                }
+            }}
     }
 
     private fun showToast(snackbarState: SnackbarTypes?) {

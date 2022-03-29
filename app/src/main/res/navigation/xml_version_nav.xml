@@ -13,6 +13,9 @@
                 app:popUpTo="@id/xml_version_nav"
                 app:launchSingleTop="false"
                 app:popUpToInclusive="true" />
+        <action
+                android:id="@+id/action_mainScreenFragment_to_sortBottomSheet"
+                app:destination="@id/sortBottomSheet" />
     </fragment>
     <fragment
             android:id="@+id/criticalErrorFragment"
@@ -28,4 +31,15 @@
                 android:id="@+id/action_criticalErrorFragment_to_mainScreenFragment3"
                 app:destination="@id/mainScreenFragment" />
     </fragment>
+    <dialog
+            android:id="@+id/sortBottomSheet"
+            android:name="com.example.kodetraineetest.presentation.screens.xml.widgets.SortBottomSheet"
+            android:label="SortBottomSheet" >
+        <action
+                android:id="@+id/action_sortBottomSheet_to_mainScreenFragment"
+                app:destination="@id/mainScreenFragment" />
+        <action
+                android:id="@+id/action_sortBottomSheet_to_mainScreenFragment2"
+                app:destination="@id/mainScreenFragment" />
+    </dialog>
 </navigation>
