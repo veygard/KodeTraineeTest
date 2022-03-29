@@ -2,6 +2,7 @@ package com.example.kodetraineetest.presentation.screens.xml.screens
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,8 @@ import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.navigation.xml.MainScreenRouter
 import com.example.kodetraineetest.navigation.xml.MainScreenRouterImpl
 import com.example.kodetraineetest.presentation.model.ScreenStates
+import com.example.kodetraineetest.presentation.model.SnackbarTypes
+import com.example.kodetraineetest.presentation.screens.xml.widgets.CustomToast
 import com.example.kodetraineetest.presentation.screens.xml.widgets.NothingFoundFragment
 import com.example.kodetraineetest.presentation.screens.xml.widgets.ShimmerFragment
 import com.example.kodetraineetest.presentation.screens.xml.widgets.UserListFragment
@@ -29,7 +32,6 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
     private val viewModel: UsersViewModel by hiltNavGraphViewModels(R.id.xml_version_nav)
     private var _binding: FragmentMainScreenBinding? = null
     private val binding get() = _binding!!
-
     private val mainScreenRouter: MainScreenRouter by lazy {
         MainScreenRouterImpl(this)
     }
@@ -53,7 +55,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
 
     private fun swipeRefreshListener() {
         _binding?.recyclerUserRefresh?.setOnRefreshListener {
-            viewModel.getUsers()
+            viewModel.refresh()
             _binding?.recyclerUserRefresh?.isRefreshing = false
         }
     }
@@ -186,37 +188,42 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
             }
         }
 
-//        lifecycleScope.launch {
-//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.showSnackbar.collect { result ->
-//                    when(result){
-//                        SnackbarTypes.ConnectionError -> TODO()
-//                        SnackbarTypes.Loading -> TODO()
-//                        SnackbarTypes.ServerError -> TODO()
-//                    }
-//                }
-//            }
-//        }
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.showSnackbar.collect { result ->
+                    Log.d("toast","viewModel.showSnackbar, result: $result")
+                    when (result) {
+                        SnackbarTypes.ConnectionError -> showToast(result)
+                        SnackbarTypes.Loading -> showToast(result)
+                        SnackbarTypes.ServerError -> showToast(result)
+                    }
+                }
+            }
+        }
     }
 
-//    private fun showToast(snackbarState: SnackbarTypes?){
-//        var text= ""
-//        var background = androidx.compose.ui.graphics.Color.DarkGray
-//        var textColor= androidx.compose.ui.graphics.Color.Green
-//
-//        when(snackbarState){
-//            SnackbarTypes.ConnectionError, SnackbarTypes.ServerError -> {
-//                text= getString(R.string.snackbar_errow_message)
-//                background= getColor
-//                textColor= MaterialTheme.colors.onError
-//            }
-//            SnackbarTypes.Loading -> {
-//                text= getString(R.string.snackbar_loading_message)
-//                background= MaterialTheme.colors.primary
-//                textColor= MaterialTheme.colors.onError
-//            }
-//        }
-//    }
+    private fun showToast(snackbarState: SnackbarTypes?) {
+        var text = ""
+        var background = Color.LTGRAY
+        var textColor = Color.BLACK
+
+        when (snackbarState) {
+            SnackbarTypes.ConnectionError, SnackbarTypes.ServerError -> {
+                text = getString(R.string.snackbar_errow_message)
+                background = this.requireContext().getColor(R.color.error)
+                textColor = this.requireContext().getColor(R.color.white)
+            }
+            SnackbarTypes.Loading -> {
+                text = getString(R.string.snackbar_loading_message)
+                background = this.requireContext().getColor(R.color.primary)
+                textColor = this.requireContext().getColor(R.color.white)
+            }
+        }
+        Log.d("toast","show toast")
+        CustomToast(this.requireContext(), text, background, textColor = textColor).show()
+
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -1,6 +1,7 @@
 package com.example.kodetraineetest.presentation.viewmodel
 
 import android.app.Application
+import android.util.Log
 import com.example.kodetraineetest.R
 import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.domain.repository.GetUsersResult
@@ -43,15 +44,15 @@ class UsersViewModel @Inject constructor(
     val sortedBy: MutableStateFlow<SortingTypes> = _sortedBy
 
     private val _showSnackbar: MutableStateFlow<SnackbarTypes?> = MutableStateFlow(null)
-    val showSnackbar: MutableStateFlow<SnackbarTypes?> = _showSnackbar
+    val showSnackbar: StateFlow<SnackbarTypes?>
+        get() = _showSnackbar.asStateFlow()
 
     private val _screenLoadingState: MutableStateFlow<ScreenStates> =
         MutableStateFlow(ScreenStates.Loading)
-
-    private val _filterValue = MutableStateFlow("")
-
     val screenLoadingState: StateFlow<ScreenStates>
         get() = _screenLoadingState.asStateFlow()
+
+    private val _filterValue = MutableStateFlow("")
 
     private val _selectedPositionTabIndex = MutableStateFlow(0)
     val selectedPositionTabIndex:MutableStateFlow<Int> = _selectedPositionTabIndex
@@ -61,19 +62,17 @@ class UsersViewModel @Inject constructor(
             _selectedPositionTabIndex.emit(position)
         }
     }
-    fun getDepNameByIndex(): String {
-        return try {
-           departmentsSet.value?.elementAt(_selectedPositionTabIndex.value)!!
-        } catch (e: Exception){
-            allDepName
-        }
-    }
+
 
     fun refresh(isLoadStateNeeded : Boolean = false) {
         viewModelScope.launch {
             _filterValue.emit("")
             if(isLoadStateNeeded) _screenLoadingState.emit(ScreenStates.Loading)
-            else _showSnackbar.emit(SnackbarTypes.Loading)
+            else {
+                _showSnackbar.emit(null) //что бы сработали обсерверы на изменение
+                _showSnackbar.emit(SnackbarTypes.Loading)
+                Log.d("toast","viewModel.refresh ${_showSnackbar.value}")
+            }
             getUsers()
         }
     }
@@ -194,7 +193,13 @@ class UsersViewModel @Inject constructor(
         }
     }
 
-
+    private fun getDepNameByIndex(): String {
+        return try {
+            departmentsSet.value?.elementAt(_selectedPositionTabIndex.value)!!
+        } catch (e: Exception){
+            allDepName
+        }
+    }
 
     fun clear() {
         _userOriginalList.value = null
