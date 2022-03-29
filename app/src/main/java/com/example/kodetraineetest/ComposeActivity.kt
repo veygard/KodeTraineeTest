@@ -8,7 +8,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.kodetraineetest.navigation.compose.AppNavigation
-import com.example.kodetraineetest.presentation.compose.ui.theme.AppTheme
+import com.example.kodetraineetest.presentation.screens.compose.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalFoundationApi

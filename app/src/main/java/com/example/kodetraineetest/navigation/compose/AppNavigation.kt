@@ -4,7 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import com.example.kodetraineetest.presentation.compose.screens.NavGraphs
+import com.example.kodetraineetest.presentation.screens.compose.screens.NavGraphs
 import com.ramcosta.composedestinations.DestinationsNavHost
 
 

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/xml_version_nav"
         app:startDestination="@id/mainScreenFragment">
     <fragment
             android:id="@+id/mainScreenFragment"
-            android:name="com.example.kodetraineetest.presentation.xml.screens.MainScreenFragment"
+            android:name="com.example.kodetraineetest.presentation.screens.xml.screens.main.MainScreenFragment"
             android:label="MainScreenFragment" >
         <action
                 android:id="@+id/action_mainScreenFragment_to_criticalErrorFragment"
@@ -17,7 +16,7 @@
     </fragment>
     <fragment
             android:id="@+id/criticalErrorFragment"
-            android:name="com.example.kodetraineetest.presentation.xml.screens.CriticalErrorFragment"
+            android:name="com.example.kodetraineetest.presentation.screens.xml.screens.CriticalErrorFragment"
             android:label="CriticalErrorFragment" >
         <action
                 android:id="@+id/action_criticalErrorFragment_to_mainScreenFragment"
