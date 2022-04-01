@@ -16,8 +16,10 @@ import com.example.kodetraineetest.presentation.model.UserParcelize
 import com.example.kodetraineetest.presentation.model.toUser
 import com.example.kodetraineetest.util.ageDescription
 import com.example.kodetraineetest.util.extention.formatPhone
+import com.example.kodetraineetest.util.extention.formatPhoneForDial
 import com.example.kodetraineetest.util.extention.toFullString
 import com.example.kodetraineetest.util.extention.toLocalDate
+import com.example.kodetraineetest.util.makeCall
 
 class UserDetailsFragment() : Fragment() {
     private var _binding: FragmentUserDetailsBinding? = null
@@ -43,6 +45,7 @@ class UserDetailsFragment() : Fragment() {
         _binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
 
         backButtonListener()
+        phoneClickListener()
         setUserData()
         return binding.root
     }
@@ -66,6 +69,11 @@ class UserDetailsFragment() : Fragment() {
     private fun backButtonListener() {
         _binding?.detailBack?.setOnClickListener {
             router.routeToMainScreen()
+        }
+    }
+    private fun phoneClickListener() {
+        _binding?.userPhoneDetails?.setOnClickListener {
+            user?.phone?.let { makeCall(this.requireContext(), it.formatPhoneForDial()) }
         }
     }
 

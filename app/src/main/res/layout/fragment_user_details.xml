@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".UserDetailsFragment">
+        >
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -133,6 +133,7 @@
             android:id="@+id/user_phone_details"
             style="@style/headline_medium"
             tools:text="@tools:sample/lorem"
+            android:onClick="phoneDetailsClick"
             app:layout_constraintTop_toTopOf="@id/detail_phone"
             app:layout_constraintStart_toEndOf="@id/detail_phone"
             app:layout_constraintBottom_toBottomOf="@id/detail_phone"
