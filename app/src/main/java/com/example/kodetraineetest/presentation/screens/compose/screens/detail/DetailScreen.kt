@@ -1,6 +1,5 @@
 package com.example.kodetraineetest.presentation.screens.compose.screens.detail
 
-import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,18 +24,13 @@ import com.example.kodetraineetest.presentation.screens.compose.ui.theme.caption
 import com.example.kodetraineetest.presentation.screens.compose.ui.theme.headlineMedium
 import com.example.kodetraineetest.presentation.screens.compose.ui.theme.title1Bold
 import com.example.kodetraineetest.presentation.screens.compose.ui.theme.title3regular
-import com.example.kodetraineetest.util.Margin
-import com.example.kodetraineetest.util.SpacingHorizontal
-import com.example.kodetraineetest.util.SpacingVertical
+import com.example.kodetraineetest.util.*
 import com.example.kodetraineetest.util.extention.formatPhone
 import com.example.kodetraineetest.util.extention.formatPhoneForDial
 import com.example.kodetraineetest.util.extention.toFullString
 import com.example.kodetraineetest.util.extention.toLocalDate
-import com.example.kodetraineetest.util.makeCall
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import java.time.LocalDate
-import java.time.Period
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
@@ -169,16 +163,5 @@ fun DetailScreen(
                 )
             }
         }
-    }
-}
-
-private fun ageDescription(date: LocalDate?, context: Context): String {
-    val age = date.let { Period.between(it, LocalDate.now()).years }
-
-    return when {
-        age % 100 in 11..14 -> "$age ${context.getString(R.string.years1)}"
-        age % 10 == 1 -> "$age ${context.getString(R.string.years2)}"
-        age % 10 in 2..4 -> "$age ${context.getString(R.string.years2)}"
-        else -> "$age ${context.getString(R.string.years1)}"
     }
 }

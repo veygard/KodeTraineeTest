@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kodetraineetest.R
 import com.example.kodetraineetest.databinding.FragmentUserListBinding
 import com.example.kodetraineetest.domain.model.User
+import com.example.kodetraineetest.presentation.screens.xml.adapters.UserClickInterface
 import com.example.kodetraineetest.presentation.screens.xml.adapters.UserListAdapter
 
-class UserListFragment(private val userList: List<User>): Fragment(R.layout.fragment_user_list) {
+class UserListFragment(private val userList: List<User>, private val userClick: UserClickInterface): Fragment(R.layout.fragment_user_list) {
     private var _binding: FragmentUserListBinding? = null
     private val binding get() = _binding!!
 
@@ -29,7 +30,7 @@ class UserListFragment(private val userList: List<User>): Fragment(R.layout.frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = UserListAdapter(userList = userList)
+        val adapter = UserListAdapter(userList = userList, userClick = userClick)
         binding.recyclerUserList.adapter= adapter
         binding.recyclerUserList.layoutManager= LinearLayoutManager(this.requireContext())
         val decoration = DividerItemDecoration(this.requireContext(), DividerItemDecoration.HORIZONTAL)
