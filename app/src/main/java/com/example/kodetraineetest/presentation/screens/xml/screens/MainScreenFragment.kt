@@ -169,7 +169,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
                     if (result != null) {
                         when {
                             result.isNotEmpty() -> {
-                                when(viewModel.sortedBy.value){
+                                when (viewModel.sortedBy.value) {
                                     SortingTypes.ABC -> setListFragment(result)
                                     SortingTypes.BORN_DATE -> setListByBornTypeFragment(result)
                                 }
@@ -226,14 +226,17 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
                 viewModel.sortedBy.collect { result ->
                     when (result) {
                         SortingTypes.ABC -> {
-                            _binding?.sortButton?.setColorFilter(
-                                context?.getColor(R.color.light_content_default_secondary) ?: Color.LTGRAY
-                            )
-                            setListFragment(viewModel.userListToShow.value ?: emptyList())
+                            if (viewModel.userListToShow.value?.isNotEmpty() == true) {
+                                _binding?.sortButton?.setColorFilter(
+                                    context?.getColor(R.color.light_content_default_secondary)
+                                        ?: Color.LTGRAY
+                                )
+                                setListFragment(viewModel.userListToShow.value ?: emptyList())
+                            }
                         }
                         SortingTypes.BORN_DATE -> {
                             _binding?.sortButton?.setColorFilter(
-                                context?.getColor(R.color.primary) ?:  Color.LTGRAY
+                                context?.getColor(R.color.primary) ?: Color.LTGRAY
                             )
                             setListByBornTypeFragment(viewModel.userListToShow.value ?: emptyList())
                         }
