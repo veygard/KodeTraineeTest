@@ -9,43 +9,41 @@ import coil.transform.CircleCropTransformation
 import com.example.kodetraineetest.R
 import com.example.kodetraineetest.databinding.UserListItemBinding
 import com.example.kodetraineetest.domain.model.User
-import com.example.kodetraineetest.util.extention.toDayMonthString
-import com.example.kodetraineetest.util.extention.toLocalDate
 
-class UserListAdapter (private val userList: List<(User)>, private val showDates:Boolean=false) :
-    RecyclerView.Adapter<UserListAdapter.MyViewHolder>() {
+class UserListAdapter(private val userList: List<(User)>, private val userClick: UserClickInterface) :
+    RecyclerView.Adapter<UserViewHolder>() {
 
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = UserListItemBinding.inflate(layoutInflater, parent, false)
-        return MyViewHolder(binding, showDates)
+        return UserViewHolder(binding, userClick)
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+
     private fun getItem(position: Int): User = userList[position]
 
     override fun getItemCount(): Int = userList.size
 
-    class MyViewHolder(private val binding: UserListItemBinding, private val showDates:Boolean) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(
+        private val binding: UserListItemBinding,
+        private val userClick: UserClickInterface
+    ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
-        fun bind(user: User){
+        private var user: User?= null
+
+
+        fun bind(user: User) {
+
+            binding.root.setOnClickListener(this)
+
+            this.user= user
             binding.userNameField.text = "${user.firstName} ${user.lastName}"
             binding.userPositionField.text = user.position
             binding.userTagField.text = user.userTag
-
-            if(showDates) {
-                val date = user.birthday?.toLocalDate()
-                date?.let { d ->
-                    val str = d.toDayMonthString()
-                    binding.userBornDateField.text = str
-                    binding.userBornDateField.visibility = View.VISIBLE
-
-                }
-            }
 
             binding.userImg.load(user.avatarUrl) {
                 crossfade(true)
@@ -54,5 +52,12 @@ class UserListAdapter (private val userList: List<(User)>, private val showDates
                 error(R.drawable.ic_goose)
             }
         }
+
+
+        override fun onClick(p0: View?) {
+            user?.let { userClick.onUserClick(it) }
+        }
     }
+
+
 }

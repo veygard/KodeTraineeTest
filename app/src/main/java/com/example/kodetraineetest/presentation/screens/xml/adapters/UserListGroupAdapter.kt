@@ -1,22 +1,16 @@
 package com.example.kodetraineetest.presentation.screens.xml.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.transform.CircleCropTransformation
-import com.example.kodetraineetest.R
 import com.example.kodetraineetest.databinding.UserListItemBinding
 import com.example.kodetraineetest.databinding.YearHeaderBinding
-import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.presentation.model.RowType
 import com.example.kodetraineetest.presentation.model.UserAdapted
-import com.example.kodetraineetest.util.extention.toDayMonthString
-import com.example.kodetraineetest.util.extention.toLocalDate
 
 class UserListGroupAdapter(
     private val usersGroups: List<UserAdapted>,
+    private val userClick: UserClickInterface
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -26,7 +20,7 @@ class UserListGroupAdapter(
             RowType.Item -> {
                 val binding =
                     UserListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                UserViewHolder(binding)
+                UserViewHolder(binding, userClick,true)
             }
             RowType.Header -> {
                 val binding =
@@ -38,7 +32,7 @@ class UserListGroupAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         when (val groups = usersGroups[position]) {
-            is UserAdapted.Users ->  (holder as UserViewHolder).bind(groups.user.user)
+            is UserAdapted.Users -> (holder as UserViewHolder).bind(groups.user.user)
             is UserAdapted.Header -> (holder as HeaderViewHolder).bind(groups)
         }
 
@@ -55,29 +49,4 @@ class UserListGroupAdapter(
         }
     }
 
-    class UserViewHolder(
-        private val binding: UserListItemBinding,
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(user: User) {
-            binding.userNameField.text = "${user.firstName} ${user.lastName}"
-            binding.userPositionField.text = user.position
-            binding.userTagField.text = user.userTag
-
-            val date = user.birthday?.toLocalDate()
-            date?.let { d ->
-                val str = d.toDayMonthString()
-                binding.userBornDateField.text = str
-                binding.userBornDateField.visibility = View.VISIBLE
-
-            }
-
-            binding.userImg.load(user.avatarUrl) {
-                crossfade(true)
-                placeholder(R.drawable.ic_goose)
-                transformations(CircleCropTransformation())
-                error(R.drawable.ic_goose)
-            }
-        }
-    }
 }

@@ -12,12 +12,13 @@ import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.presentation.model.UserAdapted
 import com.example.kodetraineetest.presentation.model.UserYearGrouped
 import com.example.kodetraineetest.presentation.model.YearsType
+import com.example.kodetraineetest.presentation.screens.xml.adapters.UserClickInterface
 import com.example.kodetraineetest.presentation.screens.xml.adapters.UserListGroupAdapter
 import com.example.kodetraineetest.util.Constants
 import com.example.kodetraineetest.util.extention.toLocalDate
 import java.time.LocalDate
 
-class UserListByGroupFragment(private val userList: List<User>): androidx.fragment.app.Fragment(R.layout.fragment_user_list) {
+class UserListByGroupFragment(private val userList: List<User>, private val userClick: UserClickInterface): androidx.fragment.app.Fragment(R.layout.fragment_user_list) {
     private var _binding: FragmentUserListBinding? = null
     private val binding get() = _binding!!
 
@@ -34,7 +35,7 @@ class UserListByGroupFragment(private val userList: List<User>): androidx.fragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = UserListGroupAdapter(setupYearGroups(userList))
+        val adapter = UserListGroupAdapter(setupYearGroups(userList), userClick)
         binding.recyclerUserList.adapter= adapter
         binding.recyclerUserList.layoutManager= LinearLayoutManager(this.requireContext())
         val decoration = DividerItemDecoration(this.requireContext(), DividerItemDecoration.HORIZONTAL)

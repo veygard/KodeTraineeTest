@@ -19,6 +19,7 @@ import com.example.kodetraineetest.navigation.xml.MainScreenRouterImpl
 import com.example.kodetraineetest.presentation.model.ScreenStates
 import com.example.kodetraineetest.presentation.model.SnackbarTypes
 import com.example.kodetraineetest.presentation.model.SortingTypes
+import com.example.kodetraineetest.presentation.screens.xml.adapters.UserClickInterface
 import com.example.kodetraineetest.presentation.screens.xml.widgets.*
 import com.example.kodetraineetest.presentation.viewmodel.UsersViewModel
 import com.example.kodetraineetest.util.extention.onQueryTextChanged
@@ -26,7 +27,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
 
 
-class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
+class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInterface {
     private val viewModel: UsersViewModel by hiltNavGraphViewModels(R.id.xml_version_nav)
     private var _binding: FragmentMainScreenBinding? = null
     private val binding get() = _binding!!
@@ -42,7 +43,9 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
 
         observeViewModelFields(viewModel)
-        viewModel.getUsers()
+
+        /*делаем запрос на список юзеров при первом запуске вью-модели*/
+        if(viewModel.userListToShow.value == null)viewModel.getUsers()
         tabLayoutListener()
         searchViewListener()
         swipeRefreshListener()
@@ -108,7 +111,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
     }
 
     private fun setListFragment(users: List<User>) {
-        val nestedFragment: Fragment = UserListFragment(users)
+        val nestedFragment: Fragment = UserListFragment(users,this)
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.list_container, nestedFragment).commit()
         if (_binding?.tabSlider?.visibility == View.INVISIBLE) toggleVisibility(
@@ -118,7 +121,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
     }
 
     private fun setListByBornTypeFragment(userList: List<User>) {
-        val nestedFragment: Fragment = UserListByGroupFragment(userList)
+        val nestedFragment: Fragment = UserListByGroupFragment(userList, this)
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.list_container, nestedFragment).commit()
         if (_binding?.tabSlider?.visibility == View.INVISIBLE) toggleVisibility(
@@ -272,6 +275,10 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onUserClick(user: User) {
+        mainScreenRouter.routeToDetailScreen(user)
     }
 
 }
