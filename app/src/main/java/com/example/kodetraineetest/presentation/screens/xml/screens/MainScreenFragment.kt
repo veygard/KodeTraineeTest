@@ -91,6 +91,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
     private fun tabLayoutListener() {
         _binding?.tabSlider?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                viewModel.saveTabIndex(tab?.position ?:0)
                 viewModel.filterUsersByTabRow(
                     tab?.text.toString(),
                     context?.getString(R.string.department_tab_row_all) ?: ""

@@ -57,10 +57,6 @@ class UsersViewModel @Inject constructor(
     private val _selectedPositionTabIndex = MutableStateFlow(0)
     val selectedPositionTabIndex:MutableStateFlow<Int> = _selectedPositionTabIndex
 
-    init {
-        Log.d("sorting_type", "VM init")
-    }
-
     fun saveTabIndex(position: Int){
         viewModelScope.launch {
             _selectedPositionTabIndex.emit(position)
