@@ -22,9 +22,6 @@ class ShimmerFragment: Fragment(R.layout.fragment_shimmer) {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding?.shimmerLayout?.stopShimmer()

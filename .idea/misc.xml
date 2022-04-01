@@ -3,10 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/drawable/bg_grey_rounded.xml" value="0.2775" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/drawable/bg_white_rounded.xml" value="0.1305" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/drawable/bg_white_top_rounded.xml" value="0.1845" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/drawable/circle.xml" value="0.1265" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/drawable/ic_line_small.xml" value="0.2775" />
+        <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/drawable/ic_phone.xml" value="0.2775" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/drawable/ic_radio_button_active.xml" value="0.2335" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/drawable/ic_radio_button_inactive.xml" value="0.2335" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/drawable/ic_search.xml" value="0.219" />
@@ -38,6 +41,7 @@
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/layout/fragment_user_list.xml" value="0.2740628166160081" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/layout/list_divider.xml" value="0.35507246376811596" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/layout/main_activity.xml" value="0.25" />
+        <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/layout/shimmer_placeholder_item.xml" value="0.5635416666666667" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/layout/shimmer_placeholder_layout.xml" value="0.33" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/layout/user_list_born_item.xml" value="0.32447916666666665" />
         <entry key="..\:/_AndroidStudioProjects/_pet/KodeTraineeTest/app/src/main/res/layout/user_list_item.xml" value="0.5" />

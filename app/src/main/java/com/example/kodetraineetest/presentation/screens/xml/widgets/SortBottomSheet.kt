@@ -30,13 +30,13 @@ class SortBottomSheet : BottomSheetDialogFragment() {
         }
 
         _binding?.radioGroup?.setOnCheckedChangeListener { group, checkedId ->
-            when{
-                checkedId == R.id.radio_abc-> {
+            when (checkedId) {
+                R.id.radio_abc -> {
                     Log.d("sorting_type","sorting $checkedId ")
                     viewModel.sortByType(SortingTypes.ABC)
                     this.dismiss()
                 }
-                checkedId == R.id.radio_date -> {
+                R.id.radio_date -> {
                     viewModel.sortByType(SortingTypes.BORN_DATE)
                     this.dismiss()
                 }

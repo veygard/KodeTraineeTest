@@ -123,7 +123,7 @@ fun DetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Row() {
+                Row {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_star),
                         contentDescription = "star",

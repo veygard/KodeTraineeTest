@@ -1,5 +1,6 @@
 package com.example.kodetraineetest.presentation.screens.xml.screens
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +22,7 @@ import com.example.kodetraineetest.util.extention.toFullString
 import com.example.kodetraineetest.util.extention.toLocalDate
 import com.example.kodetraineetest.util.makeCall
 
-class UserDetailsFragment() : Fragment() {
+class UserDetailsFragment : Fragment() {
     private var _binding: FragmentUserDetailsBinding? = null
     private val binding get() = _binding!!
     private var userParcelize:UserParcelize?= null
@@ -50,6 +51,7 @@ class UserDetailsFragment() : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setUserData() {
         _binding?.userImgDetails?.load(user?.avatarUrl) {
             crossfade(true)
