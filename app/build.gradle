@@ -130,7 +130,6 @@ dependencies {
     implementation 'com.valentinilk.shimmer:compose-shimmer:1.0.2'
     //xml shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
-
     implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.6'
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"

@@ -57,6 +57,10 @@ class UsersViewModel @Inject constructor(
     private val _selectedPositionTabIndex = MutableStateFlow(0)
     val selectedPositionTabIndex:MutableStateFlow<Int> = _selectedPositionTabIndex
 
+    init {
+        Log.d("sorting_type", "VM init")
+    }
+
     fun saveTabIndex(position: Int){
         viewModelScope.launch {
             _selectedPositionTabIndex.emit(position)
@@ -132,7 +136,7 @@ class UsersViewModel @Inject constructor(
     fun sortByType(type: SortingTypes) {
         viewModelScope.launch {
             val userListToShow = _userListToShow.value
-
+            Log.d("sorting_type","sorting sortByType")
             when (type) {
                 ABC -> {
                     userListToShow?.let { list ->
@@ -141,11 +145,11 @@ class UsersViewModel @Inject constructor(
                         )
                         sortedBy.emit(ABC)
                     }
-                    Log.d("sorting type","soring $ABC ")
+                    Log.d("sorting_type","sorting $ABC ")
                 }
                 BORN_DATE -> {
                     sortedBy.emit(BORN_DATE)
-                    Log.d("sorting type","soring $BORN_DATE ")
+                    Log.d("sorting_type","sorting $BORN_DATE ")
                 }
             }
         }

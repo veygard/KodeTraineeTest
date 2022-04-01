@@ -1,6 +1,7 @@
 package com.example.kodetraineetest.presentation.screens.xml.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -11,13 +12,15 @@ import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.util.extention.toDayMonthString
 import com.example.kodetraineetest.util.extention.toLocalDate
 
-class UserListAdapter (private val userList: List<(User)>) :
+class UserListAdapter (private val userList: List<(User)>, private val showDates:Boolean=false) :
     RecyclerView.Adapter<UserListAdapter.MyViewHolder>() {
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = UserListItemBinding.inflate(layoutInflater, parent, false)
-        return MyViewHolder(binding)
+        return MyViewHolder(binding, showDates)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -27,19 +30,22 @@ class UserListAdapter (private val userList: List<(User)>) :
 
     override fun getItemCount(): Int = userList.size
 
-    class MyViewHolder(private val binding: UserListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(private val binding: UserListItemBinding, private val showDates:Boolean) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(user: User){
             binding.userNameField.text = "${user.firstName} ${user.lastName}"
             binding.userPositionField.text = user.position
             binding.userTagField.text = user.userTag
 
-            val date = user.birthday?.toLocalDate()
-            date?.let { d ->
-                val str = d.toDayMonthString()
-                binding.userBornDateField.text = str
+            if(showDates) {
+                val date = user.birthday?.toLocalDate()
+                date?.let { d ->
+                    val str = d.toDayMonthString()
+                    binding.userBornDateField.text = str
+                    binding.userBornDateField.visibility = View.VISIBLE
+
+                }
             }
-            binding.userPositionField.tag = user.userTag
 
             binding.userImg.load(user.avatarUrl) {
                 crossfade(true)

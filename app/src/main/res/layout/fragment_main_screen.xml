@@ -35,15 +35,15 @@
 
     <ImageButton
             android:id="@+id/sort_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="48dp"
             android:background="@null"
             app:layout_constraintEnd_toEndOf="@id/search_bar"
             app:layout_constraintTop_toTopOf="@id/search_bar"
             app:layout_constraintBottom_toBottomOf="@id/search_bar"
             android:src="@drawable/ic_sort"
             android:contentDescription="sort_button"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="4dp"
             tools:ignore="TouchTargetSizeCheck" />
 
     <ImageView
@@ -57,6 +57,7 @@
             app:layout_constraintTop_toTopOf="@+id/search_bar"
             app:layout_constraintStart_toStartOf="@+id/search_bar"
             android:layout_marginStart="14dp"
+
             android:contentDescription="search" />
 
     <androidx.appcompat.widget.AppCompatButton

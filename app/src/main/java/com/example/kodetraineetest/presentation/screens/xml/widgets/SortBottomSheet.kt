@@ -24,14 +24,21 @@ class SortBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun radioClickListener() {
+        when(viewModel.sortedBy.value){
+            SortingTypes.ABC ->   _binding?.radioGroup?.check( R.id.radio_abc)
+            SortingTypes.BORN_DATE -> _binding?.radioGroup?.check( R.id.radio_date)
+        }
+
         _binding?.radioGroup?.setOnCheckedChangeListener { group, checkedId ->
             when{
                 checkedId == R.id.radio_abc-> {
-                    Log.d("sorting type","soring $result ")
+                    Log.d("sorting_type","sorting $checkedId ")
                     viewModel.sortByType(SortingTypes.ABC)
+                    this.dismiss()
                 }
                 checkedId == R.id.radio_date -> {
                     viewModel.sortByType(SortingTypes.BORN_DATE)
+                    this.dismiss()
                 }
             }
         }

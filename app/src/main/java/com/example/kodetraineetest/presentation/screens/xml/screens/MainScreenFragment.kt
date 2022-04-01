@@ -19,10 +19,7 @@ import com.example.kodetraineetest.navigation.xml.MainScreenRouterImpl
 import com.example.kodetraineetest.presentation.model.ScreenStates
 import com.example.kodetraineetest.presentation.model.SnackbarTypes
 import com.example.kodetraineetest.presentation.model.SortingTypes
-import com.example.kodetraineetest.presentation.screens.xml.widgets.CustomToast
-import com.example.kodetraineetest.presentation.screens.xml.widgets.NothingFoundFragment
-import com.example.kodetraineetest.presentation.screens.xml.widgets.ShimmerFragment
-import com.example.kodetraineetest.presentation.screens.xml.widgets.UserListFragment
+import com.example.kodetraineetest.presentation.screens.xml.widgets.*
 import com.example.kodetraineetest.presentation.viewmodel.UsersViewModel
 import com.example.kodetraineetest.util.extention.onQueryTextChanged
 import com.google.android.material.tabs.TabLayout
@@ -119,6 +116,17 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         )
     }
 
+    private fun setListByBornTypeFragment(userList: List<User>) {
+        val nestedFragment: Fragment = UserListByGroupFragment(userList)
+        val transaction = childFragmentManager.beginTransaction()
+        transaction.replace(R.id.list_container, nestedFragment).commit()
+        if (_binding?.tabSlider?.visibility == View.INVISIBLE) toggleVisibility(
+            false,
+            _binding?.tabSlider
+        )
+    }
+
+
     private fun setTabs(result: Set<String>) {
         val tabs = _binding?.tabSlider
         tabs?.removeAllTabs()
@@ -160,7 +168,12 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
                 viewModel.userListToShow.collect { result ->
                     if (result != null) {
                         when {
-                            result.isNotEmpty() -> setListFragment(result)
+                            result.isNotEmpty() -> {
+                                when(viewModel.sortedBy.value){
+                                    SortingTypes.ABC -> setListFragment(result)
+                                    SortingTypes.BORN_DATE -> setListByBornTypeFragment(result)
+                                }
+                            }
                             result.isEmpty() -> setNothingFoundFragment()
                         }
                     }
@@ -199,7 +212,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.showSnackbar.collect { result ->
-                    Log.d("toast","viewModel.showSnackbar, result: $result")
+                    Log.d("toast", "viewModel.showSnackbar, result: $result")
                     when (result) {
                         SnackbarTypes.ConnectionError -> showToast(result)
                         SnackbarTypes.Loading -> showToast(result)
@@ -211,12 +224,23 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.sortedBy.collect { result ->
-                    when(result){
-                        SortingTypes.ABC -> Log.d("sorting type","soring $result ")
-                        SortingTypes.BORN_DATE -> Log.d("sorting type","soring $result ")
+                    when (result) {
+                        SortingTypes.ABC -> {
+                            _binding?.sortButton?.setColorFilter(
+                                context?.getColor(R.color.light_content_default_secondary) ?: Color.LTGRAY
+                            )
+                            setListFragment(viewModel.userListToShow.value ?: emptyList())
+                        }
+                        SortingTypes.BORN_DATE -> {
+                            _binding?.sortButton?.setColorFilter(
+                                context?.getColor(R.color.primary) ?:  Color.LTGRAY
+                            )
+                            setListByBornTypeFragment(viewModel.userListToShow.value ?: emptyList())
+                        }
                     }
                 }
-            }}
+            }
+        }
     }
 
     private fun showToast(snackbarState: SnackbarTypes?) {
@@ -236,7 +260,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
                 textColor = this.requireContext().getColor(R.color.white)
             }
         }
-        Log.d("toast","show toast")
+        Log.d("toast", "show toast")
         CustomToast(this.requireContext(), text, background, textColor = textColor).show()
 
     }
@@ -245,4 +269,5 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen) {
         super.onDestroyView()
         _binding = null
     }
+
 }
