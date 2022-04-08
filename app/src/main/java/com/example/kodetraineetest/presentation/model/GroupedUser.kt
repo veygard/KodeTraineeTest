@@ -5,21 +5,14 @@ import com.example.kodetraineetest.domain.model.User
 sealed class UserAdapted(
     val rowType: RowType
 ){
-    data class Users(val user: UserYearGrouped) :
+    data class Users(val user: User) :
         UserAdapted(RowType.Item)
 
     data class Header(val name: String) : UserAdapted(RowType.Header)
 }
 
-enum class YearsType{
-    This, Next
-}
 enum class RowType {
     Item,
     Header
 }
 
-data class UserYearGrouped(
-    val type: YearsType,
-    val user: User
-)

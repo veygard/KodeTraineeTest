@@ -29,4 +29,3 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
         startActivity(Intent(this, XmlActivity::class.java))
     }
 }
-

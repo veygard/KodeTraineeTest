@@ -10,8 +10,6 @@ import com.example.kodetraineetest.R
 import com.example.kodetraineetest.databinding.FragmentUserListBinding
 import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.presentation.model.UserAdapted
-import com.example.kodetraineetest.presentation.model.UserYearGrouped
-import com.example.kodetraineetest.presentation.model.YearsType
 import com.example.kodetraineetest.presentation.screens.xml.adapters.UserClickInterface
 import com.example.kodetraineetest.presentation.screens.xml.adapters.UserListGroupAdapter
 import com.example.kodetraineetest.util.Constants
@@ -50,9 +48,9 @@ class UserListByGroupFragment(private val userList: List<User>, private val user
         list: List<User>
     ): List<UserAdapted> {
         /*разбиваем юзеров по годам*/
-        var usersThisYear= mutableListOf<UserYearGrouped>(
+        var usersThisYear= mutableListOf<User>(
         )
-        var usersNextYear= mutableListOf<UserYearGrouped>(
+        var usersNextYear= mutableListOf<User>(
         )
         list.forEach { user ->
             val date = user.birthday?.toLocalDate()
@@ -63,9 +61,9 @@ class UserListByGroupFragment(private val userList: List<User>, private val user
                 val newDate = LocalDate.of(year, month, day)
 
                 if (newDate.isAfter(LocalDate.now())) {
-                    usersThisYear.add(UserYearGrouped(type = YearsType.This, user))
+                    usersThisYear.add(user)
                 } else {
-                    usersNextYear.add(UserYearGrouped(type = YearsType.Next, user))
+                    usersNextYear.add(user)
                 }
             }
         }
@@ -73,15 +71,15 @@ class UserListByGroupFragment(private val userList: List<User>, private val user
         /*сортируем списки*/
         usersThisYear= usersThisYear.sortedWith(
             compareBy(
-                { it.user.birthday?.toLocalDate()?.month },
-                { it.user.birthday?.toLocalDate()?.dayOfMonth },
+                { it.birthday?.toLocalDate()?.month },
+                { it.birthday?.toLocalDate()?.dayOfMonth },
             )
         ).toMutableList()
 
         usersNextYear= usersNextYear.sortedWith(
             compareBy(
-                { it.user.birthday?.toLocalDate()?.month },
-                { it.user.birthday?.toLocalDate()?.dayOfMonth },
+                { it.birthday?.toLocalDate()?.month },
+                { it.birthday?.toLocalDate()?.dayOfMonth },
             )
         ).toMutableList()
 

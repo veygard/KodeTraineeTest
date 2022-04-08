@@ -32,7 +32,7 @@ class UserListGroupAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         when (val groups = usersGroups[position]) {
-            is UserAdapted.Users -> (holder as UserViewHolder).bind(groups.user.user)
+            is UserAdapted.Users -> (holder as UserViewHolder).bind(groups.user)
             is UserAdapted.Header -> (holder as HeaderViewHolder).bind(groups)
         }
 
