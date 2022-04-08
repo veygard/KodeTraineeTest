@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kodetraineetest.R
@@ -12,14 +13,15 @@ import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.presentation.model.UserAdapted
 import com.example.kodetraineetest.presentation.screens.xml.adapters.UserClickInterface
 import com.example.kodetraineetest.presentation.screens.xml.adapters.UserListGroupAdapter
+import com.example.kodetraineetest.presentation.viewmodel.UsersViewModel
 import com.example.kodetraineetest.util.Constants
 import com.example.kodetraineetest.util.extention.toLocalDate
 import java.time.LocalDate
 
-class UserListByGroupFragment(private val userList: List<User>, private val userClick: UserClickInterface): androidx.fragment.app.Fragment(R.layout.fragment_user_list) {
+class UserListByGroupFragment( private val userClick: UserClickInterface): androidx.fragment.app.Fragment(R.layout.fragment_user_list) {
     private var _binding: FragmentUserListBinding? = null
     private val binding get() = _binding!!
-
+    private val viewModel: UsersViewModel by hiltNavGraphViewModels(R.id.xml_version_nav)
 
 
     override fun onCreateView(
@@ -33,7 +35,7 @@ class UserListByGroupFragment(private val userList: List<User>, private val user
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = UserListGroupAdapter(setupYearGroups(userList), userClick)
+        val adapter = UserListGroupAdapter(setupYearGroups(viewModel.userListToShow.value ?: emptyList()), userClick)
         binding.recyclerUserList.adapter= adapter
         binding.recyclerUserList.layoutManager= LinearLayoutManager(this.requireContext())
         val decoration = DividerItemDecoration(this.requireContext(), DividerItemDecoration.HORIZONTAL)

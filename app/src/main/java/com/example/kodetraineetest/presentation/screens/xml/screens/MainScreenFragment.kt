@@ -110,8 +110,8 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
         mainScreenRouter.routeToCriticalErrorScreen()
     }
 
-    private fun setListFragment(users: List<User>) {
-        val nestedFragment: Fragment = UserListFragment(users,this)
+    private fun setListFragment() {
+        val nestedFragment: Fragment = UserListFragment(this)
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.list_container, nestedFragment).commit()
         if (_binding?.tabSlider?.visibility == View.INVISIBLE) toggleVisibility(
@@ -120,8 +120,8 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
         )
     }
 
-    private fun setListByBornTypeFragment(userList: List<User>) {
-        val nestedFragment: Fragment = UserListByGroupFragment(userList, this)
+    private fun setListByBornTypeFragment() {
+        val nestedFragment: Fragment = UserListByGroupFragment( this)
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.list_container, nestedFragment).commit()
         if (_binding?.tabSlider?.visibility == View.INVISIBLE) toggleVisibility(
@@ -174,8 +174,8 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
                         when {
                             result.isNotEmpty() -> {
                                 when (viewModel.sortedBy.value) {
-                                    SortingTypes.ABC -> setListFragment(result)
-                                    SortingTypes.BORN_DATE -> setListByBornTypeFragment(result)
+                                    SortingTypes.ABC -> setListFragment()
+                                    SortingTypes.BORN_DATE -> setListByBornTypeFragment()
                                 }
                             }
                             result.isEmpty() -> setNothingFoundFragment()
@@ -196,7 +196,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
                             setShimmerFragment()
                         }
                         is ScreenStates.Ready -> {
-                            setListFragment(result.userList ?: emptyList())
+                            //тут можно ничего не делать, т.к. сработает обсервер в userListToShow
                         }
                     }
                 }
@@ -217,7 +217,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.showSnackbar.collect { result ->
                     Log.d("toast", "viewModel.showSnackbar, result: $result")
-                    when (result) {
+                     when (result) {
                         SnackbarTypes.ConnectionError -> showToast(result)
                         SnackbarTypes.Loading -> showToast(result)
                         SnackbarTypes.ServerError -> showToast(result)
@@ -235,14 +235,14 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
                                     context?.getColor(R.color.light_content_default_secondary)
                                         ?: Color.LTGRAY
                                 )
-                                setListFragment(viewModel.userListToShow.value ?: emptyList())
+                                setListFragment()
                             }
                         }
                         SortingTypes.BORN_DATE -> {
                             _binding?.sortButton?.setColorFilter(
                                 context?.getColor(R.color.primary) ?: Color.LTGRAY
                             )
-                            setListByBornTypeFragment(viewModel.userListToShow.value ?: emptyList())
+                            setListByBornTypeFragment()
                         }
                     }
                 }
