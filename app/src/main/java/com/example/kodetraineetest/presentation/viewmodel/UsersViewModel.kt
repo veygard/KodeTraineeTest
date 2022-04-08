@@ -54,7 +54,10 @@ class UsersViewModel @Inject constructor(
         get() = _showSnackbar.asStateFlow()
 
     private val _screenLoadingState: MutableStateFlow<ScreenStates> =
-        MutableStateFlow(ScreenStates.Loading)
+        MutableStateFlow(when{
+            _userOriginalList?.isNotEmpty() == true -> ScreenStates.Ready()
+            else -> ScreenStates.Loading
+        })
     val screenLoadingState: StateFlow<ScreenStates>
         get() = _screenLoadingState.asStateFlow()
 

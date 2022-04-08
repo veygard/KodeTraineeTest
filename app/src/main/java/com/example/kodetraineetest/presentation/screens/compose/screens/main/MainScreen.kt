@@ -28,7 +28,7 @@ fun MainScreen(
     val departmentsSet by viewModel.departmentsSet.collectAsState()
     val listToShow by viewModel.userListToShow.collectAsState()
     val sortedByState by viewModel.sortedBy.collectAsState()
-    val shackbarState by viewModel.showSnackbar.collectAsState()
+    val snackbarState by viewModel.showSnackbar.collectAsState()
     val selectedPositionTabIndex by viewModel.selectedPositionTabIndex.collectAsState()
 
 
@@ -47,7 +47,7 @@ fun MainScreen(
     }
 
     LaunchedEffect(key1 = true, block = {
-        viewModel.getUsers()
+        if( viewModel.userListToShow.value?.isNotEmpty() != true)viewModel.getUsers()
     })
 
     fun refreshClick(isLoadStateNeeded: Boolean = false) {
@@ -93,7 +93,7 @@ fun MainScreen(
                 enteredSearchValue,
                 showCancelButton,
                 searchCancelButtonClick,
-                shackbarState,
+                snackbarState,
                 selectedPositionTabIndex
             )
         }
