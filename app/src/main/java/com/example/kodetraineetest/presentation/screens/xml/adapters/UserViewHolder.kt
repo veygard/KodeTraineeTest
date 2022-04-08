@@ -1,5 +1,6 @@
 package com.example.kodetraineetest.presentation.screens.xml.adapters
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -20,6 +21,7 @@ class UserViewHolder(
     private var user: User?= null
 
 
+    @SuppressLint("SetTextI18n")
     fun bind(user: User) {
 
         binding.root.setOnClickListener(this)

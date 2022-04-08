@@ -21,6 +21,8 @@ import com.example.kodetraineetest.presentation.model.SortingTypes
 import com.example.kodetraineetest.presentation.screens.compose.ui.theme.textMedium
 import com.example.kodetraineetest.presentation.screens.compose.ui.widgets.NothingFoundBlock
 import com.example.kodetraineetest.presentation.screens.compose.ui.widgets.UserItemInList
+import com.example.kodetraineetest.util.Constants.CURRENT_YEAR
+import com.example.kodetraineetest.util.Constants.NEXT_YEAR
 import com.example.kodetraineetest.util.SpacingHorizontal
 import com.example.kodetraineetest.util.SpacingVertical
 import com.example.kodetraineetest.util.extention.toLocalDate
@@ -37,14 +39,12 @@ fun UserListBlock(
     sortedByState: SortingTypes,
     routeDetailScreen: (user: User) -> Unit,
 ) {
-    val currentYear = LocalDate.now().year.toString()
-    val nextYear = LocalDate.now().year.plus(1).toString()
 
     val birthdayYearGroup: MutableState<Map<String, MutableSet<User>>> = remember {
         mutableStateOf(
             mapOf(
-                currentYear to mutableSetOf(),
-                nextYear to mutableSetOf(),
+                CURRENT_YEAR to mutableSetOf(),
+                NEXT_YEAR to mutableSetOf(),
             )
         )
     }
@@ -73,7 +73,7 @@ fun UserListBlock(
                             birthdayYearGroup.value.forEach { (year, userList) ->
                                 setupYearGroups(birthdayYearGroup, list)
 
-                                if (year != currentYear && userList.isNotEmpty()) {
+                                if (year != CURRENT_YEAR && userList.isNotEmpty()) {
                                     stickyHeader {
                                         StickyHeader(year)
                                     }
@@ -153,9 +153,9 @@ private fun setupYearGroups(
             val newDate = LocalDate.of(year, month, day)
 
             if (newDate.isAfter(LocalDate.now())) {
-                birthdayYearGroup.value[LocalDate.now().year.toString()]?.add(user)
+                birthdayYearGroup.value[CURRENT_YEAR]?.add(user)
             } else {
-                birthdayYearGroup.value[LocalDate.now().year.plus(1).toString()]?.add(user)
+                birthdayYearGroup.value[NEXT_YEAR]?.add(user)
             }
         }
     }

@@ -5,7 +5,7 @@
     <string name="critical_error_screen_text">Постараемся быстро починить</string>
     <string name="critical_error_screen_again">Попробовать снова</string>
     <string name="department_tab_row_all">Все</string>
-    <string name="search_field_placeholder">Введи имя, тег, почту...</string>
+    <string name="search_field_placeholder">Введи имя, тег, почту…</string>
     <string name="bottom_sheet_sort_title">Сортировка</string>
     <string name="departments_accordance_ior">iOS</string>
     <string name="departments_accordance_android">Android</string>
@@ -26,7 +26,7 @@
     <string name="years2">год</string>
     <string name="years3">года</string>
     <string name="snackbar_errow_message">Не могу обновить данные.\nПроверь соединение с интернетом.</string>
-    <string name="snackbar_loading_message">Секундочку, гружусь...</string>
+    <string name="snackbar_loading_message">Секундочку, гружусь…</string>
     <string name="xml_version_button">То XML Version</string>
     <string name="compose_version_button">То Compose Version</string>
     <string name="jetpack_compose_xml">Практическое задание выполнено в двух вариантах: Jetpack Compose и классический XML. Для перехода в раздел нажмите на соответствующую кнопку.</string>

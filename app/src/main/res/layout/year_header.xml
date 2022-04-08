@@ -8,6 +8,7 @@
     <ImageView
             android:layout_width="72dp"
             android:layout_height="1dp"
+            android:contentDescription="@null"
             android:background="@drawable/ic_line_big"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,6 +31,7 @@
     <ImageView
             android:layout_width="72dp"
             android:layout_height="1dp"
+            android:contentDescription="@null"
             android:background="@drawable/ic_line_big"
             android:id="@+id/imageView3header"
             app:layout_constraintBottom_toBottomOf="parent"

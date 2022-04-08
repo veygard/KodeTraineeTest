@@ -30,6 +30,10 @@ class UsersViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _userOriginalList: MutableLiveData<List<User>?> = MutableLiveData(null)
+
+    /*todo у переменных используется MutableStateFlow вместо MutableLiveData,
+       чтобы использовать вью-модель и в композ-версии, и в xml*/
+
     private val _userListToShow: MutableStateFlow<List<User>?> = MutableStateFlow(null)
     val userListToShow: MutableStateFlow<List<User>?> = _userListToShow
 
@@ -151,19 +155,12 @@ class UsersViewModel @Inject constructor(
         }
     }
 
-    fun loadingError() {
-        viewModelScope.launch {
-            _screenLoadingState.emit(ScreenStates.Error)
-        }
-    }
-
     fun getUsers() {
         viewModelScope.launch {
             /*задержка для того чтобы показать работу шиммер*/
             delay(500)
 
-            val result = userUseCases.getUsersUseCase.start()
-            when (result) {
+            when (val result = userUseCases.getUsersUseCase.start()) {
                 is GetUsersResult.UserList -> {
                     _userOriginalList.value = result.list
                     filterUsersByTabRow(getDepNameByIndex(), all = allDepName)
@@ -203,10 +200,6 @@ class UsersViewModel @Inject constructor(
         }
     }
 
-    fun clear() {
-        _userOriginalList.value = null
-        _userListToShow.value = null
-    }
 
 
 }

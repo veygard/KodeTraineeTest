@@ -18,7 +18,7 @@ class CustomToast(
     Toast(context) {
 
     init {
-        val view: View = View.inflate(context, R.layout.custom_toast, null);
+        val view: View = View.inflate(context, R.layout.custom_toast, null)
         val txtMsg = view.findViewById<TextView>(R.id.custom_toast_text)
         val card = view.findViewById<CardView>(R.id.custom_toast_card)
 
