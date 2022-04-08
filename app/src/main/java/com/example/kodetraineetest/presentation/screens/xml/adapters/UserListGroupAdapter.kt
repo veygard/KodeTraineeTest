@@ -10,7 +10,7 @@ import com.example.kodetraineetest.presentation.model.UserAdapted
 
 class UserListGroupAdapter(
     private val usersGroups: List<UserAdapted>,
-    private val userClick: UserClickInterface
+    private val userClick: UserClickInterface?
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

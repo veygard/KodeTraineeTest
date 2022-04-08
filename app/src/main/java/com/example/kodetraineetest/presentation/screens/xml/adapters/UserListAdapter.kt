@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kodetraineetest.databinding.UserListItemBinding
 import com.example.kodetraineetest.domain.model.User
 
-class UserListAdapter(private val userList: List<(User)>, private val userClick: UserClickInterface) :
+class UserListAdapter(private val userList: List<(User)>, private val userClick: UserClickInterface?) :
     RecyclerView.Adapter<UserViewHolder>() {
 
 

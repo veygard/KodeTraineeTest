@@ -46,6 +46,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
 
         /*делаем запрос на список юзеров при первом запуске вью-модели*/
         if (viewModel.userListToShow.value == null) viewModel.getUsers()
+        if(viewModel.xmlUserClickInterfaceImpl.value == null) viewModel.setClickInterface(this)
         tabLayoutListener()
         searchViewListener()
         swipeRefreshListener()
@@ -111,7 +112,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
     }
 
     private fun setListFragment() {
-        val nestedFragment: Fragment = UserListFragment(this)
+        val nestedFragment: Fragment = UserListFragment()
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.list_container, nestedFragment).commit()
         if (_binding?.tabSlider?.visibility == View.INVISIBLE) toggleVisibility(
@@ -121,7 +122,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
     }
 
     private fun setListByBornTypeFragment() {
-        val nestedFragment: Fragment = UserListByGroupFragment(this)
+        val nestedFragment: Fragment = UserListByGroupFragment()
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.list_container, nestedFragment).commit()
         if (_binding?.tabSlider?.visibility == View.INVISIBLE) toggleVisibility(

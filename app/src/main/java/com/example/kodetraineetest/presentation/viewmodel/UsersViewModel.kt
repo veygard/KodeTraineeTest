@@ -2,6 +2,8 @@ package com.example.kodetraineetest.presentation.viewmodel
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.kodetraineetest.R
 import com.example.kodetraineetest.domain.model.User
 import com.example.kodetraineetest.domain.repository.GetUsersResult
@@ -11,6 +13,7 @@ import com.example.kodetraineetest.presentation.model.SnackbarTypes
 import com.example.kodetraineetest.presentation.model.SortingTypes
 import com.example.kodetraineetest.presentation.model.SortingTypes.ABC
 import com.example.kodetraineetest.presentation.model.SortingTypes.BORN_DATE
+import com.example.kodetraineetest.presentation.screens.xml.adapters.UserClickInterface
 import com.example.kodetraineetest.util.DepartmentsAccordance
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
@@ -65,6 +68,12 @@ class UsersViewModel @Inject constructor(
 
     private val _selectedPositionTabIndex = MutableStateFlow(0)
     val selectedPositionTabIndex:MutableStateFlow<Int> = _selectedPositionTabIndex
+
+    private val _xmlUserClickInterfaceImpl: MutableLiveData<UserClickInterface?> = MutableLiveData(null)
+    val xmlUserClickInterfaceImpl: LiveData<UserClickInterface?> = _xmlUserClickInterfaceImpl
+    fun setClickInterface(clickInterface: UserClickInterface){
+        _xmlUserClickInterfaceImpl.value= clickInterface
+    }
 
     fun saveTabIndex(position: Int){
         viewModelScope.launch {

@@ -14,7 +14,7 @@ import com.example.kodetraineetest.util.extention.toLocalDate
 
 class UserViewHolder(
     private val binding: UserListItemBinding,
-    private val userClick: UserClickInterface,
+    private val userClick: UserClickInterface?,
     private val showDate:Boolean= false
 ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
@@ -51,6 +51,6 @@ class UserViewHolder(
 
 
     override fun onClick(p0: View?) {
-        user?.let { userClick.onUserClick(it) }
+        user?.let { userClick?.onUserClick(it) }
     }
 }
