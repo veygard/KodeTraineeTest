@@ -13,7 +13,6 @@ import com.example.kodetraineetest.presentation.model.SortingTypes.ABC
 import com.example.kodetraineetest.presentation.model.SortingTypes.BORN_DATE
 import com.example.kodetraineetest.util.DepartmentsAccordance
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +28,10 @@ class UsersViewModel @Inject constructor(
     private val departmentsAccordance: DepartmentsAccordance
 ) : ViewModel() {
 
-    private val _userOriginalList: MutableLiveData<List<User>?> = MutableLiveData(null)
+    init {
+        Log.d("view_model","VM init")
+    }
+    private var _userOriginalList: List<User>? = null
 
     /*todo у переменных используется MutableStateFlow вместо MutableLiveData,
        чтобы использовать вью-модель и в композ-версии, и в xml*/
@@ -112,22 +114,17 @@ class UsersViewModel @Inject constructor(
     fun filterUsersByTabRow(chosen: String, all: String) {
         viewModelScope.launch {
             if (chosen == all) {
-                _userListToShow.emit(_userOriginalList.value)
-                _userLisFilteredByTab.emit(_userOriginalList.value)
+                _userListToShow.emit(_userOriginalList)
+                _userLisFilteredByTab.emit(_userOriginalList)
                 if(_filterValue.value.isNotEmpty()) { filterUsersBySearch(_filterValue.value) }
             } else {
                 _userListToShow.emit(
-                    _userOriginalList.value?.filter {
+                    _userOriginalList?.filter {
                         it.department == departmentsAccordance.getOriginalName(chosen)
                     })
                 _userLisFilteredByTab.emit(_userListToShow.value)
                 if(_filterValue.value.isNotEmpty()) { filterUsersBySearch(_filterValue.value) }
 
-                when (_sortedBy.value) {
-                    ABC -> {
-                        sortByType(ABC)
-                    }
-                }
             }
         }
     }
@@ -135,14 +132,11 @@ class UsersViewModel @Inject constructor(
 
     fun sortByType(type: SortingTypes) {
         viewModelScope.launch {
-            val userListToShow = _userListToShow.value
             Log.d("sorting_type","sorting sortByType")
             when (type) {
                 ABC -> {
-                    userListToShow?.let { list ->
-                        _userListToShow.emit(
-                            list.sortedBy { it.lastName }
-                        )
+                    sortByAbc(userListToShow.value)?.let {
+                        _userListToShow.emit(it)
                         sortedBy.emit(ABC)
                     }
                     Log.d("sorting_type","sorting $ABC ")
@@ -155,6 +149,12 @@ class UsersViewModel @Inject constructor(
         }
     }
 
+    private fun sortByAbc(list: List<User>?): List<User>? {
+        return list?.let {
+            list.sortedBy { it.lastName }
+        }
+    }
+
     fun getUsers() {
         viewModelScope.launch {
             /*задержка для того чтобы показать работу шиммер*/
@@ -162,7 +162,7 @@ class UsersViewModel @Inject constructor(
 
             when (val result = userUseCases.getUsersUseCase.start()) {
                 is GetUsersResult.UserList -> {
-                    _userOriginalList.value = result.list
+                    _userOriginalList = sortByAbc(result.list)
                     filterUsersByTabRow(getDepNameByIndex(), all = allDepName)
                     setupTabRowList()
                     _screenLoadingState.emit(ScreenStates.Ready())
@@ -183,7 +183,7 @@ class UsersViewModel @Inject constructor(
         viewModelScope.launch {
             val set = mutableSetOf<String>()
             set.add(application.applicationContext.getString(R.string.department_tab_row_all))
-            _userOriginalList.value?.map { it.department }?.forEach {
+            _userOriginalList?.map { it.department }?.forEach {
                 it?.let { dep -> set.add(departmentsAccordance.getAccordanceName(dep)) }
             }
             _departmentsSet.emit(

@@ -45,7 +45,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
         observeViewModelFields(viewModel)
 
         /*делаем запрос на список юзеров при первом запуске вью-модели*/
-        if(viewModel.userListToShow.value == null)viewModel.getUsers()
+        if (viewModel.userListToShow.value == null) viewModel.getUsers()
         tabLayoutListener()
         searchViewListener()
         swipeRefreshListener()
@@ -94,7 +94,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
     private fun tabLayoutListener() {
         _binding?.tabSlider?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                viewModel.saveTabIndex(tab?.position ?:0)
+                viewModel.saveTabIndex(tab?.position ?: 0)
                 viewModel.filterUsersByTabRow(
                     tab?.text.toString(),
                     context?.getString(R.string.department_tab_row_all) ?: ""
@@ -121,7 +121,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
     }
 
     private fun setListByBornTypeFragment() {
-        val nestedFragment: Fragment = UserListByGroupFragment( this)
+        val nestedFragment: Fragment = UserListByGroupFragment(this)
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.list_container, nestedFragment).commit()
         if (_binding?.tabSlider?.visibility == View.INVISIBLE) toggleVisibility(
@@ -166,13 +166,15 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
     }
 
     private fun observeViewModelFields(viewModel: UsersViewModel) {
+        /*todo т.к. вместо Лайфдаты используется Стейтфлоу, то вместо обычных обсерверов вот такая реализация*/
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userListToShow.collect { result ->
                     if (result != null) {
                         when {
-                            result.isNotEmpty() -> {
+                            result.isNotEmpty()
+                                    && viewModel.screenLoadingState.value == ScreenStates.Ready() -> {
                                 when (viewModel.sortedBy.value) {
                                     SortingTypes.ABC -> setListFragment()
                                     SortingTypes.BORN_DATE -> setListByBornTypeFragment()
@@ -196,7 +198,8 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
                             setShimmerFragment()
                         }
                         is ScreenStates.Ready -> {
-                            //тут можно ничего не делать, т.к. сработает обсервер в userListToShow
+                            setListFragment()
+                            //тут можно ничего не делать, т.к. сработает обсервер в userListToShow, когда список получит значения.
                         }
                     }
                 }
@@ -217,7 +220,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.showSnackbar.collect { result ->
                     Log.d("toast", "viewModel.showSnackbar, result: $result")
-                     when (result) {
+                    when (result) {
                         SnackbarTypes.ConnectionError -> showToast(result)
                         SnackbarTypes.Loading -> showToast(result)
                         SnackbarTypes.ServerError -> showToast(result)
