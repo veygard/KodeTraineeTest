@@ -52,5 +52,8 @@
         <action
                 android:id="@+id/action_userDetailsFragment_to_mainScreenFragment"
                 app:destination="@id/mainScreenFragment" />
+        <argument
+                android:name="user"
+                app:argType="com.example.kodetraineetest.presentation.model.UserParcelize" />
     </fragment>
 </navigation>

@@ -24,6 +24,7 @@
         <activity android:name=".ComposeActivity" />
         <activity
                 android:name=".XmlActivity"
+                android:configChanges="screenSize|orientation"
                 android:windowSoftInputMode="adjustPan" />
     </application>
 

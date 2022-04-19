@@ -89,6 +89,7 @@ class UsersViewModel @Inject constructor(
             else {
                 _showSnackbar.emit(null) //что бы сработали обсерверы на изменение
                 _showSnackbar.emit(SnackbarTypes.Loading)
+                _showSnackbar.emit(null)  //что бы не срабатывал повторный тоаст при смене конфигурации
                 Log.d("toast","viewModel.refresh ${_showSnackbar.value}")
             }
             getUsers()

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.kodetraineetest.R
@@ -28,6 +29,7 @@ class UserDetailsFragment : Fragment() {
     private var userParcelize:UserParcelize?= null
     private var user:User?= null
 
+    private val args: UserDetailsFragmentArgs by navArgs()
 
     private val router: UserDetailsScreenRouter by lazy {
         UserDetailsScreenRouterImpl(this)
@@ -35,7 +37,7 @@ class UserDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userParcelize= arguments?.getParcelable(USER)
+        userParcelize= args.user
         userParcelize?.let { user= it.toUser() }
     }
 
@@ -77,9 +79,5 @@ class UserDetailsFragment : Fragment() {
         _binding?.userPhoneDetails?.setOnClickListener {
             user?.phone?.let { makeCall(this.requireContext(), it.formatPhoneForDial()) }
         }
-    }
-
-    companion object{
-        const val USER= "user_fragment"
     }
 }

@@ -6,6 +6,7 @@ plugins {
     id 'kotlinx-serialization'
     id 'kotlin-parcelize'
     id 'com.google.devtools.ksp' version '1.6.10-1.0.4'
+    id 'androidx.navigation.safeargs'
 }
 
 kotlin {
@@ -135,8 +136,10 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
+
 
 }

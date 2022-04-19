@@ -35,13 +35,17 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
         MainScreenRouterImpl(this)
     }
 
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("lifecycle_test"," MainScreenFragment  OnCreate")
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
 
+        _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
+        Log.d("lifecycle_test"," MainScreenFragment  onCreateView: ${_binding?.root}")
         observeViewModelFields(viewModel)
 
         /*делаем запрос на список юзеров при первом запуске вью-модели*/
@@ -52,8 +56,12 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
         swipeRefreshListener()
         cancelButtonListener()
         sortButtonListener()
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d("lifecycle_test"," MainScreenFragment  onViewCreated ${_binding?.root}")
     }
 
     private fun sortButtonListener() {
@@ -102,8 +110,16 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
                 )
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                Log.d("lifecycle_test"," MainScreenFragment  tabLayoutListener:  " +
+                        "userListToShow: ${viewModel.userListToShow.value?.size}, " +
+                        "Tab: ${viewModel.selectedPositionTabIndex.value},  " +
+                        "screenLoadingState: ${viewModel.screenLoadingState.value} " +
+                        "sortedBy: ${viewModel.sortedBy.value}"
+                )
+            }
         })
     }
 
@@ -199,7 +215,6 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
                             setShimmerFragment()
                         }
                         is ScreenStates.Ready -> {
-                            setListFragment()
                             //тут можно ничего не делать, т.к. сработает обсервер в userListToShow, когда список получит значения.
                         }
                     }
@@ -276,13 +291,37 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
 
     }
 
+
+    override fun onUserClick(user: User) {
+        mainScreenRouter.routeToDetailScreen(user, this.requireActivity())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("lifecycle_test","MainScreenFragment onPause:  " +
+                "userListToShow: ${viewModel.userListToShow.value?.size}, " +
+                "Tab: ${viewModel.selectedPositionTabIndex.value},  " +
+                "screenLoadingState: ${viewModel.screenLoadingState.value}" +
+                "sortedBy: ${viewModel.sortedBy.value}"+
+                " binding: $_binding"
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        _binding?.tabSlider?.getTabAt(viewModel.selectedPositionTabIndex.value)?.select()
+        Log.d("lifecycle_test"," MainScreenFragment onResume:  " +
+                "userListToShow: ${viewModel.userListToShow.value?.size}, " +
+                "Tab: ${viewModel.selectedPositionTabIndex.value},  " +
+                "screenLoadingState: ${viewModel.screenLoadingState.value} " +
+                "sortedBy: ${viewModel.sortedBy.value}" +
+                ", binding: ${_binding?.root}"
+        )
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        Log.d("lifecycle_test"," MainScreenFragment onDestroyView ${_binding?.root}")
     }
-
-    override fun onUserClick(user: User) {
-        mainScreenRouter.routeToDetailScreen(user)
-    }
-
 }
