@@ -2,6 +2,7 @@ package com.example.kodetraineetest.navigation.xml
 
 import android.content.Intent
 import com.example.kodetraineetest.XmlActivity
+import com.example.kodetraineetest.di.NavigationModule
 import com.example.kodetraineetest.presentation.screens.xml.screens.CriticalErrorFragment
 import com.example.kodetraineetest.presentation.screens.xml.screens.MainScreenFragment
 import com.example.kodetraineetest.presentation.screens.xml.screens.UserDetailsFragment

@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -23,34 +23,40 @@ import com.example.kodetraineetest.presentation.screens.xml.adapters.UserClickIn
 import com.example.kodetraineetest.presentation.screens.xml.widgets.*
 import com.example.kodetraineetest.presentation.viewmodel.UsersViewModel
 import com.example.kodetraineetest.util.extention.onQueryTextChanged
+import com.github.terrakok.cicerone.Router
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+class MainScreenFragment @Inject constructor(
+//    private val router: Router
+) : Fragment(R.layout.fragment_main_screen), UserClickInterface {
 
-class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInterface {
-    private val viewModel: UsersViewModel by hiltNavGraphViewModels(R.id.xml_version_nav)
+    private val viewModel: UsersViewModel by activityViewModels()
     private var _binding: FragmentMainScreenBinding? = null
     private val binding get() = _binding!!
+
     private val mainScreenRouter: MainScreenRouter by lazy {
-        MainScreenRouterImpl(this)
+        MainScreenRouterImpl(Router())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("lifecycle_test"," MainScreenFragment  OnCreate")
+        Log.d("lifecycle_test", " MainScreenFragment  OnCreate")
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
-        Log.d("lifecycle_test"," MainScreenFragment  onCreateView: ${_binding?.root}")
+        Log.d("lifecycle_test", " MainScreenFragment  onCreateView: ${_binding?.root}")
         observeViewModelFields(viewModel)
 
         /*делаем запрос на список юзеров при первом запуске вью-модели*/
         if (viewModel.userListToShow.value == null) viewModel.getUsers()
-        if(viewModel.xmlUserClickInterfaceImpl.value == null) viewModel.setClickInterface(this)
+        if (viewModel.xmlUserClickInterfaceImpl.value == null) viewModel.setClickInterface(this)
         tabLayoutListener()
         searchViewListener()
         swipeRefreshListener()
@@ -61,7 +67,7 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("lifecycle_test"," MainScreenFragment  onViewCreated ${_binding?.root}")
+        Log.d("lifecycle_test", " MainScreenFragment  onViewCreated ${_binding?.root}")
     }
 
     private fun sortButtonListener() {
@@ -112,12 +118,14 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
+
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                Log.d("lifecycle_test"," MainScreenFragment  tabLayoutListener:  " +
-                        "userListToShow: ${viewModel.userListToShow.value?.size}, " +
-                        "Tab: ${viewModel.selectedPositionTabIndex.value},  " +
-                        "screenLoadingState: ${viewModel.screenLoadingState.value} " +
-                        "sortedBy: ${viewModel.sortedBy.value}"
+                Log.d(
+                    "lifecycle_test", " MainScreenFragment  tabLayoutListener:  " +
+                            "userListToShow: ${viewModel.userListToShow.value?.size}, " +
+                            "Tab: ${viewModel.selectedPositionTabIndex.value},  " +
+                            "screenLoadingState: ${viewModel.screenLoadingState.value} " +
+                            "sortedBy: ${viewModel.sortedBy.value}"
                 )
             }
         })
@@ -293,35 +301,37 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
 
 
     override fun onUserClick(user: User) {
-        mainScreenRouter.routeToDetailScreen(user, this.requireActivity())
+        mainScreenRouter.routeToDetailScreen(user)
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("lifecycle_test","MainScreenFragment onPause:  " +
-                "userListToShow: ${viewModel.userListToShow.value?.size}, " +
-                "Tab: ${viewModel.selectedPositionTabIndex.value},  " +
-                "screenLoadingState: ${viewModel.screenLoadingState.value}" +
-                "sortedBy: ${viewModel.sortedBy.value}"+
-                " binding: $_binding"
+        Log.d(
+            "lifecycle_test", "MainScreenFragment onPause:  " +
+                    "userListToShow: ${viewModel.userListToShow.value?.size}, " +
+                    "Tab: ${viewModel.selectedPositionTabIndex.value},  " +
+                    "screenLoadingState: ${viewModel.screenLoadingState.value}" +
+                    "sortedBy: ${viewModel.sortedBy.value}" +
+                    " binding: $_binding"
         )
     }
 
     override fun onResume() {
         super.onResume()
         _binding?.tabSlider?.getTabAt(viewModel.selectedPositionTabIndex.value)?.select()
-        Log.d("lifecycle_test"," MainScreenFragment onResume:  " +
-                "userListToShow: ${viewModel.userListToShow.value?.size}, " +
-                "Tab: ${viewModel.selectedPositionTabIndex.value},  " +
-                "screenLoadingState: ${viewModel.screenLoadingState.value} " +
-                "sortedBy: ${viewModel.sortedBy.value}" +
-                ", binding: ${_binding?.root}"
+        Log.d(
+            "lifecycle_test", " MainScreenFragment onResume:  " +
+                    "userListToShow: ${viewModel.userListToShow.value?.size}, " +
+                    "Tab: ${viewModel.selectedPositionTabIndex.value},  " +
+                    "screenLoadingState: ${viewModel.screenLoadingState.value} " +
+                    "sortedBy: ${viewModel.sortedBy.value}" +
+                    ", binding: ${_binding?.root}"
         )
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        Log.d("lifecycle_test"," MainScreenFragment onDestroyView ${_binding?.root}")
+        Log.d("lifecycle_test", " MainScreenFragment onDestroyView ${_binding?.root}")
     }
 }

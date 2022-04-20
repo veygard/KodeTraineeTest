@@ -14,6 +14,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.main_activity) {
+
+
     private val binding: MainActivityBinding by viewBinding(R.id.const_container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
