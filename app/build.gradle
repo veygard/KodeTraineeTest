@@ -140,6 +140,6 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
-
+    implementation "com.github.terrakok:cicerone:7.1"
 
 }
