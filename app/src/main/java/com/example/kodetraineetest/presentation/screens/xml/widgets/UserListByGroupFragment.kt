@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kodetraineetest.R
@@ -20,7 +20,7 @@ import java.time.LocalDate
 class UserListByGroupFragment(): androidx.fragment.app.Fragment(R.layout.fragment_user_list) {
     private var _binding: FragmentUserListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: UsersViewModel by hiltNavGraphViewModels(R.id.xml_version_nav)
+    private val viewModel: UsersViewModel by activityViewModels()
 
 
     override fun onCreateView(

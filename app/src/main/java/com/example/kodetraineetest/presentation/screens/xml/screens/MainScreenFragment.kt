@@ -77,7 +77,8 @@ class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInt
 
     private fun sortButtonListener() {
         _binding?.sortButton?.setOnClickListener {
-            mainScreenRouter.openSortBottomSheet()
+            val modalBottomSheet = SortBottomSheet()
+            modalBottomSheet.show(parentFragmentManager, SortBottomSheet.TAG)
         }
     }
 

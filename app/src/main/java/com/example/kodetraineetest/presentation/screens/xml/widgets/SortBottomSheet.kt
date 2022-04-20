@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.navGraphViewModels
+import androidx.fragment.app.activityViewModels
 import com.example.kodetraineetest.R
 import com.example.kodetraineetest.databinding.BottomSheetSortBinding
 import com.example.kodetraineetest.presentation.model.SortingTypes
@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class SortBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetSortBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: UsersViewModel by navGraphViewModels(R.id.xml_version_nav)
+    private val viewModel: UsersViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,5 +57,9 @@ class SortBottomSheet : BottomSheetDialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val TAG = "SortModalBottomSheet"
     }
 }

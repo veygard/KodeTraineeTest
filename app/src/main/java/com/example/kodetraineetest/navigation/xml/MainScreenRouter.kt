@@ -6,7 +6,6 @@ import com.github.terrakok.cicerone.Router
 interface MainScreenRouter {
     fun routeToDetailScreen(user: User)
     fun routeToCriticalErrorScreen()
-    fun openSortBottomSheet()
 }
 
 class MainScreenRouterImpl(
@@ -19,10 +18,6 @@ class MainScreenRouterImpl(
 
     override fun routeToCriticalErrorScreen() {
         router.navigateTo(Screens.errorScreen())
-    }
-
-    override fun openSortBottomSheet() {
-
     }
 
 }
