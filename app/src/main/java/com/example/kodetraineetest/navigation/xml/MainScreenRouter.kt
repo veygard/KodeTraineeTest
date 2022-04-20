@@ -14,7 +14,7 @@ class MainScreenRouterImpl(
 ) : MainScreenRouter {
 
     override fun routeToDetailScreen(user: User) {
-        router.navigateTo(Screens.errorScreen())
+        router.navigateTo(Screens.detailScreen(user))
     }
 
     override fun routeToCriticalErrorScreen() {

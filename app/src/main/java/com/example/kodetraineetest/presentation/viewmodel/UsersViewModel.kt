@@ -64,6 +64,7 @@ class UsersViewModel @Inject constructor(
     val screenLoadingState: StateFlow<ScreenStates>
         get() = _screenLoadingState.asStateFlow()
 
+
     private val _filterValue = MutableStateFlow("")
 
     private val _selectedPositionTabIndex = MutableStateFlow(0)
@@ -81,6 +82,11 @@ class UsersViewModel @Inject constructor(
         }
     }
 
+    fun setLoading(){
+        viewModelScope.launch {
+            _screenLoadingState.emit(ScreenStates.Loading)
+        }
+    }
 
     fun refresh(isLoadStateNeeded : Boolean = false) {
         viewModelScope.launch {
@@ -172,7 +178,6 @@ class UsersViewModel @Inject constructor(
         viewModelScope.launch {
             /*задержка для того чтобы показать работу шиммер*/
             delay(500)
-
             when (val result = userUseCases.getUsersUseCase.start()) {
                 is GetUsersResult.UserList -> {
                     _userOriginalList = sortByAbc(result.list)

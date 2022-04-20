@@ -25,19 +25,22 @@ import com.example.kodetraineetest.presentation.viewmodel.UsersViewModel
 import com.example.kodetraineetest.util.extention.onQueryTextChanged
 import com.github.terrakok.cicerone.Router
 import com.google.android.material.tabs.TabLayout
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MainScreenFragment @Inject constructor(
-//    private val router: Router
-) : Fragment(R.layout.fragment_main_screen), UserClickInterface {
+@AndroidEntryPoint
+class MainScreenFragment : Fragment(R.layout.fragment_main_screen), UserClickInterface {
 
     private val viewModel: UsersViewModel by activityViewModels()
     private var _binding: FragmentMainScreenBinding? = null
     private val binding get() = _binding!!
 
+    @Inject
+    lateinit var router:Router
+
     private val mainScreenRouter: MainScreenRouter by lazy {
-        MainScreenRouterImpl(Router())
+        MainScreenRouterImpl(router)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,19 +52,21 @@ class MainScreenFragment @Inject constructor(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
         Log.d("lifecycle_test", " MainScreenFragment  onCreateView: ${_binding?.root}")
         observeViewModelFields(viewModel)
 
         /*делаем запрос на список юзеров при первом запуске вью-модели*/
-        if (viewModel.userListToShow.value == null) viewModel.getUsers()
+//        if (viewModel.userListToShow.value == null)
+            viewModel.getUsers()
         if (viewModel.xmlUserClickInterfaceImpl.value == null) viewModel.setClickInterface(this)
+
         tabLayoutListener()
         searchViewListener()
         swipeRefreshListener()
         cancelButtonListener()
         sortButtonListener()
+
         return binding.root
     }
 

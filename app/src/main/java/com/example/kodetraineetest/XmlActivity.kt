@@ -22,6 +22,7 @@ class XmlActivity : AppCompatActivity(){
         override fun applyCommands(commands: Array<out Command>) {
             super.applyCommands(commands)
             supportFragmentManager.executePendingTransactions()
+
         }
     }
 
