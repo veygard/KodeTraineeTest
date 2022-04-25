@@ -1,4 +1,15 @@
 package com.example.kodetraineetest.di
 
-class SubNavigationModule {
+import com.example.kodetraineetest.navigation.xml.subnavigation.MainScreenCiceroneHolder
+import dagger.Module
+import dagger.Provides
+import javax.inject.Singleton
+
+
+@Module
+object SubNavigationModule {
+
+    @Provides
+    @Singleton
+    fun provideLocalNavigationHolder(): MainScreenCiceroneHolder = MainScreenCiceroneHolder()
 }
